@@ -1,0 +1,43 @@
+[project]
+name = "api"
+version = "0.1.0"
+description = "MedLens+ backend API"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+  "fastapi>=0.136.1",
+  "uvicorn>=0.46.0",
+]
+
+[dependency-groups]
+dev = [
+  "httpx>=0.28.1",
+  "mypy>=2.0.0",
+  "psycopg[binary]>=3.2.10",
+  "pytest>=9.0.3",
+  "redis>=6.4.0",
+  "ruff>=0.15.12",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+  "unit: fast deterministic tests",
+  "integration: tests requiring infra/services"
+]
+
+[build-system]
+requires = ["uv_build>=0.11.12,<0.12.0"]
+build-backend = "uv_build"
