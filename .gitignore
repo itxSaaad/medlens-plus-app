@@ -1,0 +1,23 @@
+# Node
+node_modules/
+.next/
+dist/
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# Env
+.env
+.env.*
+
+# OS
+.DS_Store
+
+# Logs
+*.log
+coverage/
+
+# TypeScript build cache
+*.tsbuildinfo

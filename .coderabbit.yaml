@@ -1,0 +1,23 @@
+language: "en-US"
+reviews:
+  profile: "chill"
+  auto_review:
+    enabled: true
+    drafts: false
+  request_changes_workflow: false
+  high_level_summary: true
+  poem: false
+  review_status: true
+  collapse_walkthrough: false
+  path_instructions:
+    - path: "docs/**"
+      instructions: |
+        Focus on clarity, consistency with architecture docs, and safety language for medical contexts.
+    - path: "apps/api/**"
+      instructions: |
+        Prioritize correctness, type-safety, and explicit error handling.
+    - path: "apps/web/**"
+      instructions: |
+        Prioritize accessibility, readability, and maintainable component boundaries.
+chat:
+  auto_reply: true
