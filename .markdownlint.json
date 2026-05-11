@@ -1,0 +1,13 @@
+{
+  "default": true,
+  "MD013": false,
+  "MD022": false,
+  "MD024": false,
+  "MD032": false,
+  "MD041": false,
+  "ignore": [
+    "apps/web/AGENTS.md",
+    "apps/web/CLAUDE.md",
+    "apps/web/README.md"
+  ]
+}
