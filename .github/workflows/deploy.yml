@@ -1,0 +1,26 @@
+name: Deploy - Reserved Enterprise Pipeline
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+on:
+  workflow_run:
+    workflows: ["Release - Semantic Versioning And Tags"]
+    types: [completed]
+
+concurrency:
+  group: deploy-${{ github.event.workflow_run.head_branch }}
+  cancel-in-progress: true
+
+jobs:
+  deploy-gate:
+    name: Deploy Workflow Gate (Skipped By Design)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Explain deploy strategy
+        run: |
+          echo "Deploy workflow is intentionally skipped."
+          echo "Current deployment mode uses git-integrated platforms (Vercel, Render, etc.)."
+          echo "When moving to managed enterprise deployments, replace this gate with environment deployments."
+          echo "## Deploy" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Skipped intentionally: deployment is handled by external git-integrated platforms." >> "$GITHUB_STEP_SUMMARY"

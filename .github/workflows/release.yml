@@ -1,49 +1,55 @@
-name: Release
+name: Release - Semantic Versioning And Tags
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 on:
-  push:
-    branches:
-      - main
+  workflow_run:
+    workflows: ["CI - Quality And Governance"]
+    types: [completed]
 
 permissions:
   contents: write
+  issues: write
   pull-requests: write
 
 concurrency:
-  group: release-${{ github.ref }}
+  group: release-${{ github.event.workflow_run.head_branch }}
   cancel-in-progress: true
 
 jobs:
-  release-please:
+  semantic-release:
+    name: Semantic Release
     runs-on: ubuntu-latest
+    if: github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main'
     steps:
-      - name: Checkout
+      - name: Checkout main branch with full history
         uses: actions/checkout@v4
-
-      - name: Resolve release token availability
-        id: release_token
-        env:
-          RELEASE_PLEASE_TOKEN: ${{ secrets.RELEASE_PLEASE_TOKEN }}
-        run: |
-          if [ -n "$RELEASE_PLEASE_TOKEN" ]; then
-            echo "enabled=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "enabled=false" >> "$GITHUB_OUTPUT"
-          fi
-
-      - name: Skip when release token is not configured
-        if: steps.release_token.outputs.enabled != 'true'
-        run: |
-          echo "RELEASE_PLEASE_TOKEN is not configured. Skipping release automation intentionally."
-          echo "To enable automated releases, add RELEASE_PLEASE_TOKEN with repo scope."
-
-      - name: Release Please
-        if: steps.release_token.outputs.enabled == 'true'
-        uses: googleapis/release-please-action@v4
         with:
-          token: ${{ secrets.RELEASE_PLEASE_TOKEN }}
-          config-file: release-please-config.json
-          manifest-file: .release-please-manifest.json
+          ref: main
+          fetch-depth: 0
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.25.0
+
+      - name: Setup Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install workspace dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: pnpm release
+
+      - name: Release summary
+        run: |
+          echo "## Release" >> "$GITHUB_STEP_SUMMARY"
+          echo "- semantic-release executed on main." >> "$GITHUB_STEP_SUMMARY"
+          echo "- Versioning uses Conventional Commits and semantic tags (vX.Y.Z)." >> "$GITHUB_STEP_SUMMARY"
