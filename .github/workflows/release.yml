@@ -23,9 +23,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Skip when release token is not configured
+        if: ${{ secrets.RELEASE_PLEASE_TOKEN == '' }}
+        run: |
+          echo "RELEASE_PLEASE_TOKEN is not configured. Skipping release automation intentionally."
+          echo "To enable automated releases, add RELEASE_PLEASE_TOKEN with repo scope."
+
       - name: Release Please
+        if: ${{ secrets.RELEASE_PLEASE_TOKEN != '' }}
         uses: googleapis/release-please-action@v4
         with:
-          token: ${{ secrets.RELEASE_PLEASE_TOKEN || secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.RELEASE_PLEASE_TOKEN }}
           config-file: release-please-config.json
           manifest-file: .release-please-manifest.json
