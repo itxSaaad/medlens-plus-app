@@ -1,44 +1,52 @@
 # System Architecture
 
-## High-Level Components
+## Core MVP Flow
 
-1. Next.js Web App
-2. Supabase Auth
-3. Supabase Storage (MVP)
-4. FastAPI API service
-5. LangGraph processing workflow (modeled in current workflow class)
-6. Postgres (Supabase Postgres in MVP)
-7. Export/packet generation service
+1. User interacts with Next.js web app
+2. Authentication via managed auth provider
+3. Report upload to object storage provider
+4. Document record creation in relational DB
+5. FastAPI processing request triggers workflow orchestration
+6. User review and doctor-ready packet generation
+7. Export and sharing flows
 
-## MVP User Flow (Exact)
+## Agentic Workflow Topology (LangGraph-Oriented)
 
-1. User logs in via Supabase Auth.
-2. User uploads report to Supabase Storage.
-3. Web app creates document record in Postgres.
-4. FastAPI receives processing request.
-5. Processing workflow runs:
-   1. Load document
-   2. Extract text
-   3. OCR fallback (flag controlled)
-   4. Classify report type
-   5. Extract structured values
-   6. Validate schema (flag controlled)
-   7. Store extracted observations
-   8. Compare with historical values (flag controlled)
-   9. Generate safe summary
-   10. Mark review status (flag controlled)
-6. User reviews extracted values.
-7. AI generates doctor-ready packet.
-8. User exports PDF.
+State flows node-by-node with explicit transitions and failure handling.
+Every node can fail fast and return partial user-safe output instead of silent failure.
 
-## Port-and-Adapter Architecture Rule
+### Node 1: Intake and OCR
+- Validate input type (PDF/image/JSON)
+- Extract raw text
+- Confidence threshold gate
 
-All external services are accessed through interfaces in `apps/api/src/api/core/interfaces.py`.
-Provider selection is done by factories in `apps/api/src/api/core/factories.py`.
+### Node 2: Medical Parser
+- Classify report type
+- Extract structured entities
+- Map to standard identifiers (target: LOINC/ICD-10)
+- Flag critical anomalies
 
-This keeps replacement cost low:
-- Add new provider class
-- Add one factory mapping
-- Change env var (`*_PROVIDER`)
+### Node 3: Explainer
+- Generate patient-safe explanation
+- Enforce non-diagnosis, non-prescription policy
+- Apply factual grounding pipeline
 
-No business logic changes should be required for provider swaps.
+### Node 4: Timeline
+- Merge with historical observations
+- Compute trend velocities and deltas
+- Persist immutable health events
+
+### Node 5: Alert and Care
+- Trigger only with explicit consent and critical thresholds
+- Scoped caregiver access controls
+
+## Port-and-Adapter Rule
+
+All external dependencies must go through interfaces and factories:
+- auth
+- storage
+- db repository
+- OCR
+- LLM
+
+This keeps swap cost low and supports fallback providers when one service is degraded.
