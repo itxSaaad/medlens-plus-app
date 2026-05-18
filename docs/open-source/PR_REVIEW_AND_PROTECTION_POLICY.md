@@ -1,19 +1,33 @@
 # PR Review and Protection Policy
 
-This document defines merge control for enterprise-grade open-source collaboration.
+This repository enforces merge discipline similar to an enterprise software team.
 
 ## Mandatory PR Rules
 
 1. No direct pushes to `main`, `staging`, or `develop`.
 2. Every code change must come via pull request.
-3. At least 1 approval is required before merge.
+3. Approval requirements:
+   - `main`: 2 approvals (recommended target)
+   - `staging`: 1 approval
+   - `develop`: 1 approval
+   - **Exception**: CODEOWNERS can bypass approval blocks but should still request reviews as best practice
 4. Required checks must pass before merge:
-   - CI / JS Quality
-   - CI / Python Quality
-   - CI / Commit Message Lint
-   - PR Title Lint
-5. CODEOWNERS review required for protected branches.
+   - JS Quality - Lint Typecheck Test Build
+   - Python Quality - Ruff Mypy Pytest
+   - Branch Naming Validation (PR only)
+   - Commit And PR Convention Checks
+5. CODEOWNERS review required for protected paths.
 6. Resolve all conversations before merge.
+
+## CODEOWNERS Bypass Policy
+
+CODEOWNERS (code stewards) have bypass permission on approval requirements to unblock critical path work, but are **strongly encouraged** to:
+
+- Request reviews on non-trivial changes
+- Wait for at least one approval before merging
+- Use bypass only for hotfixes, dependency updates, or time-sensitive changes
+
+This balances autonomy with team accountability.
 
 ## Branch Promotion Rules
 
@@ -25,24 +39,7 @@ Only promote forward after validations pass.
 
 ## Quality Expectations
 
-- No "vibe-coded" unreviewed logic.
-- Code must be measurable, test-backed, and maintainable.
-- New behavior requires tests and doc updates in same PR.
-- Safety-critical language changes require explicit reviewer note.
-
-## Repository Settings (GitHub UI)
-
-Apply branch protection or rulesets for `develop`, `staging`, and `main`:
-
-- Require pull request before merging
-- Require approvals (>=1; recommend 2 for `main`)
-- Require review from Code Owners
-- Require status checks to pass before merging
-- Require conversation resolution before merging
-- Restrict force pushes and deletions
-- Include administrators in restrictions
-
-## Recommended Merge Strategy
-
-- Use `Squash and merge` for feature PRs into `develop`.
-- Use `Create a merge commit` for `develop -> staging -> main` promotions to preserve release trail.
+- No unreviewed "vibe-coded" logic.
+- Code must be test-backed and maintainable.
+- New behavior requires tests and docs updates in same PR.
+- Safety-critical language changes require explicit reviewer acknowledgment.

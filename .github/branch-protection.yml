@@ -1,0 +1,77 @@
+# Branch Protection Configuration
+# This file documents the branch protection rules for the MedLens+ repository.
+# 
+# These rules are managed via GitHub settings and the GitHub CLI (gh).
+# To apply these rules, run the setup script: .github/setup-branch-protection.sh
+#
+# Rules are applied to branches: main, staging, develop
+
+branches:
+  main:
+    protection:
+      required_status_checks:
+        strict: true
+        contexts:
+          - "Branch Naming Validation"
+          - "JS Quality - Lint Typecheck Test Build"
+          - "Python Quality - Ruff Mypy Pytest"
+          - "Commit And PR Convention Checks"
+      required_pull_request_reviews:
+        dismiss_stale_reviews: true
+        require_code_owner_reviews: true
+        require_last_push_approval: false
+        required_approving_review_count: 2
+      restrictions: null
+      enforce_admins: false
+      allow_force_pushes: false
+      allow_deletions: false
+      allow_auto_merge: true
+      delete_branch_on_merge: true
+
+  staging:
+    protection:
+      required_status_checks:
+        strict: true
+        contexts:
+          - "Branch Naming Validation"
+          - "JS Quality - Lint Typecheck Test Build"
+          - "Python Quality - Ruff Mypy Pytest"
+          - "Commit And PR Convention Checks"
+      required_pull_request_reviews:
+        dismiss_stale_reviews: true
+        require_code_owner_reviews: true
+        require_last_push_approval: false
+        required_approving_review_count: 1
+      restrictions: null
+      enforce_admins: false
+      allow_force_pushes: false
+      allow_deletions: false
+      allow_auto_merge: true
+      delete_branch_on_merge: true
+
+  develop:
+    protection:
+      required_status_checks:
+        strict: true
+        contexts:
+          - "Branch Naming Validation"
+          - "JS Quality - Lint Typecheck Test Build"
+          - "Python Quality - Ruff Mypy Pytest"
+          - "Commit And PR Convention Checks"
+      required_pull_request_reviews:
+        dismiss_stale_reviews: true
+        require_code_owner_reviews: true
+        require_last_push_approval: false
+        required_approving_review_count: 1
+      restrictions: null
+      enforce_admins: false
+      allow_force_pushes: false
+      allow_deletions: false
+      allow_auto_merge: true
+      delete_branch_on_merge: true
+
+# CODEOWNERS Bypass Policy:
+# - CODEOWNERS can dismiss approval requirements but should still request reviews
+# - This is enforced via GitHub's CODEOWNERS file (.github/CODEOWNERS)
+# - Auto-merge is enabled to streamline merge process for approved PRs
+# - Delete head branch on merge to maintain branch hygiene

@@ -1,71 +1,81 @@
 # MedLens+
 
-MedLens+ is an AI-powered medical report intelligence platform that turns scattered lab reports into a longitudinal, doctor-ready health timeline.
+[![CI - Quality And Governance](https://img.shields.io/github/actions/workflow/status/itxSaaad/medlens-plus-app/ci.yml?branch=main&label=CI)](./.github/workflows/ci.yml)
+[![Release](https://img.shields.io/github/actions/workflow/status/itxSaaad/medlens-plus-app/release.yml?branch=main&label=Release)](./.github/workflows/release.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](./LICENSE)
+[![Conventional Commits](https://img.shields.io/badge/commits-conventional-brightgreen.svg)](https://www.conventionalcommits.org/)
 
-## Why MedLens+ Exists
-Most tools can "chat with a PDF." MedLens+ is different:
-- Tracks report-to-report changes over time
-- Flags out-of-range values based on source report ranges
-- Builds patient-friendly explanations and doctor-ready summaries
-- Surfaces trend risks and missing information without diagnosis claims
-- Creates structured medical memory for patients and caregivers
+MedLens+ is a safety-first, longitudinal medical report intelligence platform that turns fragmented lab reports into clear, doctor-ready timelines.
 
 ## Product Principles
-- Safety first: no diagnosis claims, strict medical disclaimers
-- Source-grounded outputs only (no unverified hallucinations)
-- Longitudinal intelligence over one-off chatbot answers
-- Privacy by design and minimal data collection
-- Open-source, contributor-friendly, production-minded architecture
 
-## Repository Structure
-- `docs/product/` Product vision, PRD, scope, user journeys
-- `docs/architecture/` System design, data model, AI pipeline, security
-- `docs/roadmap/` Year plan, release milestones, prioritization
-- `docs/open-source/` Contribution model, governance, standards
-- `docs/ops/` Deployment, environments, observability, runbooks
-- `docs/agent-context/` Instructions for coding agents
-- `planning/sprints/` Sprint-by-sprint execution plan
-- `planning/tickets/` Detailed implementation tickets
-- `infra/terraform/` IaC for future AWS/Azure migration paths
+- Never diagnose, prescribe, or replace a doctor.
+- Always use reference ranges from the uploaded report.
+- Always warn when comparing across labs.
+- Keep all safety guardrails testable and auditable.
 
-## Recommended Stack (Free Now, Scalable Later)
-- Frontend: Next.js 16 + TypeScript + Tailwind + shadcn/ui (Vercel free)
-- Backend API: FastAPI (Python) on Render/Fly free tier initially
-- DB: Supabase Postgres (free tier)
-- Auth: Supabase Auth (email + OAuth)
-- Storage: Cloudflare R2 (low-cost, S3-compatible)
-- Queue/Jobs: Upstash Redis + QStash (free starter)
-- OCR/Extraction: Docling + Tesseract fallback
-- AI orchestration: LangGraph + LangChain
-- LLM provider abstraction: OpenRouter/OpenAI-compatible adapter
-- Observability: OpenTelemetry + Sentry free tier
-- IaC: Terraform from day one for migration to AWS/Azure
+## Why This Is Not "Just Chat With PDF"
 
-## Planned Milestones
-1. Foundation and ingestion pipeline
-2. Structured extraction and medical timeline model
-3. Trend analysis and doctor-ready summary generation
-4. Safety layer, review workflows, and production hardening
-5. Contributor ecosystem and public launch prep
+- Structured extraction for each report type
+- Timeline intelligence across historical reports
+- Safe trend summaries with explainable outputs
+- Doctor-visit preparation packets and question generation
 
-## Start Here
-- Product and PRD: `docs/product/`
-- MVP v1 scope: `docs/product/MVP_V1_SPEC.md`
-- Golden safety rules: `docs/product/GOLDEN_RULES.md`
-- Engineering blueprint: `docs/architecture/`
-- Shared package strategy: `docs/architecture/SHARED_PACKAGES_STRATEGY.md`
-- Execution plan: `planning/sprints/` and `planning/tickets/`
-- MVP to Enterprise plan: `docs/roadmap/MVP_TO_ENTERPRISE_PLAN.md`
-- Contributor onboarding: `CONTRIBUTING.md`
-- Quality gates: `docs/open-source/QUALITY_GATES.md`
+## Monorepo Structure
+
+- `apps/web` Next.js 16 frontend (TypeScript, App Router)
+- `apps/api` FastAPI backend (Python, Pydantic v2, async services)
+- `packages/types` shared TypeScript workspace contracts
+- `packages/agents` agent layer guidance and standards
+- `packages/schemas` schema strategy and cross-language contracts
+- `packages/security` privacy, redaction, and security docs
+- `packages/parsers` extraction module guidance
+- `packages/i18n` localization baseline
+- `planning/` enterprise-style epics, sprints, and tickets
+- `docs/` architecture, product, operations, and OSS governance
+- `CLAUDE.md`, `CODEX.md`, `.github/copilot-instructions.md` agent-specific instruction entrypoints
+
+## Engineering Workflow
+
+- Long-lived branches only: `main`, `staging`, `develop`
+- Feature branches merge by PR and are auto-deleted after merge
+- Exactly three workflow files:
+  - `CI - Quality And Governance`
+  - `Release - Semantic Versioning And Tags`
+  - `Deploy - Reserved Enterprise Pipeline` (skip gate for now)
+
+Current deployment strategy is git-integrated platform deployment (Vercel/Render). The deploy workflow is intentionally a placeholder gate until managed environments are enabled.
+
+## Quick Start
+
+```bash
+pnpm install
+pnpm lint
+pnpm typecheck
+pnpm test
+pnpm build
+```
+
+Backend Python quality and tests are executed through workspace scripts and CI using `uv` + FastAPI tooling.
+
+## Key Docs
+
+- Product scope: `docs/product/MVP_V1_SPEC.md`
+- Golden rules: `docs/product/GOLDEN_RULES.md`
+- System architecture: `docs/architecture/SYSTEM_ARCHITECTURE.md`
+- Adapter/factory strategy: `docs/architecture/ADAPTER_FACTORY_GUIDE.md`
+- Config and feature flags: `docs/ops/CONFIGURATION_AND_FLAGS.md`
 - Branching model: `docs/open-source/BRANCHING_STRATEGY.md`
-- Conventions: `docs/open-source/CONVENTIONS.md`
-- Operating manual: `docs/open-source/PROJECT_OPERATING_MANUAL.md`
-- PR protection policy: `docs/open-source/PR_REVIEW_AND_PROTECTION_POLICY.md`
-- Maintainer checklist: `docs/open-source/OSS_MAINTAINER_CHECKLIST.md`
-- Runtime (docker dev/prod): `docs/ops/LOCAL_AND_PROD_RUNTIME.md`
-- Env + feature flags: `docs/ops/CONFIGURATION_AND_FLAGS.md`
-- Coding-agent brief: `AGENTS.md`
+- Release model: `docs/open-source/RELEASE_PROCESS.md`
+- Quality gates: `docs/open-source/QUALITY_GATES.md`
+- Commit standards: `docs/open-source/COMMIT_STRATEGY.md`
+- OSS operating manual: `docs/open-source/PROJECT_OPERATING_MANUAL.md`
+- Agent baseline: `docs/agent-context/AGENT_SKILLS_BASELINE.md`
+
+## Contributing
+
+Read `CONTRIBUTING.md`, then pick a ticket from `planning/tickets/`. Every PR must include safety impact, test evidence, and security/privacy notes.
 
 ## License
-MIT (see `LICENSE`)
+
+MIT License. See `LICENSE`.
