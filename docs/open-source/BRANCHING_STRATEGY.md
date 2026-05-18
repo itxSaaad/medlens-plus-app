@@ -6,10 +6,14 @@
 - `develop`: integration branch
 
 ## Working Branches
-- `feat/<ticket-id>-<slug>`
-- `fix/<ticket-id>-<slug>`
-- `chore/<scope>`
-- `docs/<scope>`
+- `feat/<ticket-id>-<slug>` — new features
+- `fix/<ticket-id>-<slug>` — bug fixes
+- `refactor/<scope>` — code refactoring without behavior change
+- `test/<scope>` — test additions or improvements
+- `ci/<scope>` — CI/CD configuration changes
+- `chore/<scope>` — dependency updates, tooling
+- `docs/<scope>` — documentation
+- `release/<version>` — release preparation
 
 ## Merge Policy
 1. Feature/fix/chore/docs branches merge into `develop` via PR.

@@ -10,6 +10,7 @@ This repository enforces merge discipline similar to an enterprise software team
    - `main`: 2 approvals (recommended target)
    - `staging`: 1 approval
    - `develop`: 1 approval
+   - **Exception**: CODEOWNERS can bypass approval blocks but should still request reviews as best practice
 4. Required checks must pass before merge:
    - JS Quality - Lint Typecheck Test Build
    - Python Quality - Ruff Mypy Pytest
@@ -17,6 +18,16 @@ This repository enforces merge discipline similar to an enterprise software team
    - Commit And PR Convention Checks
 5. CODEOWNERS review required for protected paths.
 6. Resolve all conversations before merge.
+
+## CODEOWNERS Bypass Policy
+
+CODEOWNERS (code stewards) have bypass permission on approval requirements to unblock critical path work, but are **strongly encouraged** to:
+
+- Request reviews on non-trivial changes
+- Wait for at least one approval before merging
+- Use bypass only for hotfixes, dependency updates, or time-sensitive changes
+
+This balances autonomy with team accountability.
 
 ## Branch Promotion Rules
 

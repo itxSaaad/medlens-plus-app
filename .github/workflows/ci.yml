@@ -149,16 +149,27 @@ jobs:
           BRANCH_TO_DELETE: ${{ github.event.pull_request.head.ref }}
           REPO: ${{ github.repository }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          HEAD_REPO: ${{ github.event.pull_request.head.repo.full_name }}
         run: |
           if [[ "$BRANCH_TO_DELETE" == "main" || "$BRANCH_TO_DELETE" == "develop" || "$BRANCH_TO_DELETE" == "staging" ]]; then
             echo "Skipping deletion for permanent branch: $BRANCH_TO_DELETE"
             exit 0
           fi
 
+          # Skip cleanup if PR is from a fork
+          if [[ "$HEAD_REPO" != "$REPO" ]]; then
+            echo "Skipping cleanup: PR from fork ($HEAD_REPO)"
+            exit 0
+          fi
+
           echo "Deleting merged branch: $BRANCH_TO_DELETE"
-          gh api -X DELETE "repos/$REPO/git/refs/heads/$BRANCH_TO_DELETE"
+          if gh api -X DELETE "repos/$REPO/git/refs/heads/$BRANCH_TO_DELETE" 2>/dev/null; then
+            echo "Branch deleted successfully."
+          else
+            echo "Branch may have already been deleted or does not exist. Continuing gracefully."
+          fi
 
       - name: Branch cleanup summary
         run: |
           echo "## Branch Cleanup" >> "$GITHUB_STEP_SUMMARY"
-          echo "- Merged non-permanent feature branch deleted." >> "$GITHUB_STEP_SUMMARY"
+          echo "- Merged feature branch cleanup completed." >> "$GITHUB_STEP_SUMMARY"

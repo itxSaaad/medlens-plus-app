@@ -23,7 +23,7 @@ MedLens+ is a safety-first, longitudinal medical report intelligence platform th
 
 ## Monorepo Structure
 
-- `apps/web` Next.js 15 frontend (TypeScript, App Router)
+- `apps/web` Next.js 16 frontend (TypeScript, App Router)
 - `apps/api` FastAPI backend (Python, Pydantic v2, async services)
 - `packages/types` shared TypeScript workspace contracts
 - `packages/agents` agent layer guidance and standards
