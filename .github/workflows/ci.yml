@@ -1,14 +1,21 @@
 name: CI
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 on:
   pull_request:
     branches: [main, develop, staging]
   push:
     branches: [main, develop, staging]
 
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   js-quality:
-    name: JS Quality (lint, typecheck, test, build)
+    name: JS Quality (lint, typecheck, unit test, build)
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -28,20 +35,24 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Lint
-        run: pnpm lint
+      - name: Lint (frontend + markdown)
+        run: |
+          pnpm --filter @medlens/web lint
+          pnpm lint:md
 
-      - name: Typecheck
-        run: pnpm typecheck
+      - name: Typecheck (frontend + shared types)
+        run: |
+          pnpm --filter @medlens/web typecheck
+          pnpm --filter @medlens/types typecheck
 
-      - name: Test
-        run: pnpm test
+      - name: Unit tests (frontend)
+        run: pnpm --filter @medlens/web test:unit
 
-      - name: Build
-        run: pnpm build
+      - name: Build (frontend)
+        run: pnpm --filter @medlens/web build
 
   python-quality:
-    name: Python Quality (ruff, mypy, pytest)
+    name: Python Quality (ruff, mypy, unit tests)
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -59,8 +70,8 @@ jobs:
       - name: Mypy
         run: uv run --directory apps/api mypy src
 
-      - name: Pytest
-        run: uv run --directory apps/api pytest
+      - name: Unit tests (api)
+        run: uv run --directory apps/api pytest -m "not integration"
 
   commitlint:
     name: Commit Message Lint
