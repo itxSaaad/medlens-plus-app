@@ -24,3 +24,8 @@
 ## Release Cadence
 - Weekly internal release to `staging`
 - Monthly stable release to `main`
+
+## Enforcement
+- Enforce branch protection and required approvals via
+  `docs/open-source/PR_REVIEW_AND_PROTECTION_POLICY.md`.
+- Use `docs/open-source/OSS_MAINTAINER_CHECKLIST.md` before merge.

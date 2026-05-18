@@ -61,6 +61,8 @@ Most tools can "chat with a PDF." MedLens+ is different:
 - Branching model: `docs/open-source/BRANCHING_STRATEGY.md`
 - Conventions: `docs/open-source/CONVENTIONS.md`
 - Operating manual: `docs/open-source/PROJECT_OPERATING_MANUAL.md`
+- PR protection policy: `docs/open-source/PR_REVIEW_AND_PROTECTION_POLICY.md`
+- Maintainer checklist: `docs/open-source/OSS_MAINTAINER_CHECKLIST.md`
 - Runtime (docker dev/prod): `docs/ops/LOCAL_AND_PROD_RUNTIME.md`
 - Env + feature flags: `docs/ops/CONFIGURATION_AND_FLAGS.md`
 - Coding-agent brief: `AGENTS.md`
