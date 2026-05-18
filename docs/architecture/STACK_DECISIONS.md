@@ -11,7 +11,7 @@
 ## Target Enterprise Stack (Recommended)
 
 ### Frontend
-- Next.js App Router (targeting Next.js 15 conventions)
+- Next.js App Router (targeting Next.js 16 conventions)
 - Server Components for low client bundle surfaces
 - TypeScript strict mode, no `any` policy
 - shadcn/ui + Tailwind for accessible primitives
