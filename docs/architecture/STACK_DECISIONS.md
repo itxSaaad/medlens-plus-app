@@ -1,37 +1,52 @@
 # Stack Decisions
 
-## Objectives
+## Current Implementation Baseline
 
-- Free to start
-- Fast weekend development
-- Production migration path to cloud
-- Easy service replacement with minimal code changes
+- Frontend: Next.js + TypeScript + Tailwind
+- Backend: FastAPI + Pydantic v2
+- Adapter/factory architecture for providers
+- Env-backed settings and feature flags
+- CI with JS and Python quality gates
 
-## Chosen Stack (MVP)
+## Target Enterprise Stack (Recommended)
 
-- UI: Next.js + TypeScript + Tailwind
-- Auth: Supabase Auth
-- Storage: Supabase Storage
-- API: FastAPI + Pydantic
-- DB: Supabase Postgres
-- Workflow orchestration: LangGraph
-- OCR: Docling + fallback strategy
-- LLM provider abstraction: OpenAI-compatible provider layer
-- Observability: OpenTelemetry + Sentry
-- IaC: Terraform modules from day zero
+### Frontend
+- Next.js App Router (targeting Next.js 16 conventions)
+- Server Components for low client bundle surfaces
+- TypeScript strict mode, no `any` policy
+- shadcn/ui + Tailwind for accessible primitives
+- Zustand + TanStack Query for pragmatic client state and server state
 
-## Why This Works Long-Term
+### Backend
+- FastAPI + Pydantic v2
+- SQLAlchemy 2 async
+- Alembic migrations
+- LangGraph for explicit state-machine orchestration
+- Ruff + mypy enforced in CI
 
-- Initial cost stays low with managed free tiers.
-- Service dependencies are abstracted by provider interfaces + factories.
-- Cloud migration is incremental and controlled.
+### Observability and Reliability
+- Langfuse for LLM traces and token/cost telemetry
+- Sentry with pre-send PII scrubbing hooks
+- Axiom for structured logs with PHI-safe patterns
+
+### Data and Infra
+- Neon Postgres (or Supabase Postgres in early stage)
+- Pinecone for embeddings only (no raw PHI)
+- Upstash Redis for rate limits/cache/session state
+
+## Multi-LLM Extensibility Rule
+
+The system must support provider failover:
+- LLM selection goes through `LLMProvider` interface and factory
+- Provider switch must require env/config change only
+- Workflows must never hardcode one model vendor SDK path
 
 ## Provider Swap Policy
 
 When replacing a service:
-1. Create provider class implementing the interface.
-2. Register provider in factory.
-3. Switch provider via environment variable.
-4. Run provider contract tests.
+1. Implement provider class for the interface
+2. Add mapping in factory
+3. Change env key
+4. Run contract and integration tests
 
-No direct provider SDK calls should appear in workflow/business modules.
+No direct provider SDK calls in workflow/business modules.
