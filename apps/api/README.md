@@ -1,16 +1,13 @@
 # apps/api
 
-FastAPI backend for MedLens+ (CLI scaffolded with `uv init`).
+FastAPI backend for MedLens+.
 
-## Local
-- `uv sync --group dev`
-- `uv run uvicorn src.api.main:app --reload --host 0.0.0.0 --port 8000`
+## Run via pnpm scripts
 
-## Quality
-- `uv run ruff check .`
-- `uv run mypy src`
-- `uv run pytest`
+- `pnpm --filter @medlens/api dev`
+- `pnpm --filter @medlens/api lint`
+- `pnpm --filter @medlens/api typecheck`
+- `pnpm --filter @medlens/api test`
+- `pnpm --filter @medlens/api test:integration`
 
-## Docker
-- Dev: uses `apps/api/Dockerfile.dev`
-- Prod: uses `apps/api/Dockerfile`
+These scripts delegate to `uv` internally.

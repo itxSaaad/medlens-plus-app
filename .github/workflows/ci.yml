@@ -1,17 +1,47 @@
-name: CI
+name: CI - Quality And Governance
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 on:
   pull_request:
     branches: [main, develop, staging]
+    types: [opened, synchronize, reopened, edited, closed]
   push:
     branches: [main, develop, staging]
 
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  js-quality:
-    name: JS Quality (lint, typecheck, test, build)
+  branch-naming:
+    name: Branch Naming Validation
     runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' && github.event.action != 'closed'
     steps:
-      - name: Checkout
+      - name: Validate source branch naming convention
+        env:
+          BRANCH_NAME: ${{ github.head_ref }}
+        run: |
+          echo "Validating branch: $BRANCH_NAME"
+          if [[ ! "$BRANCH_NAME" =~ ^(feat|fix|chore|docs|refactor|test|ci|release)\/ ]]; then
+            echo "Invalid branch name: $BRANCH_NAME"
+            echo "Use one of: feat/*, fix/*, chore/*, docs/*, refactor/*, test/*, ci/*, release/*"
+            exit 1
+          fi
+
+      - name: Branch naming result summary
+        run: |
+          echo "## Branch Naming" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Source branch follows enforced naming convention." >> "$GITHUB_STEP_SUMMARY"
+
+  js-quality:
+    name: JS Quality - Lint Typecheck Test Build
+    runs-on: ubuntu-latest
+    if: github.event_name != 'pull_request' || github.event.action != 'closed'
+    steps:
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Setup pnpm
@@ -19,55 +49,127 @@ jobs:
         with:
           version: 10.25.0
 
-      - name: Setup Node
+      - name: Setup Node.js 22 with pnpm cache
         uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: pnpm
 
-      - name: Install dependencies
+      - name: Install workspace dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Lint
-        run: pnpm lint
+      - name: Lint frontend and markdown
+        run: |
+          pnpm --filter @medlens/web lint
+          pnpm lint:md
 
-      - name: Typecheck
-        run: pnpm typecheck
+      - name: Typecheck frontend and shared schemas
+        run: |
+          pnpm --filter @medlens/web typecheck
+          pnpm --filter @medlens/types typecheck
 
-      - name: Test
-        run: pnpm test
+      - name: Run frontend unit tests
+        run: pnpm --filter @medlens/web test:unit
 
-      - name: Build
-        run: pnpm build
+      - name: Build frontend production artifacts
+        run: pnpm --filter @medlens/web build
+
+      - name: JS quality result summary
+        run: |
+          echo "## JS Quality" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Lint, typecheck, unit tests, and build completed successfully." >> "$GITHUB_STEP_SUMMARY"
 
   python-quality:
-    name: Python Quality (ruff, mypy, pytest)
+    name: Python Quality - Ruff Mypy Pytest
     runs-on: ubuntu-latest
+    if: github.event_name != 'pull_request' || github.event.action != 'closed'
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup uv
+      - name: Setup uv runtime
         uses: astral-sh/setup-uv@v5
 
-      - name: Install python dependencies
+      - name: Install backend dependencies
         run: uv sync --directory apps/api --frozen --group dev
 
-      - name: Ruff
+      - name: Lint backend with ruff
         run: uv run --directory apps/api ruff check .
 
-      - name: Mypy
+      - name: Typecheck backend with mypy
         run: uv run --directory apps/api mypy src
 
-      - name: Pytest
-        run: uv run --directory apps/api pytest
+      - name: Run backend unit tests
+        run: uv run --directory apps/api pytest -m "not integration"
 
-  commitlint:
-    name: Commit Message Lint
+      - name: Python quality result summary
+        run: |
+          echo "## Python Quality" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Ruff, mypy, and unit tests completed successfully." >> "$GITHUB_STEP_SUMMARY"
+
+  commit-conventions:
+    name: Commit And PR Convention Checks
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request'
+    if: github.event_name == 'pull_request' && github.event.action != 'closed'
     steps:
-      - name: Lint commits
+      - name: Lint commit messages
         uses: wagoid/commitlint-github-action@v6
         with:
           configFile: commitlint.config.cjs
+
+      - name: Lint PR title semantics
+        uses: amannn/action-semantic-pull-request@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          types: |
+            feat
+            fix
+            docs
+            chore
+            refactor
+            test
+            ci
+            release
+
+      - name: Convention checks result summary
+        run: |
+          echo "## Commit And PR Conventions" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Commit messages and PR title format are compliant." >> "$GITHUB_STEP_SUMMARY"
+
+  cleanup-merged-branch:
+    name: Cleanup Merged Feature Branch
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
+    permissions:
+      contents: write
+    steps:
+      - name: Keep only permanent branches
+        env:
+          BRANCH_TO_DELETE: ${{ github.event.pull_request.head.ref }}
+          REPO: ${{ github.repository }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          HEAD_REPO: ${{ github.event.pull_request.head.repo.full_name }}
+        run: |
+          if [[ "$BRANCH_TO_DELETE" == "main" || "$BRANCH_TO_DELETE" == "develop" || "$BRANCH_TO_DELETE" == "staging" ]]; then
+            echo "Skipping deletion for permanent branch: $BRANCH_TO_DELETE"
+            exit 0
+          fi
+
+          # Skip cleanup if PR is from a fork
+          if [[ "$HEAD_REPO" != "$REPO" ]]; then
+            echo "Skipping cleanup: PR from fork ($HEAD_REPO)"
+            exit 0
+          fi
+
+          echo "Deleting merged branch: $BRANCH_TO_DELETE"
+          if gh api -X DELETE "repos/$REPO/git/refs/heads/$BRANCH_TO_DELETE" 2>/dev/null; then
+            echo "Branch deleted successfully."
+          else
+            echo "Branch may have already been deleted or does not exist. Continuing gracefully."
+          fi
+
+      - name: Branch cleanup summary
+        run: |
+          echo "## Branch Cleanup" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Merged feature branch cleanup completed." >> "$GITHUB_STEP_SUMMARY"
