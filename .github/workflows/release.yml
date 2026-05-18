@@ -23,14 +23,25 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Resolve release token availability
+        id: release_token
+        env:
+          RELEASE_PLEASE_TOKEN: ${{ secrets.RELEASE_PLEASE_TOKEN }}
+        run: |
+          if [ -n "$RELEASE_PLEASE_TOKEN" ]; then
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Skip when release token is not configured
-        if: '${{ !secrets.RELEASE_PLEASE_TOKEN }}'
+        if: steps.release_token.outputs.enabled != 'true'
         run: |
           echo "RELEASE_PLEASE_TOKEN is not configured. Skipping release automation intentionally."
           echo "To enable automated releases, add RELEASE_PLEASE_TOKEN with repo scope."
 
       - name: Release Please
-        if: '${{ secrets.RELEASE_PLEASE_TOKEN }}'
+        if: steps.release_token.outputs.enabled == 'true'
         uses: googleapis/release-please-action@v4
         with:
           token: ${{ secrets.RELEASE_PLEASE_TOKEN }}
