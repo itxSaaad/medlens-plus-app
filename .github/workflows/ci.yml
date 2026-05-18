@@ -25,6 +25,10 @@ jobs:
           BRANCH_NAME: ${{ github.head_ref }}
         run: |
           echo "Validating branch: $BRANCH_NAME"
+          if [[ "$BRANCH_NAME" =~ ^(develop|staging|main)$ ]]; then
+            echo "Bypassing naming validation for permanent branch: $BRANCH_NAME"
+            exit 0
+          fi
           if [[ ! "$BRANCH_NAME" =~ ^(feat|fix|chore|docs|refactor|test|ci|release)\/ ]]; then
             echo "Invalid branch name: $BRANCH_NAME"
             echo "Use one of: feat/*, fix/*, chore/*, docs/*, refactor/*, test/*, ci/*, release/*"
