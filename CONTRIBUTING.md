@@ -14,8 +14,10 @@ Thanks for contributing.
 3. Implement small, reviewable commits on your feature branch
 4. Add/adjust tests
 5. Run `pnpm graphify:update` if you changed architecture or module boundaries
-6. Open PR to **`develop`** using PR template with `Closes #NNN`
-7. Hotfixes: branch from `main`, PR to **`main`** (maintainers backmerge to lower branches)
+6. Open PR to **`develop`** using the [PR template](.github/pull_request_template.md) with `Closes #NNN` or `Relates to #NNN`
+7. Keep PRs **≤150 changed files** when possible (recommended for AI/human review); use modular commits on the feature branch for large stacks
+8. Request **CodeRabbit** (`@coderabbitai review`) and **Copilot** (assign as reviewer) **manually** when the PR is ready — see [`docs/open-source/TOOLING_SETUP.md`](docs/open-source/TOOLING_SETUP.md)
+9. Hotfixes: branch from `main`, PR to **`main`** (maintainers backmerge to lower branches)
 
 ## Commit Convention
 Use Conventional Commits:
