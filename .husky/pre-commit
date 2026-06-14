@@ -1,4 +1,4 @@
 #!/usr/bin/env sh
-# Auto-fix staged files, then typecheck (same as CI gate, without full-repo lint).
+# Format and lint staged files only; full repo gates run in CI.
 pnpm exec lint-staged
 pnpm typecheck

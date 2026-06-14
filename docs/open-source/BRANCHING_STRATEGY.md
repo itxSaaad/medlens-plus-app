@@ -6,9 +6,9 @@
 
 ## Working Branches
 - Branch **from `main`** (always matches production baseline)
-- `feat/<ticket-id>-<slug>` — new features
-- `fix/<ticket-id>-<slug>` — bug fixes
-- `hotfix/<ticket-id>-<slug>` — urgent production fixes (PR to `main`)
+- `feat/<ticket-id>-<slug>` or `feat/<description-slug>` — new features
+- `fix/<ticket-id>-<slug>` or `fix/<description-slug>` — bug fixes
+- `hotfix/<ticket-id>-<slug>` or `hotfix/<description-slug>` — urgent production fixes (PR to `main`)
 - `refactor/<scope>`, `test/<scope>`, `ci/<scope>`, `chore/<scope>`, `docs/<scope>`
 
 ## Merge Policy
@@ -51,7 +51,7 @@ git merge origin/main
 # resolve conflicts, then push or open PR
 ```
 
-There is **no** GitHub Actions backmerge workflow — Actions cannot create PRs on this repo.
+There is **no** automated backmerge workflow — open the PR yourself when needed.
 
 ## One-time branch alignment
 

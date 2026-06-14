@@ -10,6 +10,8 @@
     "apps/web/AGENTS.md",
     "apps/web/CLAUDE.md",
     "apps/web/README.md",
-    "graphify-out/**"
+    "graphify-out/**",
+    ".cursor/**",
+    ".claude/skills/graphify/**"
   ]
 }

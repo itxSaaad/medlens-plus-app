@@ -13,13 +13,13 @@ Install these GitHub Apps on `itxSaaad/medlens-plus-app` and add repository secr
 
 ## Codecov (coverage dashboard)
 
-- **Config:** [`codecov.yml`](../../codecov.yml)
+- **Config:** [`codecov.yml`](../../codecov.yml) — flags scoped to `apps/web` and `apps/api`; ignores tests, graphify artifacts, and agent tooling paths
 - **Install:** [Codecov project](https://codecov.io/gh/itxSaaad/medlens-plus-app)
 - **Secret:** `CODECOV_TOKEN` — copy from Codecov project settings → Repository upload token
 
 ## Codacy (quality dashboard)
 
-- **Config:** [`.codacy.yml`](../../.codacy.yml) — `exclude_paths` and `engines.markdownlint.exclude_paths` skip `graphify-out/**` (generated graph docs)
+- **Config:** [`.codacy.yml`](../../.codacy.yml) — excludes `graphify-out/**`, `.cursor/**`, graphify skill/hooks, build caches, and lockfiles from analysis
 - **Workflow:** [`.github/workflows/codacy.yml`](../../.github/workflows/codacy.yml)
 - **Install:** [Codacy GitHub App](https://github.com/apps/codacy)
 - **Secret:** `CODACY_PROJECT_TOKEN` — from Codacy → Project → Settings → Integrations
@@ -30,6 +30,15 @@ Install these GitHub Apps on `itxSaaad/medlens-plus-app` and add repository secr
 - **Target branch:** `develop` (all npm, pip, and GitHub Actions updates)
 - **Policy:** Never merge Dependabot PRs directly to `main`; land on `develop` first
 - **No install required** — enabled automatically when the config file is on `main`
+- **CI:** Branch naming validation bypasses `dependabot/*`; Dependabot `chore(deps):` / `chore(deps-dev):` commits already pass commitlint
+- **Lockfile conflicts:** When several npm Dependabot PRs overlap, open one manual branch with all version bumps and run `pnpm install` once — do **not** hand-merge `pnpm-lock.yaml` conflict hunks; delete the lockfile and regenerate if needed
+
+## Local formatting
+
+- **Command:** `pnpm format` at repo root (Prettier for JS/TS/JSON/YAML/CSS, `ruff format` for API, Markdownlint `--fix` for docs)
+- **Check only:** `pnpm format:check` (Prettier dry run)
+- **Editor:** `.editorconfig` + `.vscode/settings.json` (format on save; Prettier, Ruff, Markdownlint)
+- **On commit:** Husky `pre-commit` runs `lint-staged` on **staged files only** (skips graphify, `.cursor`, graphify skills); full `pnpm lint` runs in CI
 
 ## Branch promotion and drift
 
@@ -58,8 +67,8 @@ Install these GitHub Apps on `itxSaaad/medlens-plus-app` and add repository secr
 ### Local git hooks (Husky)
 
 | Hook | When | Behavior |
-|------|------|----------|
-| `pre-commit` | Before each commit | **Auto-fix** staged `*.md` via `lint-staged` + markdownlint `--fix` |
+| ------ | ------ | ---------- |
+| `pre-commit` | Before each commit | **Staged files only:** Prettier, ESLint (web), Ruff (api), Markdownlint — skips `graphify-out/**`, `.cursor/**`, graphify skills |
 | `post-checkout` | Branch switch | Full `graphify update . --force` |
 | `post-merge` | After `git pull` (merge) | Full `graphify update . --force` |
 
