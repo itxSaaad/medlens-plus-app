@@ -19,7 +19,7 @@ Install these GitHub Apps on `itxSaaad/medlens-plus-app` and add repository secr
 
 ## Codacy (quality dashboard)
 
-- **Config:** [`.codacy.yml`](../../.codacy.yml)
+- **Config:** [`.codacy.yml`](../../.codacy.yml) — `exclude_paths` and `engines.markdownlint.exclude_paths` skip `graphify-out/**` (generated graph docs)
 - **Workflow:** [`.github/workflows/codacy.yml`](../../.github/workflows/codacy.yml)
 - **Install:** [Codacy GitHub App](https://github.com/apps/codacy)
 - **Secret:** `CODACY_PROJECT_TOKEN` — from Codacy → Project → Settings → Integrations
