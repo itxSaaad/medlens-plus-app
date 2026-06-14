@@ -6,8 +6,10 @@ on:
     branches: [develop, main]
 
 permissions:
+  contents: read
   issues: write
   pull-requests: read
+  projects: write
 
 jobs:
   update-project-status:
@@ -21,8 +23,14 @@ jobs:
           PR_BODY: ${{ github.event.pull_request.body }}
           PR_TITLE: ${{ github.event.pull_request.title }}
         run: |
-          TEXT="$PR_BODY $PR_TITLE"
-          ISSUE=$(echo "$TEXT" | grep -oiE '(closes|fixes|resolves)\s+#([0-9]+)' | head -1 | grep -oE '[0-9]+' || true)
+          # Match only real issue links (line-start), not PR template examples like `Closes #42`.
+          ISSUE=$(
+            { printf '%s\n' "$PR_BODY"; printf '%s\n' "$PR_TITLE"; } \
+              | grep -oiE '^[[:space:]]*(closes|fixes|resolves)[[:space:]]+#[0-9]+' \
+              | head -1 \
+              | grep -oE '[0-9]+' \
+              || true
+          )
           if [ -z "$ISSUE" ]; then
             echo "skip=true" >> "$GITHUB_OUTPUT"
           else
