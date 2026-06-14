@@ -7,9 +7,9 @@
 
 ## Working Branches
 - Branch **from `main`** (always matches production baseline)
-- `feat/<ticket-id>-<slug>` — new features
-- `fix/<ticket-id>-<slug>` — bug fixes
-- `hotfix/<ticket-id>-<slug>` — urgent production fixes (PR to `main`)
+- `feat/<ticket-id>-<slug>` or `feat/<description-slug>` — new features
+- `fix/<ticket-id>-<slug>` or `fix/<description-slug>` — bug fixes
+- `hotfix/<ticket-id>-<slug>` or `hotfix/<description-slug>` — urgent production fixes (PR to `main`)
 - `refactor/<scope>`, `test/<scope>`, `ci/<scope>`, `chore/<scope>`, `docs/<scope>`
 
 ## Merge Policy
@@ -23,7 +23,7 @@ hotfix (from main)          -->  main  -->  backmerge PRs to staging + develop
 
 1. Feature branches open PRs to **`develop`** (squash merge only, manual merge after CI passes).
 2. Maintainers promote with **manual promotion PRs** (see below).
-3. After every push to `main`, [Branch Backmerge](https://github.com/itxSaaad/medlens-plus-app/actions/workflows/branch-backmerge.yml) **opens PRs only** — maintainers resolve conflicts and merge manually.
+3. After every successful release on `main`, [Branch Backmerge](https://github.com/itxSaaad/medlens-plus-app/actions/workflows/branch-backmerge.yml) **opens PRs only** — maintainers resolve conflicts and merge manually.
 
 ## Manual promotion
 
@@ -41,7 +41,7 @@ Review, wait for CI, resolve conflicts if any, then squash merge. Repeat until b
 
 ## Backmerge
 
-When `main` moves (hotfix or promotion), the backmerge workflow opens PRs `main` → `staging` and `main` → `develop`. **These PRs are not merged automatically.** Review each one, fix conflicts locally if needed, and merge manually.
+When `main` moves (hotfix or promotion), CI on `main` runs first, then semantic-release, then the backmerge workflow opens PRs `main` → `staging` and `main` → `develop`. **These PRs are not merged automatically.** Review each one, fix conflicts locally if needed, and merge manually.
 
 ## Required Checks Per PR
 - Branch Naming Validation

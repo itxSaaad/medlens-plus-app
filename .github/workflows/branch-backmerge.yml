@@ -1,7 +1,9 @@
 name: Branch Backmerge
 
 on:
-  push:
+  workflow_run:
+    workflows: ["Release - Semantic Versioning And Tags"]
+    types: [completed]
     branches: [main]
 
 permissions:
@@ -12,6 +14,7 @@ jobs:
   backmerge:
     name: Backmerge main into staging and develop
     runs-on: ubuntu-latest
+    if: github.event.workflow_run.conclusion == 'success'
     strategy:
       matrix:
         target: [staging, develop]
@@ -19,6 +22,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v6
         with:
+          ref: main
           fetch-depth: 0
 
       - name: Create or update backmerge PR
@@ -28,6 +32,8 @@ jobs:
         run: |
           TITLE="chore: backmerge main into ${TARGET}"
           BODY="## Backmerge PR (does not auto-merge)
+
+          Opened automatically after a successful release on \`main\`.
 
           This workflow **only opens or updates a PR**. A maintainer must review, resolve any conflicts, wait for CI, and **merge manually**.
 
@@ -44,3 +50,8 @@ jobs:
             gh pr create --head main --base "$TARGET" --title "$TITLE" --body "$BODY"
             echo "Created backmerge PR (main -> $TARGET)"
           fi
+
+      - name: Backmerge summary
+        run: |
+          echo "## Backmerge" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Opened or updated PR: main -> ${{ matrix.target }}" >> "$GITHUB_STEP_SUMMARY"
