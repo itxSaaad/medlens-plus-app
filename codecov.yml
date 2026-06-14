@@ -1,0 +1,25 @@
+coverage:
+  status:
+    project:
+      default:
+        target: 70%
+        threshold: 2%
+    patch:
+      default:
+        target: 60%
+  flags:
+    web:
+      paths:
+        - apps/web/
+    api:
+      paths:
+        - apps/api/
+  ignore:
+    - "**/tests/**"
+    - "**/*.test.*"
+    - "**/*.spec.*"
+    - graphify-out/**
+
+comment:
+  layout: reach,diff,flags,files
+  behavior: default

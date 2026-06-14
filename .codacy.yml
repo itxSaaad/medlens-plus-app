@@ -1,0 +1,14 @@
+---
+exclude:
+  - graphify-out/**
+  - "**/node_modules/**"
+  - "**/.next/**"
+  - "**/coverage/**"
+  - "**/dist/**"
+  - "**/.venv/**"
+  - "**/__pycache__/**"
+
+engines:
+  duplication:
+    minThreshold: 5
+    threshold: 10

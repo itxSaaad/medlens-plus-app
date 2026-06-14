@@ -29,9 +29,9 @@ jobs:
             echo "Bypassing naming validation for permanent branch: $BRANCH_NAME"
             exit 0
           fi
-          if [[ ! "$BRANCH_NAME" =~ ^(feat|fix|chore|docs|refactor|test|ci|release)\/ ]]; then
+          if [[ ! "$BRANCH_NAME" =~ ^(feat|fix|hotfix|chore|docs|refactor|test|ci|release)\/ ]]; then
             echo "Invalid branch name: $BRANCH_NAME"
-            echo "Use one of: feat/*, fix/*, chore/*, docs/*, refactor/*, test/*, ci/*, release/*"
+            echo "Use one of: feat/*, fix/*, hotfix/*, chore/*, docs/*, refactor/*, test/*, ci/*, release/*"
             exit 1
           fi
 
@@ -73,7 +73,16 @@ jobs:
           pnpm --filter @medlens/types typecheck
 
       - name: Run frontend unit tests
-        run: pnpm --filter @medlens/web test:unit
+        run: pnpm --filter @medlens/web test:unit -- --coverage
+
+      - name: Upload web coverage to Codecov
+        if: always()
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: apps/web/coverage/coverage-final.json
+          flags: web
+          fail_ci_if_error: false
 
       - name: Build frontend production artifacts
         run: pnpm --filter @medlens/web build
@@ -104,7 +113,16 @@ jobs:
         run: uv run --directory apps/api mypy src
 
       - name: Run backend unit tests
-        run: uv run --directory apps/api pytest -m "not integration"
+        run: uv run --directory apps/api pytest -m "not integration" --cov=src --cov-report=xml:coverage.xml
+
+      - name: Upload API coverage to Codecov
+        if: always()
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: apps/api/coverage.xml
+          flags: api
+          fail_ci_if_error: false
 
       - name: Python quality result summary
         run: |
@@ -177,3 +195,32 @@ jobs:
         run: |
           echo "## Branch Cleanup" >> "$GITHUB_STEP_SUMMARY"
           echo "- Merged feature branch cleanup completed." >> "$GITHUB_STEP_SUMMARY"
+
+  graphify-sync:
+    name: Graphify Graph Sync Check
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' && github.event.action != 'closed'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup uv for graphify CLI
+        uses: astral-sh/setup-uv@v5
+
+      - name: Install graphify CLI
+        run: uv tool install graphifyy
+
+      - name: Update AST knowledge graph
+        run: graphify update . --force
+
+      - name: Fail if committed graph is stale
+        run: |
+          git diff --exit-code graphify-out/graph.json graphify-out/GRAPH_REPORT.md || {
+            echo "::error::graphify-out/ is stale. Run 'pnpm graphify:update' locally and commit graph.json + GRAPH_REPORT.md."
+            exit 1
+          }
+
+      - name: Graphify sync summary
+        run: |
+          echo "## Graphify" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Knowledge graph is in sync with code changes." >> "$GITHUB_STEP_SUMMARY"
