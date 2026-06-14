@@ -35,7 +35,7 @@ MedLens+ is a safety-first, longitudinal medical report intelligence platform th
 - `packages/parsers` extraction module guidance
 - `packages/i18n` localization baseline
 - `docs/` architecture, product, operations, and OSS governance
-- `graphify-out/` codebase knowledge graph (`graph.json`, `GRAPH_REPORT.md`)
+- `graphify-out/` local codebase knowledge graph (gitignored; run `pnpm graphify:update`)
 - `CLAUDE.md`, `CODEX.md`, `.github/copilot-instructions.md` agent-specific instruction entrypoints
 
 ## Engineering Workflow

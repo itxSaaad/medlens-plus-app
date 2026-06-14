@@ -24,9 +24,5 @@ coverage/
 # TypeScript build cache
 *.tsbuildinfo
 
-# Graphify — commit graph.json + GRAPH_REPORT.md; ignore ephemeral build artifacts
-graphify-out/**
-!graphify-out/graph.json
-!graphify-out/GRAPH_REPORT.md
-!graphify-out/wiki/
-!graphify-out/wiki/**
+# Graphify — local-only knowledge graph (not committed; run pnpm graphify:update)
+graphify-out/

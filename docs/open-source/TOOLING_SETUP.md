@@ -61,22 +61,20 @@ Install these GitHub Apps on `itxSaaad/medlens-plus-app` and add repository secr
 ## Graphify (codebase knowledge graph)
 
 - **CLI:** `uv tool install graphifyy`
-- **Update:** `pnpm graphify:update` when structure changes (optional; not a CI gate)
-- **Artifacts:** commit `graphify-out/graph.json` + `GRAPH_REPORT.md` only if you maintain the graph in-repo
+- **Update:** `pnpm graphify:update` when structure changes (local only; **not committed**)
+- **Output:** `graphify-out/` is in [`.gitignore`](../../.gitignore) — each machine builds its own graph
 
 ### Local git hooks (Husky)
 
 | Hook | When | Behavior |
 | ------ | ------ | ---------- |
 | `pre-commit` | Before each commit | **Staged files only:** Prettier, ESLint (web), Ruff (api), Markdownlint — skips `graphify-out/**`, `.cursor/**`, graphify skills |
-| `post-checkout` | Branch switch | Full `graphify update . --force` |
-| `post-merge` | After `git pull` (merge) | Full `graphify update . --force` |
+| `post-checkout` | Branch switch | Full `graphify update . --force` (writes to local `graphify-out/` only) |
+| `post-merge` | After `git pull` (merge) | Full `graphify update . --force` (local only) |
 
 **Skip graphify hooks:** `SKIP_GRAPHIFY_HOOK=1 git checkout <branch>` or `SKIP_GRAPHIFY_HOOK=1 git pull`
 
 Hooks use Husky (`pnpm prepare`). Do **not** run `graphify hook install` — conflicts with Husky.
-
-Committed artifacts: `graphify-out/graph.json` and `graphify-out/GRAPH_REPORT.md` only (see [`.gitignore`](../../.gitignore)).
 
 ## Branch protection (one-time)
 

@@ -21,7 +21,7 @@ Use when picking work, shipping features, opening PRs, or promoting branches.
 - Conventional Commits; **lowercase subject**; body lines **≤100 characters**
 - Husky runs commitlint on every commit; CI re-checks all PR commits
 - Before push: `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm build`
-- After structural changes: `pnpm graphify:update` and commit graph artifacts
+- After structural changes: run `pnpm graphify:update` locally (artifacts stay gitignored)
 
 ## PR policy
 - PR-only merges to `develop` and `main` — **no auto-merge**
