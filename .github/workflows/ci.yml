@@ -85,7 +85,7 @@ jobs:
 
       - name: Upload web coverage to Codecov
         if: always()
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v7
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: apps/web/coverage/coverage-final.json
@@ -125,7 +125,7 @@ jobs:
 
       - name: Upload API coverage to Codecov
         if: always()
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v7
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: apps/api/coverage.xml
