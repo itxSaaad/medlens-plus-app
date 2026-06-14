@@ -22,8 +22,10 @@ Build MedLens+ as a safety-first, longitudinal medical report intelligence platf
 - Branch from `main`; PR to `develop` (features) or `main` (hotfixes).
 - Long-lived branches: `main`, `staging`, `develop` only.
 - All merges to protected branches are **manual PR merges** — auto-merge disabled.
-- Link a GitHub issue (`Closes #NNN`) in every PR.
-- Include safety impact, user impact, and test evidence in PR body.
+- Link a GitHub issue (`Closes #NNN` or `Relates to #NNN`) in every PR.
+- Use the [PR template](../pull_request_template.md) — summary, safety impact, privacy impact, test evidence.
+- **AI reviews (Copilot, CodeRabbit) are manual only** — request when the PR is ready and scoped (see `docs/open-source/TOOLING_SETUP.md`).
+- **PR size (recommended):** ≤150 changed files for AI tools; ≤400 lines meaningful diff; one logical change per PR when possible.
 
 ## Local Validation
 Run before requesting review:

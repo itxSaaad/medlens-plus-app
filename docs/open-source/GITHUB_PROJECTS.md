@@ -64,6 +64,8 @@ fix/TKT-XXX-short-slug
 ## PR Requirements
 
 - Title: conventional commit format
-- Body: `Closes #NNN`
+- Body: follow [PR template](../../.github/pull_request_template.md) — `Closes #NNN` or `Relates to #NNN`, problem/solution, checklists, validation evidence
+- **Size (recommended):** ≤150 changed files; ≤400 lines meaningful diff; split or use modular commits when larger
+- **AI review:** manual only — `@coderabbitai review` / assign Copilot when ready (see [`TOOLING_SETUP.md`](./TOOLING_SETUP.md))
 - Target: `develop` (features); promotion PRs to `staging`/`main` by maintainers
 - Merge: **squash only** on protected branches

@@ -6,28 +6,41 @@ This repository enforces merge discipline similar to an enterprise software team
 
 1. No direct pushes to `main`, `staging`, or `develop`.
 2. Every code change must come via pull request.
-3. Approval requirements:
-   - `main`: 2 approvals (recommended target)
-   - `staging`: 1 approval
-   - `develop`: 1 approval
-   - **Exception**: CODEOWNERS can bypass approval blocks but should still request reviews as best practice
-4. Required checks must pass before merge:
+3. Use the [PR template](../../.github/pull_request_template.md) for the body (ticket link, problem, solution, checklists, validation evidence).
+4. Approval requirements (current solo-maintainer mode — see [`docs/ops/BRANCH_PROTECTION_SETUP.md`](../ops/BRANCH_PROTECTION_SETUP.md)):
+   - `develop`, `staging`, `main`: **0 approvals** (PR + required CI only)
+   - **Future:** re-enable CODEOWNERS + 1 approval per branch when a second reviewer exists
+5. Required checks must pass before merge:
+   - Branch Naming Validation
    - JS Quality - Lint Typecheck Test Build
    - Python Quality - Ruff Mypy Pytest
-   - Branch Naming Validation (PR only)
    - Commit And PR Convention Checks
-5. CODEOWNERS review required for protected paths.
-6. Resolve all conversations before merge.
+   - Graphify Sync
+6. Resolve blocking conversations before merge.
 
-## CODEOWNERS Bypass Policy
+## Recommended PR Size (not enforced by CI)
 
-CODEOWNERS (code stewards) have bypass permission on approval requirements to unblock critical path work, but are **strongly encouraged** to:
+Keep PRs reviewable for humans and AI tools:
 
-- Request reviews on non-trivial changes
-- Wait for at least one approval before merging
-- Use bypass only for hotfixes, dependency updates, or time-sensitive changes
+| Guideline | Target | Why |
+|-----------|--------|-----|
+| Changed files | **≤150** (recommended) | CodeRabbit auto-skips above 150; Copilot skips above ~300 |
+| Meaningful diff | **≤400 lines** | Faster human review; easier cherry-pick |
+| Scope | **One issue / logical change** | Cleaner history; modular commits on feature branches |
 
-This balances autonomy with team accountability.
+Large stacks (e.g. initial skills consolidation) are acceptable when commits are modular and documented — **request AI review manually** only on scoped follow-up PRs or after splitting.
+
+## AI Review Policy (manual only)
+
+- **CodeRabbit:** `auto_review.enabled: false` in [`.coderabbit.yaml`](../../.coderabbit.yaml). Trigger with `@coderabbitai review` or `@coderabbitai full review` in a PR comment when ready.
+- **GitHub Copilot:** Do not enable automatic PR review in repo rulesets or Copilot settings. Assign **Copilot** as a reviewer when you want feedback.
+- **Codacy:** On-demand via PR comment / dashboard (no blocking auto-review by default).
+
+Setup details: [`TOOLING_SETUP.md`](./TOOLING_SETUP.md).
+
+## CODEOWNERS (future)
+
+When `require_code_owner_reviews` is re-enabled, CODEOWNERS paths in [`.github/CODEOWNERS`](../../.github/CODEOWNERS) apply. Until then, maintainers merge after CI without approval gate.
 
 ## Branch Promotion Rules
 
