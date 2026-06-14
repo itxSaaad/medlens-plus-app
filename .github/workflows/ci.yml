@@ -29,15 +29,21 @@ jobs:
             echo "Bypassing naming validation for permanent branch: $BRANCH_NAME"
             exit 0
           fi
+          if [[ "$BRANCH_NAME" =~ ^dependabot/ ]]; then
+            echo "Bypassing naming validation for Dependabot branch: $BRANCH_NAME"
+            exit 0
+          fi
           if [[ ! "$BRANCH_NAME" =~ ^(feat|fix|hotfix|chore|docs|refactor|test|ci|release)\/ ]]; then
             echo "Invalid branch name: $BRANCH_NAME"
             echo "Use one of: feat/*, fix/*, hotfix/*, chore/*, docs/*, refactor/*, test/*, ci/*, release/*"
             exit 1
           fi
           if [[ "$BRANCH_NAME" =~ ^(feat|fix|hotfix)/ ]]; then
-            if [[ ! "$BRANCH_NAME" =~ ^(feat|fix|hotfix)/TKT-[0-9]+(\.[0-9]+)?-[a-z0-9]+(-[a-z0-9]+)*$ ]]; then
+            TICKET_PATTERN='^(feat|fix|hotfix)/TKT-[0-9]+(\.[0-9]+)?-[a-z0-9]+(-[a-z0-9]+)*$'
+            SLUG_PATTERN='^(feat|fix|hotfix)/[a-z0-9]+(-[a-z0-9]+)*$'
+            if [[ ! "$BRANCH_NAME" =~ $TICKET_PATTERN ]] && [[ ! "$BRANCH_NAME" =~ $SLUG_PATTERN ]]; then
               echo "Invalid branch name: $BRANCH_NAME"
-              echo "feat/fix/hotfix branches must include ticket id: feat/TKT-013-short-slug"
+              echo "feat/fix/hotfix branches need a ticket id (feat/TKT-013-short-slug) or a description slug (feat/short-slug)"
               echo "See docs/open-source/NAMING_CONVENTIONS.md"
               exit 1
             fi

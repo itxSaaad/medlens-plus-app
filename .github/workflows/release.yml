@@ -7,6 +7,7 @@ on:
   workflow_run:
     workflows: ["CI - Quality And Governance"]
     types: [completed]
+    branches: [main]
 
 permissions:
   contents: write

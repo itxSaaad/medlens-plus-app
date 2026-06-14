@@ -5,10 +5,13 @@
   "MD024": false,
   "MD032": false,
   "MD041": false,
+  "MD060": false,
   "ignore": [
     "apps/web/AGENTS.md",
     "apps/web/CLAUDE.md",
     "apps/web/README.md",
-    "graphify-out/**"
+    "graphify-out/**",
+    ".cursor/**",
+    ".claude/skills/graphify/**"
   ]
 }
