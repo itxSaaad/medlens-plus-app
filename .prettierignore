@@ -1,0 +1,14 @@
+node_modules
+.next
+out
+build
+dist
+coverage
+graphify-out/**
+.cursor/**
+.claude/skills/graphify/**
+.venv
+__pycache__
+pnpm-lock.yaml
+*.tsbuildinfo
+.uv-cache

@@ -1,16 +1,16 @@
-# Graph Report - medlens-plus-app  (2026-06-14)
+# Graph Report - medlens-plus-app  (2026-06-15)
 
 ## Corpus Check
-- 565 files · ~296,355 words
+- 565 files · ~297,798 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 4909 nodes · 4586 edges · 535 communities (352 shown, 183 thin omitted)
+- 4935 nodes · 4611 edges · 536 communities (353 shown, 183 thin omitted)
 - Extraction: 97% EXTRACTED · 3% INFERRED · 0% AMBIGUOUS · INFERRED: 150 edges (avg confidence: 0.54)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `88b978d0`
+- Built from commit: `17862f59`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -538,18 +538,19 @@
 - [[_COMMUNITY_Community 532|Community 532]]
 - [[_COMMUNITY_Community 533|Community 533]]
 - [[_COMMUNITY_Community 534|Community 534]]
+- [[_COMMUNITY_Community 535|Community 535]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `DocumentRepository` - 22 edges
 2. `LLMProvider` - 20 edges
 3. `FileStorageProvider` - 19 edges
 4. `OCRProvider` - 18 edges
-5. `Data Fetching & Caching` - 17 edges
-6. `Server Actions` - 17 edges
-7. `Data Fetching & Caching` - 17 edges
-8. `Server Actions` - 17 edges
-9. `MedLens+ MVP to Enterprise Execution Plan` - 17 edges
-10. `Settings` - 16 edges
+5. `scripts` - 18 edges
+6. `Data Fetching & Caching` - 17 edges
+7. `Server Actions` - 17 edges
+8. `Data Fetching & Caching` - 17 edges
+9. `Server Actions` - 17 edges
+10. `MedLens+ MVP to Enterprise Execution Plan` - 17 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `get_auth_provider()` --calls--> `SupabaseAuthProvider`  [INFERRED]
@@ -566,7 +567,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (535 total, 183 thin omitted)
+## Communities (536 total, 183 thin omitted)
 
 ### Community 0 - "Community 0"
 Cohesion: 0.06
@@ -578,11 +579,11 @@ Nodes (44): 10) Leadership Dashboard (Monthly), 1) Planning Horizon and Constrai
 
 ### Community 2 - "Community 2"
 Cohesion: 0.06
-Nodes (30): dependencies, next, react, react-dom, devDependencies, eslint, eslint-config-next, jsdom (+22 more)
+Nodes (31): dependencies, next, react, react-dom, devDependencies, eslint, eslint-config-next, jsdom (+23 more)
 
 ### Community 3 - "Community 3"
-Cohesion: 0.06
-Nodes (29): husky.sh script, devDependencies, @commitlint/cli, @commitlint/config-conventional, husky, markdownlint-cli, semantic-release, @semantic-release/commit-analyzer (+21 more)
+Cohesion: 0.05
+Nodes (35): husky.sh script, devDependencies, @commitlint/cli, @commitlint/config-conventional, husky, lint-staged, markdownlint-cli, semantic-release (+27 more)
 
 ### Community 4 - "Community 4"
 Cohesion: 0.08
@@ -597,8 +598,8 @@ Cohesion: 0.17
 Nodes (11): compilerOptions, allowSyntheticDefaultImports, esModuleInterop, forceConsistentCasingInFileNames, module, moduleResolution, resolveJsonModule, skipLibCheck (+3 more)
 
 ### Community 7 - "Community 7"
-Cohesion: 0.18
-Nodes (10): description, name, private, scripts, dev, lint, test, test:integration (+2 more)
+Cohesion: 0.17
+Nodes (11): description, name, private, scripts, dev, format, lint, test (+3 more)
 
 ### Community 8 - "Community 8"
 Cohesion: 0.18
@@ -721,8 +722,8 @@ Cohesion: 0.22
 Nodes (8): Branch Naming, GitHub Projects Delivery Board, Hierarchy, Maintainer sync (not for contributors), Milestones (Gates), PR Requirements, Project Views, Status Model
 
 ### Community 38 - "Community 38"
-Cohesion: 0.18
-Nodes (10): Branch promotion, backmerge, and drift, Branch protection (one-time), Codacy (quality dashboard), Codecov (coverage dashboard), CodeRabbit (PR review + issue enrichment), Dependabot (dependency updates), GitHub Copilot (PR review), Graphify (codebase knowledge graph) (+2 more)
+Cohesion: 0.17
+Nodes (11): Branch promotion, backmerge, and drift, Branch protection (one-time), Codacy (quality dashboard), Codecov (coverage dashboard), CodeRabbit (PR review + issue enrichment), Dependabot (dependency updates), GitHub Copilot (PR review), Graphify (codebase knowledge graph) (+3 more)
 
 ### Community 40 - "Community 40"
 Cohesion: 0.20
@@ -813,8 +814,8 @@ Cohesion: 0.40
 Nodes (4): Governance Expectations, Integration Gates (Pre-release), Local Pre-Push Checklist, Quality Gates
 
 ### Community 62 - "Community 62"
-Cohesion: 0.40
-Nodes (4): Release Automation Behavior, Release Process, Requirements, Workflow Sequence
+Cohesion: 0.33
+Nodes (5): Local formatting, Release Automation Behavior, Release Process, Requirements, Workflow Sequence
 
 ### Community 63 - "Community 63"
 Cohesion: 0.40
@@ -1928,14 +1929,20 @@ Nodes (5): Delivery Rule, Planning System, Priority Levels, Status Model, Struct
 Cohesion: 0.29
 Nodes (6): Branches, CI jobs that enforce this, Commits (Conventional Commits + commitlint), Naming Conventions (Branches, Commits, PRs), Pre-PR checklist (agents), Pull requests
 
+### Community 535 - "Community 535"
+Cohesion: 0.12
+Nodes (15): 1. shadcn + tokens, 2. Marketing shell, 3. Pages, 4. Loading, error, 404, 5. SEO pack, 6. Tests and docs, 7. Validation (before PR), Branch and PR governance (+7 more)
+
 ## Knowledge Gaps
-- **3434 isolated node(s):** `Path`, `husky.sh script`, `graphify-update.sh script`, `name`, `private` (+3429 more)
+- **3456 isolated node(s):** `Path`, `husky.sh script`, `graphify-update.sh script`, `name`, `private` (+3451 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **183 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
+- **Why does `7. JavaScript Performance` connect `Community 198` to `Community 249`?**
+  _High betweenness centrality (0.000) - this node is a cross-community bridge._
 - **Are the 15 inferred relationships involving `DocumentRepository` (e.g. with `DocumentRepository` and `FileStorageProvider`) actually correct?**
   _`DocumentRepository` has 15 INFERRED edges - model-reasoned connections that need verification._
 - **Are the 15 inferred relationships involving `LLMProvider` (e.g. with `DocumentRepository` and `FileStorageProvider`) actually correct?**
@@ -1945,8 +1952,6 @@ _Questions this graph is uniquely positioned to answer:_
 - **Are the 15 inferred relationships involving `OCRProvider` (e.g. with `DocumentRepository` and `FileStorageProvider`) actually correct?**
   _`OCRProvider` has 15 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `Path`, `Map sprint title -> iteration id (active + completed).`, `husky.sh script` to the rest of the system?**
-  _3436 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _3458 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Community 0` be split into smaller, more focused modules?**
   _Cohesion score 0.06442127773322641 - nodes in this community are weakly interconnected._
-- **Should `Community 1` be split into smaller, more focused modules?**
-  _Cohesion score 0.044444444444444446 - nodes in this community are weakly interconnected._
