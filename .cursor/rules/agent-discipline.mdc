@@ -1,0 +1,18 @@
+---
+description: Agent discipline — minimal diffs, no placeholders, verify deps, match existing patterns
+alwaysApply: true
+---
+
+# Agent Discipline
+
+- Read surrounding code before editing; match naming, imports, and error-handling patterns.
+- Smallest correct diff; no drive-by refactors or new abstractions unless required.
+- No placeholders in delivered code: no `TODO`, `...`, stub bodies, or "implement later".
+- Verify dependencies exist in `package.json` / `pyproject.toml` before importing new packages.
+- Interface-first for new modules: types/contracts before implementation.
+- Prefer editing existing files over creating parallel helpers.
+- Concrete error messages; reuse project error types — no generic catch-all handlers.
+- No over-commenting, generic names, or unnecessary wrappers.
+- **Branches, commits, PR titles:** follow [`docs/open-source/NAMING_CONVENTIONS.md`](../../docs/open-source/NAMING_CONVENTIONS.md) so CI passes.
+- Staged Markdown is auto-fixed on commit (`lint-staged` + markdownlint `--fix` in pre-commit).
+- Run validation before claiming done: `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm build`.

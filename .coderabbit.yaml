@@ -1,17 +1,16 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+# Manual review mode — trigger with @coderabbitai review or @coderabbitai full review
+
 language: "en-US"
 reviews:
   profile: "chill"
   auto_review:
-    enabled: true
+    enabled: false
     drafts: false
-    base_branches:
-      - "main"
-      - "develop"
-      - "staging"
   request_changes_workflow: false
   high_level_summary: true
   poem: false
-  review_status: true
+  review_status: false
   collapse_walkthrough: false
   path_instructions:
     - path: "docs/**"
@@ -23,5 +22,30 @@ reviews:
     - path: "apps/web/**"
       instructions: |
         Prioritize accessibility, readability, and maintainable component boundaries.
+issue_enrichment:
+  auto_enrich:
+    enabled: true
+  labeling:
+    auto_apply_labels: true
+    instructions:
+      - label: "type:story"
+        instructions: "User-facing implementation story with acceptance criteria"
+      - label: "type:epic"
+        instructions: "Strategic outcome container"
+      - label: "type:sub-task"
+        instructions: "Sub-issue breakdown of a parent story"
+      - label: "priority:P0"
+        instructions: "Critical path; blocks sprint exit"
+  planning:
+    enabled: true
+    auto_planning:
+      enabled: true
+      labels:
+        - "type:story"
+        - "!no-plan"
 chat:
   auto_reply: true
+
+# Manual review commands (PR comment):
+#   @coderabbitai review       — incremental review of new commits
+#   @coderabbitai full review  — full review of all files (use when under 150 changed files)

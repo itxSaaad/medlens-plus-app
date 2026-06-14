@@ -1,4 +1,4 @@
-# Branching Strategy (3-Branch Model)
+# Branching Strategy (Main-First, 3-Branch Model)
 
 ## Long-Lived Branches
 - `main`: production branch (protected)
@@ -6,19 +6,42 @@
 - `develop`: integration branch
 
 ## Working Branches
+- Branch **from `main`** (always matches production baseline)
 - `feat/<ticket-id>-<slug>` — new features
 - `fix/<ticket-id>-<slug>` — bug fixes
-- `refactor/<scope>` — code refactoring without behavior change
-- `test/<scope>` — test additions or improvements
-- `ci/<scope>` — CI/CD configuration changes
-- `chore/<scope>` — dependency updates, tooling
-- `docs/<scope>` — documentation
-- `release/<version>` — release preparation
+- `hotfix/<ticket-id>-<slug>` — urgent production fixes (PR to `main`)
+- `refactor/<scope>`, `test/<scope>`, `ci/<scope>`, `chore/<scope>`, `docs/<scope>`
 
 ## Merge Policy
-1. Feature/fix/chore/docs branches merge into `develop` via PR.
-2. `develop` is promoted to `staging` via PR.
-3. `staging` is promoted to `main` via PR.
+
+```text
+feat/fix/chore (from main)  -->  develop  -->  staging  -->  main
+hotfix (from main)          -->  main  -->  backmerge PRs to staging + develop
+```
+
+**PR-only rule:** All changes to `develop`, `staging`, and `main` land via **pull requests with required CI**. Human review is optional until the CODEOWNERS gate is re-enabled (see [`docs/ops/BRANCH_PROTECTION_SETUP.md`](../ops/BRANCH_PROTECTION_SETUP.md)). No workflow auto-merges branches. Auto-merge is disabled on protected branches.
+
+1. Feature branches open PRs to **`develop`** (squash merge only, manual merge after CI passes).
+2. Maintainers promote with **manual promotion PRs** (see below).
+3. After every push to `main`, [Branch Backmerge](https://github.com/itxSaaad/medlens-plus-app/actions/workflows/branch-backmerge.yml) **opens PRs only** — maintainers resolve conflicts and merge manually.
+
+## Manual promotion
+
+Open promotion PRs yourself (GitHub UI or `gh`):
+
+```bash
+# develop → staging
+gh pr create --head develop --base staging --title "chore: promote develop to staging"
+
+# staging → main
+gh pr create --head staging --base main --title "chore: promote staging to main"
+```
+
+Review, wait for CI, resolve conflicts if any, then squash merge. Repeat until branches are aligned.
+
+## Backmerge
+
+When `main` moves (hotfix or promotion), the backmerge workflow opens PRs `main` → `staging` and `main` → `develop`. **These PRs are not merged automatically.** Review each one, fix conflicts locally if needed, and merge manually.
 
 ## Required Checks Per PR
 - Branch Naming Validation
@@ -26,13 +49,9 @@
 - Python Quality - Ruff Mypy Pytest
 - Commit And PR Convention Checks
 
-## Workflow Chain
-- CI first
-- Release second (semantic-release runs only after successful CI on `main`)
-- Deploy third (currently skip-only by design)
-
 ## Enforcement
-- Apply branch protection to `main`, `staging`, `develop`
-- Require approvals, CODEOWNERS review, and conversation resolution
-- No direct pushes to protected branches
-- Auto-delete merged branches except `main`, `staging`, and `develop`
+- One-time setup: [`docs/ops/BRANCH_PROTECTION_SETUP.md`](../ops/BRANCH_PROTECTION_SETUP.md)
+- Branch, commit, and PR naming: [`NAMING_CONVENTIONS.md`](./NAMING_CONVENTIONS.md)
+- Squash merge only on `develop`, `staging`, `main`
+- Auto-merge disabled; Dependabot PRs still require manual merge on `develop`
+- Auto-delete merged feature branches; never delete protected branches
