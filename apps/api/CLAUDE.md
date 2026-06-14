@@ -3,6 +3,7 @@
 FastAPI backend (`@medlens/api`), Python 3.12+.
 
 ## Commands
+
 ```bash
 pnpm --filter @medlens/api dev
 pnpm --filter @medlens/api lint
@@ -12,7 +13,8 @@ pnpm --filter @medlens/api test:integration
 ```
 
 ## Layout
-```
+
+```text
 src/api/
   core/         interfaces.py, factories.py, settings.py
   providers/    auth, storage, db, ocr, llm

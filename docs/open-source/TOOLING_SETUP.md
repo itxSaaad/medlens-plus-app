@@ -9,19 +9,19 @@ Install these GitHub Apps on `itxSaaad/medlens-plus-app` and add repository secr
 - **File limit:** CodeRabbit skips PRs over **150 changed files**; split large stacks or review by directory (`coderabbit review --dir`)
 - **Issue enrichment (free/OSS beta):** Duplicate detection, related issues/PRs, smart labels on new issues
 - **Planning:** Auto-plan on `type:story` issues (engineering plans only — not medical advice); comment `@coderabbitai plan` on any issue
-- **Install:** https://github.com/apps/coderabbitai
+- **Install:** [CodeRabbit GitHub App](https://github.com/apps/coderabbitai)
 
 ## Codecov (coverage dashboard)
 
 - **Config:** [`codecov.yml`](../../codecov.yml)
-- **Install:** https://codecov.io/gh/itxSaaad/medlens-plus-app
+- **Install:** [Codecov project](https://codecov.io/gh/itxSaaad/medlens-plus-app)
 - **Secret:** `CODECOV_TOKEN` — copy from Codecov project settings → Repository upload token
 
 ## Codacy (quality dashboard)
 
 - **Config:** [`.codacy.yml`](../../.codacy.yml)
 - **Workflow:** [`.github/workflows/codacy.yml`](../../.github/workflows/codacy.yml)
-- **Install:** https://github.com/apps/codacy
+- **Install:** [Codacy GitHub App](https://github.com/apps/codacy)
 - **Secret:** `CODACY_PROJECT_TOKEN` — from Codacy → Project → Settings → Integrations
 
 ## Dependabot (dependency updates)

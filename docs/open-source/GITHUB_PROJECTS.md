@@ -40,6 +40,7 @@ MedLens+ uses [GitHub Project #2](https://github.com/users/itxSaaad/projects/2) 
 | **Epic Roadmap** | Roadmap | Group by Epic |
 | **Phase Table** | Table | Ticket ID, Status, Epic, Priority, Sprint |
 | **Contributor Queue** | Table | Ready or good first issue |
+
 GitHub does not expose a public API to create views. Follow [`PROJECT_VIEWS_SETUP.md`](./PROJECT_VIEWS_SETUP.md) (step-by-step GUI guide).
 
 ## Maintainer sync (not for contributors)
@@ -56,10 +57,13 @@ See `docs/ops/MAINTAINER_DELIVERY.md` — run `.github/maintainer/sync-delivery.
 
 ## Branch Naming
 
-```
+```text
 feat/TKT-013-env-strategy-config
 fix/TKT-XXX-short-slug
+chore/governance-agent-skills
 ```
+
+Full rules: [`NAMING_CONVENTIONS.md`](./NAMING_CONVENTIONS.md)
 
 ## PR Requirements
 

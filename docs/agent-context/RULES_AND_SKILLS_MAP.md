@@ -63,6 +63,7 @@ Claude also: `graphify`, `medlens` index skill.
 ## Web experience stacks
 
 ### Discovery (public / marketing ranking)
+
 | Layer | Skill |
 |-------|-------|
 | UX design review | `product-ux` |
@@ -75,6 +76,7 @@ Claude also: `graphify`, `medlens` index skill.
 | a11y | `ui-accessibility` |
 
 ### In-app (clinical UI)
+
 | Layer | Skill |
 |-------|-------|
 | UX design review | `product-ux` |

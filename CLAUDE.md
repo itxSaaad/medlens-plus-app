@@ -8,6 +8,7 @@ Claude Code instructions for MedLens+.
 3. Pick a **Ready** issue on [Project #2](https://github.com/users/itxSaaad/projects/2)
 
 ## Monorepo
+
 | Path | Role |
 |------|------|
 | `apps/web` | Next.js 16 — see `apps/web/CLAUDE.md` |
@@ -19,11 +20,13 @@ Claude Code instructions for MedLens+.
 
 ## Execution
 - Branch from `main`; PR to `develop` (features) or `main` (hotfixes)
+- Naming: [`docs/open-source/NAMING_CONVENTIONS.md`](docs/open-source/NAMING_CONVENTIONS.md) — `feat/TKT-NNN-slug`, conventional commits, semantic PR title
 - Adapter/factory boundaries; env + feature flags
 - PR-only merges; auto-merge disabled
 - Never bypass medical safety guardrails
 
 ## Validation
+
 ```bash
 pnpm lint && pnpm typecheck && pnpm test && pnpm build
 ```

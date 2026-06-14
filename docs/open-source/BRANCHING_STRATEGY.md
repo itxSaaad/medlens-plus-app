@@ -52,6 +52,7 @@ When `main` moves (hotfix or promotion), the backmerge workflow opens PRs `main`
 
 ## Enforcement
 - One-time setup: [`docs/ops/BRANCH_PROTECTION_SETUP.md`](../ops/BRANCH_PROTECTION_SETUP.md)
+- Branch, commit, and PR naming: [`NAMING_CONVENTIONS.md`](./NAMING_CONVENTIONS.md)
 - Squash merge only on `develop`, `staging`, `main`
 - Auto-merge disabled; Dependabot PRs still require manual merge on `develop`
 - Auto-delete merged feature branches; never delete protected branches

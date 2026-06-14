@@ -6,7 +6,8 @@ alwaysApply: false
 # GitHub Delivery
 
 - Source of truth: [Project #2](https://github.com/users/itxSaaad/projects/2)
+- **Naming (CI):** [`docs/open-source/NAMING_CONVENTIONS.md`](../../docs/open-source/NAMING_CONVENTIONS.md)
 - Pick **Ready** issues; update Status: In Progress → In Review → Done.
-- Branch **from `main`**: `feat/TKT-XXX-slug`; PR target **`develop`**
-- PR body: `Closes #NNN` + safety/privacy/test evidence.
+- Branch **from `main`**: `feat/TKT-XXX-slug` (or `chore/scope` for governance)
+- PR target **`develop`**; title = semantic conventional commit; body = PR template + `Closes #NNN`
 - Skill: `.cursor/skills/project-delivery/SKILL.md`

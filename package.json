@@ -5,7 +5,7 @@
   "packageManager": "pnpm@10.25.0",
   "scripts": {
     "lint": "pnpm -r --if-present lint && pnpm lint:md",
-    "lint:md": "markdownlint \"**/*.md\" --ignore node_modules --ignore .next",
+    "lint:md": "markdownlint \"**/*.md\" --ignore node_modules --ignore .next --ignore graphify-out",
     "typecheck": "pnpm -r --if-present typecheck",
     "test": "pnpm --filter @medlens/web test:unit && pnpm --filter @medlens/api test",
     "test:integration": "pnpm --filter @medlens/web test:integration && pnpm --filter @medlens/api test:integration",

@@ -10,8 +10,8 @@ Thanks for contributing.
 
 ## Workflow
 1. Fork repository
-2. Sync `main`, then create branch: `feat/TKT-XXX-short-slug` **from `main`**
-3. Implement small, reviewable commits on your feature branch
+2. Sync `main`, then create branch per [`NAMING_CONVENTIONS.md`](docs/open-source/NAMING_CONVENTIONS.md): `feat/TKT-XXX-short-slug` **from `main`**
+3. Implement small, reviewable commits (conventional; body lines ≤100 chars)
 4. Add/adjust tests
 5. Run `pnpm graphify:update` if you changed architecture or module boundaries
 6. Open PR to **`develop`** using the [PR template](.github/pull_request_template.md) with `Closes #NNN` or `Relates to #NNN`
