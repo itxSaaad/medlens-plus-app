@@ -2,7 +2,7 @@ name: Integration Gate
 
 on:
   pull_request:
-    branches: [staging, main]
+    branches: [develop, main]
     types: [opened, synchronize, reopened]
 
 permissions:
@@ -12,23 +12,69 @@ jobs:
   integration:
     name: Integration Tests
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: medlens
+          POSTGRES_USER: medlens
+          POSTGRES_PASSWORD: medlens
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U medlens -d medlens"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 10
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      DATABASE_URL: postgresql://medlens:medlens@localhost:5432/medlens
+      REDIS_URL: redis://localhost:6379/0
+      NEXT_PUBLIC_API_BASE_URL: http://127.0.0.1:8000
+      APP_ENV: ci
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v6
         with:
           version: 10.25.0
 
       - name: Setup Node.js 22
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: 22
           cache: pnpm
 
+      - name: Setup uv runtime
+        uses: astral-sh/setup-uv@v5
+
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: |
+          pnpm install --frozen-lockfile
+          uv sync --directory apps/api --frozen --group dev
+
+      - name: Start API for integration tests
+        run: |
+          uv run --directory apps/api uvicorn src.api.main:app --host 127.0.0.1 --port 8000 &
+          for i in $(seq 1 30); do
+            if curl -fsS "$NEXT_PUBLIC_API_BASE_URL/health" >/dev/null; then
+              echo "API is ready"
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "API failed to become ready on $NEXT_PUBLIC_API_BASE_URL"
+          exit 1
 
       - name: Run integration tests
         run: pnpm test:integration

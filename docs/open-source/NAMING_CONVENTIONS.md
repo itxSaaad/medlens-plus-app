@@ -1,24 +1,25 @@
 # Naming Conventions (Branches, Commits, PRs)
 
-CI enforces these rules on every PR to `develop`, `staging`, and `main`. Agents and contributors must follow them **before** opening a PR.
+CI enforces these rules on every PR to `develop` and `main`. Agents and contributors must follow them **before** opening a PR.
 
 ## Branches
 
 Branch **from `main`**. PR target: **`develop`** (features/fixes) or **`main`** (hotfixes).
 
 | Type | Pattern | Example |
-|------|---------|---------|
-| Feature | `feat/TKT-<id>-<slug>` | `feat/TKT-013-env-strategy-config` |
-| Bug fix | `fix/TKT-<id>-<slug>` | `fix/TKT-052-1-block-diagnosis-phrasing` |
-| Hotfix | `hotfix/TKT-<id>-<slug>` | `hotfix/TKT-021-storage-adapter` |
+| ------ | --------- | --------- |
+| Feature | `feat/TKT-<id>-<slug>` or `feat/<slug>` | `feat/TKT-013-env-strategy-config`, `feat/marketing-hero-refresh` |
+| Bug fix | `fix/TKT-<id>-<slug>` or `fix/<slug>` | `fix/TKT-052-1-block-diagnosis-phrasing`, `fix/login-redirect-loop` |
+| Hotfix | `hotfix/TKT-<id>-<slug>` or `hotfix/<slug>` | `hotfix/TKT-021-storage-adapter`, `hotfix/release-workflow-gate` |
 | Chore / docs / CI / refactor / test / release | `<type>/<scope-slug>` | `chore/governance-agent-skills` |
 
 Rules:
 
 - Use lowercase kebab-case slugs (`env-strategy-config`, not `EnvStrategy`).
-- Ticket id matches the GitHub issue title (`TKT-013`, `TKT-052.1` → use `TKT-052-1` in branch if dots are awkward).
-- **feat / fix / hotfix** must include `TKT-<number>` — CI rejects `feat/my-feature` without a ticket id.
+- **Ticket-bound (preferred):** `feat/TKT-<id>-<slug>` when work maps to [Project #2](https://github.com/users/itxSaaad/projects/2).
+- **Description-based:** `feat/<slug>`, `fix/<slug>`, or `hotfix/<slug>` for urgent or repo-wide work without a ticket id.
 - Repo-wide governance (no single ticket): use **`chore/`**, **`docs/`**, or **`ci/`** prefix instead of `feat/`.
+- **Dependabot** branches (`dependabot/*`) are exempt — CI bypasses naming validation for bot PRs.
 
 ## Commits (Conventional Commits + commitlint)
 
@@ -53,7 +54,7 @@ Tests cover validation errors and missing env configuration.
 chore(ops): bypass PR reviews temporarily for solo maintainer
 
 Disable CODEOWNERS review gate and set zero required approvals on
-develop, staging, and main while keeping PR-only merges and CI checks.
+develop and main while keeping PR-only merges and CI checks.
 ```
 
 Anti-patterns (CI **fails**):
@@ -65,7 +66,7 @@ Anti-patterns (CI **fails**):
 ## Pull requests
 
 | Field | Rule |
-|-------|------|
+| ------ | ------ |
 | **Title** | Same format as commit subject — semantic PR title (`feat: …`, `chore: …`) |
 | **Body** | [PR template](../../.github/pull_request_template.md): ticket link, problem, solution, checklists |
 | **Ticket** | `Closes #NNN` or `Relates to #NNN` |

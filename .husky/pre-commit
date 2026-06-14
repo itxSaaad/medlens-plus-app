@@ -1,5 +1,4 @@
 #!/usr/bin/env sh
-# Auto-fix staged Markdown, then run the same gates as CI.
+# Format and lint staged files only; full repo gates run in CI.
 pnpm exec lint-staged
-pnpm lint
 pnpm typecheck

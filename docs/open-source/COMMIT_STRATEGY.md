@@ -1,7 +1,7 @@
 # Commit Strategy (Cherry-Pick Safe)
 
 ## Objective
-Keep every commit meaningful, reviewable, and safe to cherry-pick into `staging` or `main` when needed.
+Keep every commit meaningful, reviewable, and safe to cherry-pick into `main` when needed.
 
 ## Rules
 1. One commit should represent one logical change.

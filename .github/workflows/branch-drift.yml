@@ -15,19 +15,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
       - name: Compare branch commit counts
         id: drift
         run: |
-          git fetch origin develop staging main
-          DEV_AHEAD=$(git rev-list --count origin/staging..origin/develop)
-          STG_AHEAD=$(git rev-list --count origin/main..origin/staging)
+          git fetch origin develop main
+          DEV_AHEAD=$(git rev-list --count origin/main..origin/develop)
+          MAIN_AHEAD=$(git rev-list --count origin/develop..origin/main)
           echo "dev_ahead=$DEV_AHEAD" >> "$GITHUB_OUTPUT"
-          echo "stg_ahead=$STG_AHEAD" >> "$GITHUB_OUTPUT"
-          if [ "$DEV_AHEAD" -gt 0 ] || [ "$STG_AHEAD" -gt 0 ]; then
+          echo "main_ahead=$MAIN_AHEAD" >> "$GITHUB_OUTPUT"
+          if [ "$DEV_AHEAD" -gt 0 ] || [ "$MAIN_AHEAD" -gt 0 ]; then
             echo "drift=true" >> "$GITHUB_OUTPUT"
           else
             echo "drift=false" >> "$GITHUB_OUTPUT"
@@ -38,18 +38,18 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           DEV_AHEAD: ${{ steps.drift.outputs.dev_ahead }}
-          STG_AHEAD: ${{ steps.drift.outputs.stg_ahead }}
+          MAIN_AHEAD: ${{ steps.drift.outputs.main_ahead }}
         run: |
           TITLE="Branch sync required"
           BODY="## Branch drift detected
 
-          - \`develop\` is **${DEV_AHEAD}** commit(s) ahead of \`staging\`
-          - \`staging\` is **${STG_AHEAD}** commit(s) ahead of \`main\`
+          - \`develop\` is **${DEV_AHEAD}** commit(s) ahead of \`main\` (unpromoted work)
+          - \`main\` is **${MAIN_AHEAD}** commit(s) ahead of \`develop\` (needs backmerge)
 
           ### What to do (manual PRs only)
 
-          1. **Promotion:** open and merge PRs \`develop\` → \`staging\`, then \`staging\` → \`main\` (see \`docs/open-source/BRANCHING_STRATEGY.md\`).
-          2. **Backmerge:** after \`main\` updates, merge any open backmerge PRs from \`main\` → \`staging\` and \`main\` → \`develop\`.
+          1. **Promotion:** if \`develop\` is ahead, open and merge PR \`develop\` → \`main\` (see \`docs/open-source/BRANCHING_STRATEGY.md\`).
+          2. **Backmerge:** if \`main\` is ahead, open and merge PR \`main\` → \`develop\` manually (see \`docs/open-source/BRANCHING_STRATEGY.md\`).
           3. No workflow merges branches for you — review, resolve conflicts, and merge each PR manually.
           "
           EXISTING=$(gh issue list --search "repo:${{ github.repository }} in:title \"$TITLE\" state:open" --json number --jq '.[0].number // empty')

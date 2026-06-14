@@ -13,13 +13,13 @@ Install these GitHub Apps on `itxSaaad/medlens-plus-app` and add repository secr
 
 ## Codecov (coverage dashboard)
 
-- **Config:** [`codecov.yml`](../../codecov.yml)
+- **Config:** [`codecov.yml`](../../codecov.yml) — flags scoped to `apps/web` and `apps/api`; ignores tests, graphify artifacts, and agent tooling paths
 - **Install:** [Codecov project](https://codecov.io/gh/itxSaaad/medlens-plus-app)
 - **Secret:** `CODECOV_TOKEN` — copy from Codecov project settings → Repository upload token
 
 ## Codacy (quality dashboard)
 
-- **Config:** [`.codacy.yml`](../../.codacy.yml) — `exclude_paths` and `engines.markdownlint.exclude_paths` skip `graphify-out/**` (generated graph docs)
+- **Config:** [`.codacy.yml`](../../.codacy.yml) — excludes `graphify-out/**`, `.cursor/**`, graphify skill/hooks, build caches, and lockfiles from analysis
 - **Workflow:** [`.github/workflows/codacy.yml`](../../.github/workflows/codacy.yml)
 - **Install:** [Codacy GitHub App](https://github.com/apps/codacy)
 - **Secret:** `CODACY_PROJECT_TOKEN` — from Codacy → Project → Settings → Integrations
@@ -30,11 +30,20 @@ Install these GitHub Apps on `itxSaaad/medlens-plus-app` and add repository secr
 - **Target branch:** `develop` (all npm, pip, and GitHub Actions updates)
 - **Policy:** Never merge Dependabot PRs directly to `main`; land on `develop` first
 - **No install required** — enabled automatically when the config file is on `main`
+- **CI:** Branch naming validation bypasses `dependabot/*`; Dependabot `chore(deps):` / `chore(deps-dev):` commits already pass commitlint
+- **Lockfile conflicts:** When several npm Dependabot PRs overlap, open one manual branch with all version bumps and run `pnpm install` once — do **not** hand-merge `pnpm-lock.yaml` conflict hunks; delete the lockfile and regenerate if needed
 
-## Branch promotion, backmerge, and drift
+## Local formatting
 
-- **Promotion:** manual PRs only — \`develop\` → \`staging\` → \`main\` (see [`BRANCHING_STRATEGY.md`](./BRANCHING_STRATEGY.md))
-- **Backmerge:** [`.github/workflows/branch-backmerge.yml`](../../.github/workflows/branch-backmerge.yml) — on push to `main`, **opens PRs only** to `staging` and `develop` (no auto-merge)
+- **Command:** `pnpm format` at repo root (Prettier for JS/TS/JSON/YAML/CSS, `ruff format` for API, Markdownlint `--fix` for docs)
+- **Check only:** `pnpm format:check` (Prettier dry run)
+- **Editor:** `.editorconfig` + `.vscode/settings.json` (format on save; Prettier, Ruff, Markdownlint)
+- **On commit:** Husky `pre-commit` runs `lint-staged` on **staged files only** (skips graphify, `.cursor`, graphify skills); full `pnpm lint` runs in CI
+
+## Branch promotion and drift
+
+- **Promotion:** manual PR only — `develop` → `main` (see [`BRANCHING_STRATEGY.md`](./BRANCHING_STRATEGY.md))
+- **Backmerge:** manual PR or local merge — `main` → `develop` after hotfixes or promotion (no workflow)
 - **Drift detection:** [`.github/workflows/branch-drift.yml`](../../.github/workflows/branch-drift.yml) — weekly advisory issue
 - **Bot PRs:** Dependabot targets `develop`; merge manually after review
 
@@ -52,22 +61,20 @@ Install these GitHub Apps on `itxSaaad/medlens-plus-app` and add repository secr
 ## Graphify (codebase knowledge graph)
 
 - **CLI:** `uv tool install graphifyy`
-- **Update:** `pnpm graphify:update` when structure changes (optional; not a CI gate)
-- **Artifacts:** commit `graphify-out/graph.json` + `GRAPH_REPORT.md` only if you maintain the graph in-repo
+- **Update:** `pnpm graphify:update` when structure changes (local only; **not committed**)
+- **Output:** `graphify-out/` is in [`.gitignore`](../../.gitignore) — each machine builds its own graph
 
 ### Local git hooks (Husky)
 
 | Hook | When | Behavior |
-|------|------|----------|
-| `pre-commit` | Before each commit | **Auto-fix** staged `*.md` via `lint-staged` + markdownlint `--fix` |
-| `post-checkout` | Branch switch | Full `graphify update . --force` |
-| `post-merge` | After `git pull` (merge) | Full `graphify update . --force` |
+| ------ | ------ | ---------- |
+| `pre-commit` | Before each commit | **Staged files only:** Prettier, ESLint (web), Ruff (api), Markdownlint — skips `graphify-out/**`, `.cursor/**`, graphify skills |
+| `post-checkout` | Branch switch | Full `graphify update . --force` (writes to local `graphify-out/` only) |
+| `post-merge` | After `git pull` (merge) | Full `graphify update . --force` (local only) |
 
 **Skip graphify hooks:** `SKIP_GRAPHIFY_HOOK=1 git checkout <branch>` or `SKIP_GRAPHIFY_HOOK=1 git pull`
 
 Hooks use Husky (`pnpm prepare`). Do **not** run `graphify hook install` — conflicts with Husky.
-
-Committed artifacts: `graphify-out/graph.json` and `graphify-out/GRAPH_REPORT.md` only (see [`.gitignore`](../../.gitignore)).
 
 ## Branch protection (one-time)
 

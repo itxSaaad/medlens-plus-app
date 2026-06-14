@@ -2,9 +2,9 @@ name: Codacy Analysis
 
 on:
   pull_request:
-    branches: [main, develop, staging]
+    branches: [main, develop]
   push:
-    branches: [main, develop, staging]
+    branches: [main, develop]
 
 jobs:
   codacy:
@@ -13,7 +13,7 @@ jobs:
     if: github.event_name != 'pull_request' || github.event.action != 'closed'
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Run Codacy analysis
         uses: codacy/codacy-analysis-cli-action@master

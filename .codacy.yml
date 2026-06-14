@@ -1,12 +1,18 @@
 ---
 exclude_paths:
   - "graphify-out/**"
+  - ".cursor/**"
+  - ".husky/graphify-update.sh"
+  - ".claude/skills/graphify/**"
+  - "**/.graphify_*"
   - "**/node_modules/**"
   - "**/.next/**"
   - "**/coverage/**"
   - "**/dist/**"
   - "**/.venv/**"
   - "**/__pycache__/**"
+  - "**/.uv-cache/**"
+  - "**/pnpm-lock.yaml"
 
 engines:
   duplication:
@@ -15,3 +21,6 @@ engines:
   markdownlint:
     exclude_paths:
       - "graphify-out/**"
+      - ".cursor/**"
+      - ".claude/skills/graphify/**"
+      - "**/node_modules/**"
