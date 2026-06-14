@@ -1,16 +1,16 @@
 # Graph Report - medlens-plus-app  (2026-06-14)
 
 ## Corpus Check
-- 548 files · ~294,927 words
+- 565 files · ~296,355 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 4895 nodes · 4573 edges · 534 communities (351 shown, 183 thin omitted)
+- 4909 nodes · 4586 edges · 535 communities (352 shown, 183 thin omitted)
 - Extraction: 97% EXTRACTED · 3% INFERRED · 0% AMBIGUOUS · INFERRED: 150 edges (avg confidence: 0.54)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `eaf0997c`
+- Built from commit: `88b978d0`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -537,6 +537,7 @@
 - [[_COMMUNITY_Community 531|Community 531]]
 - [[_COMMUNITY_Community 532|Community 532]]
 - [[_COMMUNITY_Community 533|Community 533]]
+- [[_COMMUNITY_Community 534|Community 534]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `DocumentRepository` - 22 edges
@@ -565,7 +566,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (534 total, 183 thin omitted)
+## Communities (535 total, 183 thin omitted)
 
 ### Community 0 - "Community 0"
 Cohesion: 0.06
@@ -580,8 +581,8 @@ Cohesion: 0.06
 Nodes (30): dependencies, next, react, react-dom, devDependencies, eslint, eslint-config-next, jsdom (+22 more)
 
 ### Community 3 - "Community 3"
-Cohesion: 0.07
-Nodes (28): devDependencies, @commitlint/cli, @commitlint/config-conventional, husky, markdownlint-cli, semantic-release, @semantic-release/commit-analyzer, @semantic-release/github (+20 more)
+Cohesion: 0.06
+Nodes (29): husky.sh script, devDependencies, @commitlint/cli, @commitlint/config-conventional, husky, markdownlint-cli, semantic-release, @semantic-release/commit-analyzer (+21 more)
 
 ### Community 4 - "Community 4"
 Cohesion: 0.08
@@ -704,8 +705,8 @@ Cohesion: 0.33
 Nodes (5): Contributor Experience, Engineering Governance, Merge Discipline, Public OSS Readiness Checklist, Repository Governance
 
 ### Community 34 - "Community 34"
-Cohesion: 0.33
-Nodes (5): Branch Promotion Rules, CODEOWNERS Bypass Policy, Mandatory PR Rules, PR Review and Protection Policy, Quality Expectations
+Cohesion: 0.25
+Nodes (7): AI Review Policy (manual only), Branch Promotion Rules, CODEOWNERS (future), Mandatory PR Rules, PR Review and Protection Policy, Quality Expectations, Recommended PR Size (not enforced by CI)
 
 ### Community 35 - "Community 35"
 Cohesion: 0.67
@@ -720,8 +721,8 @@ Cohesion: 0.22
 Nodes (8): Branch Naming, GitHub Projects Delivery Board, Hierarchy, Maintainer sync (not for contributors), Milestones (Gates), PR Requirements, Project Views, Status Model
 
 ### Community 38 - "Community 38"
-Cohesion: 0.20
-Nodes (9): Branch promotion, backmerge, and drift, Branch protection (one-time), Codacy (quality dashboard), Codecov (coverage dashboard), CodeRabbit (PR review + issue enrichment), Dependabot (dependency updates), Graphify (codebase knowledge graph), Local git hooks (Husky) (+1 more)
+Cohesion: 0.18
+Nodes (10): Branch promotion, backmerge, and drift, Branch protection (one-time), Codacy (quality dashboard), Codecov (coverage dashboard), CodeRabbit (PR review + issue enrichment), Dependabot (dependency updates), GitHub Copilot (PR review), Graphify (codebase knowledge graph) (+2 more)
 
 ### Community 40 - "Community 40"
 Cohesion: 0.20
@@ -1548,8 +1549,8 @@ Cohesion: 0.25
 Nodes (7): Cookie Security, CORS Configuration, Helmet (Express), Manual Headers, Quick Reference, Rate Limiting, Security Headers
 
 ### Community 281 - "Community 281"
-Cohesion: 0.25
-Nodes (7): MVP delivery, Pick up work, PR policy, Project Delivery, Promotion (manual), Release, Source of truth
+Cohesion: 0.22
+Nodes (8): Commits and CI, MVP delivery, Pick up work, PR policy, Project Delivery, Promotion (manual), Release, Source of truth
 
 ### Community 282 - "Community 282"
 Cohesion: 0.25
@@ -1580,8 +1581,8 @@ Cohesion: 0.25
 Nodes (7): Cookie Security, CORS Configuration, Helmet (Express), Manual Headers, Quick Reference, Rate Limiting, Security Headers
 
 ### Community 289 - "Community 289"
-Cohesion: 0.25
-Nodes (7): MVP delivery, Pick up work, PR policy, Project Delivery, Promotion (manual), Release, Source of truth
+Cohesion: 0.22
+Nodes (8): Commits and CI, MVP delivery, Pick up work, PR policy, Project Delivery, Promotion (manual), Release, Source of truth
 
 ### Community 290 - "Community 290"
 Cohesion: 0.25
@@ -1923,18 +1924,18 @@ Nodes (5): Allowed examples (marketing), Event taxonomy (stub), Forbidden params
 Cohesion: 0.33
 Nodes (5): Delivery Rule, Planning System, Priority Levels, Status Model, Structure
 
+### Community 534 - "Community 534"
+Cohesion: 0.29
+Nodes (6): Branches, CI jobs that enforce this, Commits (Conventional Commits + commitlint), Naming Conventions (Branches, Commits, PRs), Pre-PR checklist (agents), Pull requests
+
 ## Knowledge Gaps
-- **3424 isolated node(s):** `graphify-update.sh script`, `CodeRabbit (PR review + issue enrichment)`, `Codecov (coverage dashboard)`, `Codacy (quality dashboard)`, `Dependabot (dependency updates)` (+3419 more)
+- **3434 isolated node(s):** `Path`, `husky.sh script`, `graphify-update.sh script`, `name`, `private` (+3429 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **183 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `React Best Practices` connect `Community 249` to `Community 225`, `Community 198`, `Community 234`, `Community 299`, `Community 300`, `Community 330`, `Community 189`?**
-  _High betweenness centrality (0.000) - this node is a cross-community bridge._
-- **Why does `7. JavaScript Performance` connect `Community 198` to `Community 249`?**
-  _High betweenness centrality (0.000) - this node is a cross-community bridge._
 - **Are the 15 inferred relationships involving `DocumentRepository` (e.g. with `DocumentRepository` and `FileStorageProvider`) actually correct?**
   _`DocumentRepository` has 15 INFERRED edges - model-reasoned connections that need verification._
 - **Are the 15 inferred relationships involving `LLMProvider` (e.g. with `DocumentRepository` and `FileStorageProvider`) actually correct?**
@@ -1943,5 +1944,9 @@ _Questions this graph is uniquely positioned to answer:_
   _`FileStorageProvider` has 15 INFERRED edges - model-reasoned connections that need verification._
 - **Are the 15 inferred relationships involving `OCRProvider` (e.g. with `DocumentRepository` and `FileStorageProvider`) actually correct?**
   _`OCRProvider` has 15 INFERRED edges - model-reasoned connections that need verification._
-- **What connects `graphify-update.sh script`, `CodeRabbit (PR review + issue enrichment)`, `Codecov (coverage dashboard)` to the rest of the system?**
-  _3426 weakly-connected nodes found - possible documentation gaps or missing edges._
+- **What connects `Path`, `Map sprint title -> iteration id (active + completed).`, `husky.sh script` to the rest of the system?**
+  _3436 weakly-connected nodes found - possible documentation gaps or missing edges._
+- **Should `Community 0` be split into smaller, more focused modules?**
+  _Cohesion score 0.06442127773322641 - nodes in this community are weakly interconnected._
+- **Should `Community 1` be split into smaller, more focused modules?**
+  _Cohesion score 0.044444444444444446 - nodes in this community are weakly interconnected._

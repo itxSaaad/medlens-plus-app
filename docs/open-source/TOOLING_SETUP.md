@@ -57,17 +57,18 @@ Install these GitHub Apps on `itxSaaad/medlens-plus-app` and add repository secr
 
 ### Local git hooks (Husky)
 
-Hooks in [`.husky/`](../../.husky/) refresh the knowledge graph automatically:
+Hooks in [`.husky/`](../../.husky/) refresh the knowledge graph on **branch changes only** (not on every commit):
 
 | Hook | When | Behavior |
 |------|------|----------|
-| `post-commit` | After each local commit | Incremental `graphify update .` |
 | `post-checkout` | Branch switch | Full `graphify update . --force` |
 | `post-merge` | After `git pull` (merge) | Full `graphify update . --force` |
 
+**Not hooked:** commits — run `pnpm graphify:update` manually before pushing when you changed structure, then commit `graphify-out/` if needed. CI **Graphify Sync** also checks PRs.
+
 **Skip hooks:** `SKIP_GRAPHIFY_HOOK=1 git checkout <branch>` or `SKIP_GRAPHIFY_HOOK=1 git pull`
 
-Hooks use Husky (`pnpm prepare`); do not run `graphify hook install` separately — it writes to `.git/hooks` and conflicts with Husky.
+Hooks use Husky (`pnpm prepare`). Do **not** run `graphify hook install` — it adds a per-commit hook under `.git/hooks` and conflicts with this policy. If already installed: `graphify hook uninstall`.
 
 Committed artifacts: `graphify-out/graph.json` and `graphify-out/GRAPH_REPORT.md` only (see [`.gitignore`](../../.gitignore)).
 

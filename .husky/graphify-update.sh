@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# Shared graphify refresh for Husky hooks.
+# Shared graphify refresh for Husky hooks (branch switch / pull only — not post-commit).
 # Skip: SKIP_GRAPHIFY_HOOK=1 git checkout ...
 if [ "$SKIP_GRAPHIFY_HOOK" = "1" ]; then
   exit 0

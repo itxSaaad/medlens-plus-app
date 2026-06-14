@@ -79,7 +79,7 @@ PR title is checked by `amannn/action-semantic-pull-request` with the same types
 2. Create branch with correct prefix and `TKT-` id (or `chore/` for repo governance)
 3. Commits: conventional, lowercase subject, body lines ≤100 chars
 4. Run `pnpm lint` (includes markdownlint on `**/*.md`)
-5. Run `pnpm graphify:update` if structure changed; commit `graphify-out/graph.json` + `GRAPH_REPORT.md`
+5. Run `pnpm graphify:update` manually if structure changed before push; commit graph artifacts if CI requires it (not auto-run on commit)
 6. PR title matches conventional format; body uses template
 
 ## CI jobs that enforce this
