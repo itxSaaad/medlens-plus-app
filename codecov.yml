@@ -18,7 +18,16 @@ coverage:
     - "**/tests/**"
     - "**/*.test.*"
     - "**/*.spec.*"
-    - graphify-out/**
+    - "graphify-out/**"
+    - ".cursor/**"
+    - ".husky/graphify-update.sh"
+    - ".claude/skills/graphify/**"
+    - "**/.graphify_*"
+    - "**/node_modules/**"
+    - "**/.next/**"
+    - "**/dist/**"
+    - "**/.venv/**"
+    - "**/__pycache__/**"
 
 comment:
   layout: reach,diff,flags,files
