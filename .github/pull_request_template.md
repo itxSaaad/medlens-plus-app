@@ -1,5 +1,5 @@
 ## Ticket Reference
-Link ticket or issue from `planning/tickets/`:
+Link GitHub issue (e.g. `Closes #42`):
 
 ## Problem Statement
 What user/system problem does this PR solve?
@@ -25,6 +25,7 @@ What changed and why this approach?
 - [ ] Unit tests added/updated
 - [ ] Integration tests updated if infra behavior changed
 - [ ] Docs updated to match current code
+- [ ] `pnpm graphify:update` run if architecture changed
 
 ## Validation Evidence
 Paste key command outputs used for validation.

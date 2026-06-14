@@ -23,5 +23,26 @@ reviews:
     - path: "apps/web/**"
       instructions: |
         Prioritize accessibility, readability, and maintainable component boundaries.
+issue_enrichment:
+  auto_enrich:
+    enabled: true
+  labeling:
+    auto_apply_labels: true
+    instructions:
+      - label: "type:story"
+        instructions: "User-facing implementation story with acceptance criteria"
+      - label: "type:epic"
+        instructions: "Strategic outcome container"
+      - label: "type:sub-task"
+        instructions: "Sub-issue breakdown of a parent story"
+      - label: "priority:P0"
+        instructions: "Critical path; blocks sprint exit"
+  planning:
+    enabled: true
+    auto_planning:
+      enabled: true
+      labels:
+        - "type:story"
+        - "!no-plan"
 chat:
   auto_reply: true

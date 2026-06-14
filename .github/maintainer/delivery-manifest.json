@@ -1,0 +1,135 @@
+{
+  "meta": {
+    "project_id": "PVT_kwHOBkWrfs4Banf5",
+    "project_number": 2,
+    "owner": "itxSaaad",
+    "repo": "itxSaaad/medlens-plus-app",
+    "canonical_issues": [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60],
+    "deleted_issues": {
+      "61": 19,
+      "62": 20,
+      "63": 21,
+      "64": 22,
+      "65": 23,
+      "66": 24,
+      "67": 25,
+      "68": 26
+    },
+    "milestone_numbers": {
+      "Gate A - Foundation": 1,
+      "Gate B - MVP Core Loop": 2,
+      "Gate C - Public Beta": 3,
+      "Phase 4 - Enterprise Foundation": 4,
+      "Phase 5 - Enterprise Scale": 5
+    }
+  },
+  "field_ids": {
+    "status": "PVTSSF_lAHOBkWrfs4Banf5zhVdy1s",
+    "epic": "PVTSSF_lAHOBkWrfs4Banf5zhVd7bU",
+    "priority": "PVTSSF_lAHOBkWrfs4Banf5zhVd7cM",
+    "ticket_id": "PVTF_lAHOBkWrfs4Banf5zhVd7eQ"
+  },
+  "milestones": {
+    "Gate A - Foundation": {
+      "description": "Repo/process/safety baseline ready (Phase 0)",
+      "state": "closed",
+      "due_offset_weeks": -12,
+      "issues": [15, 19, 20, 21, 22, 23, 24, 25, 26, 27]
+    },
+    "Gate B - MVP Core Loop": {
+      "description": "End-to-end report intelligence on supported panels (Phase 1)",
+      "state": "open",
+      "due_offset_weeks": 12,
+      "issues": [16, 28, 29, 30, 31, 32, 33, 34, 35, 36]
+    },
+    "Gate C - Public Beta": {
+      "description": "Reliability, UX, and contributor throughput stable (Phase 3)",
+      "state": "open",
+      "due_offset_weeks": 24,
+      "issues": [17, 18, 37, 38, 39, 40, 41, 42, 43, 44, 45]
+    },
+    "Phase 4 - Enterprise Foundation": {
+      "description": "Multi-tenant security and compliance baseline (placeholder)",
+      "state": "open",
+      "due_offset_months": 9,
+      "issues": []
+    },
+    "Phase 5 - Enterprise Scale": {
+      "description": "Partner/API ecosystem and resilient operations (placeholder)",
+      "state": "open",
+      "due_offset_months": 12,
+      "issues": []
+    }
+  },
+  "hierarchy": {
+    "epic_children": {
+      "15": [19, 20, 21, 22, 23, 24, 25, 26, 27],
+      "16": [28, 29, 30, 31, 32, 33, 34, 35, 36],
+      "17": [37, 38, 39, 40, 41],
+      "18": [42, 43, 44, 45]
+    },
+    "story_children": {
+      "32": [46, 47, 48],
+      "36": [49, 50, 51],
+      "37": [52, 53, 54],
+      "39": [55, 56, 57],
+      "44": [58, 59, 60]
+    }
+  },
+  "items": {
+    "EPIC-001": { "issue": 15, "epic": "EPIC-001", "priority": "P0", "sprint": "SPRINT-01", "status": "Done", "phase": "Phase 0", "gate": "Gate A" },
+    "EPIC-002": { "issue": 16, "epic": "EPIC-002", "priority": "P0", "sprint": "SPRINT-03", "status": "Backlog", "phase": "Phase 1", "gate": "Gate B" },
+    "EPIC-003": { "issue": 17, "epic": "EPIC-003", "priority": "P0", "sprint": "SPRINT-05", "status": "Backlog", "phase": "Phase 2", "gate": "Gate C" },
+    "EPIC-004": { "issue": 18, "epic": "EPIC-004", "priority": "P0", "sprint": "SPRINT-06", "status": "Backlog", "phase": "Phase 3", "gate": "Gate C" },
+    "TKT-001": { "issue": 19, "epic": "EPIC-001", "priority": "P0", "sprint": "SPRINT-01", "status": "Done", "phase": "Phase 0", "gate": "Gate A" },
+    "TKT-002": { "issue": 20, "epic": "EPIC-001", "priority": "P0", "sprint": "SPRINT-01", "status": "Done", "phase": "Phase 0", "gate": "Gate A" },
+    "TKT-003": { "issue": 21, "epic": "EPIC-001", "priority": "P0", "sprint": "SPRINT-01", "status": "Done", "phase": "Phase 0", "gate": "Gate A" },
+    "TKT-004": { "issue": 22, "epic": "EPIC-001", "priority": "P1", "sprint": "SPRINT-01", "status": "Done", "phase": "Phase 0", "gate": "Gate A" },
+    "TKT-005": { "issue": 23, "epic": "EPIC-001", "priority": "P1", "sprint": "SPRINT-01", "status": "Done", "phase": "Phase 0", "gate": "Gate A" },
+    "TKT-010": { "issue": 24, "epic": "EPIC-001", "priority": "P0", "sprint": "SPRINT-02", "status": "Done", "phase": "Phase 0", "gate": "Gate A" },
+    "TKT-011": { "issue": 25, "epic": "EPIC-001", "priority": "P0", "sprint": "SPRINT-02", "status": "Done", "phase": "Phase 0", "gate": "Gate A" },
+    "TKT-012": { "issue": 26, "epic": "EPIC-001", "priority": "P1", "sprint": "SPRINT-02", "status": "Done", "phase": "Phase 0", "gate": "Gate A" },
+    "TKT-013": { "issue": 27, "epic": "EPIC-001", "priority": "P1", "sprint": "SPRINT-02", "status": "Ready", "phase": "Phase 0", "gate": "Gate A" },
+    "TKT-020": { "issue": 28, "epic": "EPIC-002", "priority": "P0", "sprint": "SPRINT-03", "status": "Backlog", "phase": "Phase 1", "gate": "Gate B" },
+    "TKT-021": { "issue": 29, "epic": "EPIC-002", "priority": "P0", "sprint": "SPRINT-03", "status": "Backlog", "phase": "Phase 1", "gate": "Gate B" },
+    "TKT-022": { "issue": 30, "epic": "EPIC-002", "priority": "P0", "sprint": "SPRINT-03", "status": "Backlog", "phase": "Phase 1", "gate": "Gate B" },
+    "TKT-023": { "issue": 31, "epic": "EPIC-002", "priority": "P0", "sprint": "SPRINT-03", "status": "Backlog", "phase": "Phase 1", "gate": "Gate B" },
+    "TKT-030": { "issue": 32, "epic": "EPIC-002", "priority": "P0", "sprint": "SPRINT-04", "status": "Backlog", "phase": "Phase 1", "gate": "Gate B" },
+    "TKT-031": { "issue": 33, "epic": "EPIC-002", "priority": "P0", "sprint": "SPRINT-04", "status": "Backlog", "phase": "Phase 1", "gate": "Gate B" },
+    "TKT-032": { "issue": 34, "epic": "EPIC-002", "priority": "P0", "sprint": "SPRINT-04", "status": "Backlog", "phase": "Phase 1", "gate": "Gate B" },
+    "TKT-033": { "issue": 35, "epic": "EPIC-002", "priority": "P0", "sprint": "SPRINT-04", "status": "Backlog", "phase": "Phase 1", "gate": "Gate B" },
+    "TKT-034": { "issue": 36, "epic": "EPIC-002", "priority": "P0", "sprint": "SPRINT-04", "status": "Backlog", "phase": "Phase 1", "gate": "Gate B" },
+    "TKT-040": { "issue": 37, "epic": "EPIC-003", "priority": "P0", "sprint": "SPRINT-05", "status": "Backlog", "phase": "Phase 2", "gate": "Gate C" },
+    "TKT-041": { "issue": 38, "epic": "EPIC-003", "priority": "P1", "sprint": "SPRINT-05", "status": "Backlog", "phase": "Phase 2", "gate": "Gate C" },
+    "TKT-042": { "issue": 39, "epic": "EPIC-003", "priority": "P0", "sprint": "SPRINT-05", "status": "Backlog", "phase": "Phase 2", "gate": "Gate C" },
+    "TKT-043": { "issue": 40, "epic": "EPIC-003", "priority": "P1", "sprint": "SPRINT-05", "status": "Backlog", "phase": "Phase 2", "gate": "Gate C" },
+    "TKT-044": { "issue": 41, "epic": "EPIC-003", "priority": "P0", "sprint": "SPRINT-05", "status": "Backlog", "phase": "Phase 2", "gate": "Gate C" },
+    "TKT-050": { "issue": 42, "epic": "EPIC-004", "priority": "P1", "sprint": "SPRINT-06", "status": "Backlog", "phase": "Phase 3", "gate": "Gate C" },
+    "TKT-051": { "issue": 43, "epic": "EPIC-004", "priority": "P1", "sprint": "SPRINT-06", "status": "Backlog", "phase": "Phase 3", "gate": "Gate C" },
+    "TKT-052": { "issue": 44, "epic": "EPIC-004", "priority": "P0", "sprint": "SPRINT-06", "status": "Backlog", "phase": "Phase 3", "gate": "Gate C" },
+    "TKT-053": { "issue": 45, "epic": "EPIC-004", "priority": "P0", "sprint": "SPRINT-06", "status": "Backlog", "phase": "Phase 3", "gate": "Gate C" },
+    "TKT-030.1": { "issue": 46, "epic": "EPIC-002", "priority": "P0", "sprint": "SPRINT-04", "status": "Backlog", "phase": "Phase 1", "gate": "Gate B", "parent": 32 },
+    "TKT-030.2": { "issue": 47, "epic": "EPIC-002", "priority": "P0", "sprint": "SPRINT-04", "status": "Backlog", "phase": "Phase 1", "gate": "Gate B", "parent": 32 },
+    "TKT-030.3": { "issue": 48, "epic": "EPIC-002", "priority": "P0", "sprint": "SPRINT-04", "status": "Backlog", "phase": "Phase 1", "gate": "Gate B", "parent": 32 },
+    "TKT-034.1": { "issue": 49, "epic": "EPIC-002", "priority": "P0", "sprint": "SPRINT-04", "status": "Backlog", "phase": "Phase 1", "gate": "Gate B", "parent": 36 },
+    "TKT-034.2": { "issue": 50, "epic": "EPIC-002", "priority": "P0", "sprint": "SPRINT-04", "status": "Backlog", "phase": "Phase 1", "gate": "Gate B", "parent": 36 },
+    "TKT-034.3": { "issue": 51, "epic": "EPIC-002", "priority": "P0", "sprint": "SPRINT-04", "status": "Backlog", "phase": "Phase 1", "gate": "Gate B", "parent": 36 },
+    "TKT-040.1": { "issue": 52, "epic": "EPIC-003", "priority": "P0", "sprint": "SPRINT-05", "status": "Backlog", "phase": "Phase 2", "gate": "Gate C", "parent": 37 },
+    "TKT-040.2": { "issue": 53, "epic": "EPIC-003", "priority": "P0", "sprint": "SPRINT-05", "status": "Backlog", "phase": "Phase 2", "gate": "Gate C", "parent": 37 },
+    "TKT-040.3": { "issue": 54, "epic": "EPIC-003", "priority": "P0", "sprint": "SPRINT-05", "status": "Backlog", "phase": "Phase 2", "gate": "Gate C", "parent": 37 },
+    "TKT-042.1": { "issue": 55, "epic": "EPIC-003", "priority": "P0", "sprint": "SPRINT-05", "status": "Backlog", "phase": "Phase 2", "gate": "Gate C", "parent": 39 },
+    "TKT-042.2": { "issue": 56, "epic": "EPIC-003", "priority": "P0", "sprint": "SPRINT-05", "status": "Backlog", "phase": "Phase 2", "gate": "Gate C", "parent": 39 },
+    "TKT-042.3": { "issue": 57, "epic": "EPIC-003", "priority": "P0", "sprint": "SPRINT-05", "status": "Backlog", "phase": "Phase 2", "gate": "Gate C", "parent": 39 },
+    "TKT-052.1": { "issue": 58, "epic": "EPIC-004", "priority": "P0", "sprint": "SPRINT-06", "status": "Backlog", "phase": "Phase 3", "gate": "Gate C", "parent": 44 },
+    "TKT-052.2": { "issue": 59, "epic": "EPIC-004", "priority": "P0", "sprint": "SPRINT-06", "status": "Backlog", "phase": "Phase 3", "gate": "Gate C", "parent": 44 },
+    "TKT-052.3": { "issue": 60, "epic": "EPIC-004", "priority": "P0", "sprint": "SPRINT-06", "status": "Backlog", "phase": "Phase 3", "gate": "Gate C", "parent": 44 }
+  },
+  "sprints": [
+    { "title": "SPRINT-01", "start_offset_days": -28, "duration": 14, "issues": [15, 19, 20, 21, 22, 23] },
+    { "title": "SPRINT-02", "start_offset_days": -14, "duration": 14, "issues": [24, 25, 26, 27] },
+    { "title": "SPRINT-03", "start_offset_days": 0, "duration": 14, "issues": [16, 28, 29, 30, 31] },
+    { "title": "SPRINT-04", "start_offset_days": 14, "duration": 21, "issues": [32, 33, 34, 35, 36, 46, 47, 48, 49, 50, 51] },
+    { "title": "SPRINT-05", "start_offset_days": 35, "duration": 21, "issues": [17, 37, 38, 39, 40, 41, 52, 53, 54, 55, 56, 57] },
+    { "title": "SPRINT-06", "start_offset_days": 56, "duration": 14, "issues": [18, 42, 43, 44, 45, 58, 59, 60] }
+  ]
+}

@@ -1,0 +1,61 @@
+name: Branch Drift Detection
+
+on:
+  schedule:
+    - cron: "0 9 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  detect-drift:
+    name: Detect branch drift
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Compare branch commit counts
+        id: drift
+        run: |
+          git fetch origin develop staging main
+          DEV_AHEAD=$(git rev-list --count origin/staging..origin/develop)
+          STG_AHEAD=$(git rev-list --count origin/main..origin/staging)
+          echo "dev_ahead=$DEV_AHEAD" >> "$GITHUB_OUTPUT"
+          echo "stg_ahead=$STG_AHEAD" >> "$GITHUB_OUTPUT"
+          if [ "$DEV_AHEAD" -gt 0 ] || [ "$STG_AHEAD" -gt 0 ]; then
+            echo "drift=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "drift=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Open or update drift issue
+        if: steps.drift.outputs.drift == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          DEV_AHEAD: ${{ steps.drift.outputs.dev_ahead }}
+          STG_AHEAD: ${{ steps.drift.outputs.stg_ahead }}
+        run: |
+          TITLE="Branch sync required"
+          BODY="## Branch drift detected
+
+          - \`develop\` is **${DEV_AHEAD}** commit(s) ahead of \`staging\`
+          - \`staging\` is **${STG_AHEAD}** commit(s) ahead of \`main\`
+
+          ### What to do (manual PRs only)
+
+          1. **Promotion:** open and merge PRs \`develop\` → \`staging\`, then \`staging\` → \`main\` (see \`docs/open-source/BRANCHING_STRATEGY.md\`).
+          2. **Backmerge:** after \`main\` updates, merge any open backmerge PRs from \`main\` → \`staging\` and \`main\` → \`develop\`.
+          3. No workflow merges branches for you — review, resolve conflicts, and merge each PR manually.
+          "
+          EXISTING=$(gh issue list --search "repo:${{ github.repository }} in:title \"$TITLE\" state:open" --json number --jq '.[0].number // empty')
+          if [ -n "$EXISTING" ]; then
+            gh issue comment "$EXISTING" --body "$BODY"
+            echo "Updated issue #$EXISTING"
+          else
+            gh issue create --title "$TITLE" --body "$BODY" --label "type:story" --label "priority:P1"
+          fi

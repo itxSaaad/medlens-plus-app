@@ -1,0 +1,66 @@
+name: Story
+description: Implementation story with acceptance criteria
+title: "TKT-XXX: "
+labels:
+  - type:story
+body:
+  - type: dropdown
+    id: epic
+    attributes:
+      label: Epic
+      options:
+        - EPIC-001
+        - EPIC-002
+        - EPIC-003
+        - EPIC-004
+    validations:
+      required: true
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      options:
+        - P0
+        - P1
+        - P2
+        - P3
+    validations:
+      required: true
+  - type: dropdown
+    id: sprint
+    attributes:
+      label: Sprint
+      options:
+        - SPRINT-01
+        - SPRINT-02
+        - SPRINT-03
+        - SPRINT-04
+        - SPRINT-05
+        - SPRINT-06
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What user/system problem does this solve?
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance Criteria
+      description: Numbered list of testable criteria
+    validations:
+      required: true
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: Dependencies
+      description: Issue numbers or TKT IDs this is blocked by
