@@ -1,0 +1,20 @@
+---
+description: LangGraph AI workflows — LLM nodes, prompt versioning, safety filters, grounding
+globs: ["apps/api/**/workflows/**", "packages/agents/**"]
+alwaysApply: false
+---
+
+# AI Workflows
+
+Reference: `docs/architecture/SYSTEM_ARCHITECTURE.md`, `apps/api/src/api/workflows/`.
+
+## Rules
+
+- Every AI flow change includes **prompt/version metadata** (version id, model, changelog note).
+- Nodes fail fast with partial user-safe output — no silent failures.
+- Run safety post-filters on all patient-facing text; never diagnose or prescribe.
+- Ground outputs in uploaded report data; no internet-generic reference ranges.
+- LLM access only through provider interface (`providers/llm/`); resolve via factories.
+- Log `request_id` / `job_id`; never log raw report text or identifiers.
+
+Skill: `.cursor/skills/ai-workflows/SKILL.md`

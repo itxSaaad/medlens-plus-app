@@ -1,0 +1,14 @@
+---
+description: Architecture-first engineering standards for MedLens+
+alwaysApply: true
+---
+
+# Engineering Standards
+
+- Follow typed contracts and schema-first design.
+- Keep frontend and backend decoupled; share OpenAPI/JSON schema, not runtime code.
+- Use adapter/factory boundaries; never hardcode providers in workflows.
+- Keep behavior env-backed and feature-flag-backed.
+- Add tests for parser, normalization, trends, and safety filters.
+- Any AI flow change must include prompt/version metadata.
+- Run `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm build` before finishing.

@@ -1,0 +1,12 @@
+---
+description: GitHub Project delivery — picking issues, branch naming, PR linking, Status workflow
+alwaysApply: false
+---
+
+# GitHub Delivery
+
+- Source of truth: [Project #2](https://github.com/users/itxSaaad/projects/2)
+- Pick **Ready** issues; update Status: In Progress → In Review → Done.
+- Branch **from `main`**: `feat/TKT-XXX-slug`; PR target **`develop`**
+- PR body: `Closes #NNN` + safety/privacy/test evidence.
+- Skill: `.cursor/skills/project-delivery/SKILL.md`

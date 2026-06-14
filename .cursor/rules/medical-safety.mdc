@@ -1,0 +1,16 @@
+---
+description: Non-negotiable medical safety guardrails
+alwaysApply: true
+---
+
+# Medical Safety (Golden Rules)
+
+1. Never diagnose disease.
+2. Never prescribe medication.
+3. Never suggest dosage changes.
+4. Never claim "you have X disease."
+5. Never replace professional consultation.
+6. Always use uploaded report reference ranges, not internet-generic ranges.
+7. Always show caution when comparing reports from different labs.
+
+Full policy: `docs/product/GOLDEN_RULES.md`

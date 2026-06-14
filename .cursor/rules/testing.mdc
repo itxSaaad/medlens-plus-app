@@ -1,0 +1,27 @@
+---
+description: Unit, integration, and contract tests — Vitest and pytest patterns
+globs: ["**/*.test.*", "**/tests/**", "**/test_*.py"]
+alwaysApply: false
+---
+
+# Testing
+
+## Web (`apps/web`)
+
+- Unit: `src/tests/unit/` with Vitest + Testing Library
+- Integration: `src/tests/integration/`
+- Mirror setup in `src/tests/setup.ts`
+
+## API (`apps/api`)
+
+- Unit: `tests/unit/` — mock providers via interfaces
+- Integration: `tests/integration/` — mark with `@pytest.mark.integration`
+- Use `tests/conftest.py` fixtures
+
+## General
+
+- Test changed behavior, not implementation trivia.
+- Parser/normalization/trends/safety filters require tests when touched.
+- Contract tests when OpenAPI or shared schemas change.
+
+Skill: `.cursor/skills/testing/SKILL.md`
