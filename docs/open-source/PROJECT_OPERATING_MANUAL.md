@@ -40,7 +40,7 @@ MVP outcomes:
 - Behavioral rollout/risk control must be flag-backed.
 
 ## Enterprise Readiness Rules
-- 3 long-lived branches: `develop`, `staging`, `main`.
+- 2 long-lived branches: `develop`, `main`.
 - PRs must pass lint/typecheck/unit tests/build.
 - Integration tests required pre-release.
 - Use CI + release automation + semantic commit discipline.

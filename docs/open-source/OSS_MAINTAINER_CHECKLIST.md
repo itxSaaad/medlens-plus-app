@@ -18,6 +18,6 @@ Use this checklist before merging PRs.
 ## Release Promotion Checklist
 
 - [ ] `develop` validated
-- [ ] `staging` validated
+- [ ] `develop` validated before promotion to `main`
 - [ ] release PR merged to `main`
 - [ ] changelog/release notes reviewed

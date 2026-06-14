@@ -40,10 +40,10 @@ Install these GitHub Apps on `itxSaaad/medlens-plus-app` and add repository secr
 - **Editor:** `.editorconfig` + `.vscode/settings.json` (format on save; Prettier, Ruff, Markdownlint)
 - **On commit:** Husky `pre-commit` runs `lint-staged` on **staged files only** (skips graphify, `.cursor`, graphify skills); full `pnpm lint` runs in CI
 
-## Branch promotion, backmerge, and drift
+## Branch promotion and drift
 
-- **Promotion:** manual PRs only — \`develop\` → \`staging\` → \`main\` (see [`BRANCHING_STRATEGY.md`](./BRANCHING_STRATEGY.md))
-- **Backmerge:** [`.github/workflows/branch-backmerge.yml`](../../.github/workflows/branch-backmerge.yml) — on push to `main`, **opens PRs only** to `staging` and `develop` (no auto-merge)
+- **Promotion:** manual PR only — `develop` → `main` (see [`BRANCHING_STRATEGY.md`](./BRANCHING_STRATEGY.md))
+- **Backmerge:** manual PR or local merge — `main` → `develop` after hotfixes or promotion (no workflow)
 - **Drift detection:** [`.github/workflows/branch-drift.yml`](../../.github/workflows/branch-drift.yml) — weekly advisory issue
 - **Bot PRs:** Dependabot targets `develop`; merge manually after review
 
@@ -61,22 +61,20 @@ Install these GitHub Apps on `itxSaaad/medlens-plus-app` and add repository secr
 ## Graphify (codebase knowledge graph)
 
 - **CLI:** `uv tool install graphifyy`
-- **Update:** `pnpm graphify:update` when structure changes (optional; not a CI gate)
-- **Artifacts:** commit `graphify-out/graph.json` + `GRAPH_REPORT.md` only if you maintain the graph in-repo
+- **Update:** `pnpm graphify:update` when structure changes (local only; **not committed**)
+- **Output:** `graphify-out/` is in [`.gitignore`](../../.gitignore) — each machine builds its own graph
 
 ### Local git hooks (Husky)
 
 | Hook | When | Behavior |
 | ------ | ------ | ---------- |
 | `pre-commit` | Before each commit | **Staged files only:** Prettier, ESLint (web), Ruff (api), Markdownlint — skips `graphify-out/**`, `.cursor/**`, graphify skills |
-| `post-checkout` | Branch switch | Full `graphify update . --force` |
-| `post-merge` | After `git pull` (merge) | Full `graphify update . --force` |
+| `post-checkout` | Branch switch | Full `graphify update . --force` (writes to local `graphify-out/` only) |
+| `post-merge` | After `git pull` (merge) | Full `graphify update . --force` (local only) |
 
 **Skip graphify hooks:** `SKIP_GRAPHIFY_HOOK=1 git checkout <branch>` or `SKIP_GRAPHIFY_HOOK=1 git pull`
 
 Hooks use Husky (`pnpm prepare`). Do **not** run `graphify hook install` — conflicts with Husky.
-
-Committed artifacts: `graphify-out/graph.json` and `graphify-out/GRAPH_REPORT.md` only (see [`.gitignore`](../../.gitignore)).
 
 ## Branch protection (one-time)
 

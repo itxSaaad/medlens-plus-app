@@ -4,11 +4,11 @@ This repository enforces merge discipline similar to an enterprise software team
 
 ## Mandatory PR Rules
 
-1. No direct pushes to `main`, `staging`, or `develop`.
+1. No direct pushes to `main` or `develop`.
 2. Every code change must come via pull request.
 3. Use the [PR template](../../.github/pull_request_template.md) for the body (ticket link, problem, solution, checklists, validation evidence).
 4. Approval requirements (current solo-maintainer mode — see [`docs/ops/BRANCH_PROTECTION_SETUP.md`](../ops/BRANCH_PROTECTION_SETUP.md)):
-   - `develop`, `staging`, `main`: **0 approvals** (PR + required CI only)
+   - `develop`, `main`: **0 approvals** (PR + required CI only)
    - **Future:** re-enable CODEOWNERS + 1 approval per branch when a second reviewer exists
 5. Required checks must pass before merge:
    - Branch Naming Validation
@@ -44,8 +44,7 @@ When `require_code_owner_reviews` is re-enabled, CODEOWNERS paths in [`.github/C
 ## Branch Promotion Rules
 
 - `feature/*` -> `develop`
-- `develop` -> `staging`
-- `staging` -> `main`
+- `develop` -> `main`
 
 Only promote forward after validations pass.
 

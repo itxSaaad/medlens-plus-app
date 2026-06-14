@@ -1,6 +1,6 @@
 # Naming Conventions (Branches, Commits, PRs)
 
-CI enforces these rules on every PR to `develop`, `staging`, and `main`. Agents and contributors must follow them **before** opening a PR.
+CI enforces these rules on every PR to `develop` and `main`. Agents and contributors must follow them **before** opening a PR.
 
 ## Branches
 
@@ -54,7 +54,7 @@ Tests cover validation errors and missing env configuration.
 chore(ops): bypass PR reviews temporarily for solo maintainer
 
 Disable CODEOWNERS review gate and set zero required approvals on
-develop, staging, and main while keeping PR-only merges and CI checks.
+develop and main while keeping PR-only merges and CI checks.
 ```
 
 Anti-patterns (CI **fails**):

@@ -2,7 +2,7 @@ name: Integration Gate
 
 on:
   pull_request:
-    branches: [staging, main]
+    branches: [develop, main]
     types: [opened, synchronize, reopened]
 
 permissions:

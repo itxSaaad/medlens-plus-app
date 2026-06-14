@@ -5,10 +5,10 @@ env:
 
 on:
   pull_request:
-    branches: [main, develop, staging]
+    branches: [main, develop]
     types: [opened, synchronize, reopened, edited, closed]
   push:
-    branches: [main, develop, staging]
+    branches: [main, develop]
 
 concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}
@@ -25,7 +25,7 @@ jobs:
           BRANCH_NAME: ${{ github.head_ref }}
         run: |
           echo "Validating branch: $BRANCH_NAME"
-          if [[ "$BRANCH_NAME" =~ ^(develop|staging|main)$ ]]; then
+          if [[ "$BRANCH_NAME" =~ ^(develop|main)$ ]]; then
             echo "Bypassing naming validation for permanent branch: $BRANCH_NAME"
             exit 0
           fi
@@ -187,7 +187,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           HEAD_REPO: ${{ github.event.pull_request.head.repo.full_name }}
         run: |
-          if [[ "$BRANCH_TO_DELETE" == "main" || "$BRANCH_TO_DELETE" == "develop" || "$BRANCH_TO_DELETE" == "staging" ]]; then
+          if [[ "$BRANCH_TO_DELETE" == "main" || "$BRANCH_TO_DELETE" == "develop" ]]; then
             echo "Skipping deletion for permanent branch: $BRANCH_TO_DELETE"
             exit 0
           fi
