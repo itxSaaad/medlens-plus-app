@@ -1,0 +1,18 @@
+name: Epic
+description: Strategic outcome spanning multiple stories
+title: "EPIC-XXX: "
+labels:
+  - type:epic
+body:
+  - type: textarea
+    id: objective
+    attributes:
+      label: Objective
+    validations:
+      required: true
+  - type: textarea
+    id: success_metrics
+    attributes:
+      label: Success Metrics
+    validations:
+      required: true
