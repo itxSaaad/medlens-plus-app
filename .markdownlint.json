@@ -8,6 +8,7 @@
   "ignore": [
     "apps/web/AGENTS.md",
     "apps/web/CLAUDE.md",
-    "apps/web/README.md"
+    "apps/web/README.md",
+    "graphify-out/**"
   ]
 }

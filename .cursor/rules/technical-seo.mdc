@@ -1,0 +1,16 @@
+---
+description: Next.js technical SEO — metadata, sitemaps, robots, structured data, crawlability for apps/web public pages.
+globs:
+  - apps/web/**
+alwaysApply: false
+---
+
+# Technical SEO
+
+Public/marketing routes in `apps/web` — discovery stack:
+
+- `technical-seo` — metadata, sitemap, robots, JSON-LD, CWV
+- `content-seo` — intent, keywords, clusters, E-E-A-T copy
+- `answer-engine-optimization` — AEO/GEO, llms.txt, citation-friendly structure
+
+Also: `marketing-ui` (design), `web-frontend` (perf), `safety-privacy` (YMYL copy).

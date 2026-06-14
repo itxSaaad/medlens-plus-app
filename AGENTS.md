@@ -21,13 +21,18 @@ Build MedLens+ as a safety-first, longitudinal medical report intelligence platf
 - Add tests for parser, normalization, trends, and safety filters.
 - Any AI flow change must include prompt/version metadata.
 
-## Branch Strategy (3 Long-Lived)
-- `main`: production-ready only
-- `staging`: release candidate validation
-- `develop`: integration branch
+## Branch Strategy (Main-First)
+- Branch **from `main`** (production baseline)
+- Open PRs to **`develop`** (features) or **`main`** (hotfixes)
+- **Naming:** [`docs/open-source/NAMING_CONVENTIONS.md`](docs/open-source/NAMING_CONVENTIONS.md) — `feat/TKT-NNN-slug`, conventional commits (body ≤100 chars/line), semantic PR title
+- Promotion: `develop` → `staging` → `main` (maintainers)
+- After `main` updates, backmerge keeps `staging` and `develop` in sync with production
+
+## Ticket Source
+- [GitHub Project #2](https://github.com/users/itxSaaad/projects/2) — not local `planning/tickets/`
 
 ## PR Requirements
-- Link a ticket from `planning/tickets/`
+- Link a GitHub issue (`Closes #NNN`) from the [Project Board](https://github.com/users/itxSaaad/projects/2)
 - Mention user impact and safety impact
 - Include test evidence
 - Include privacy/security notes
@@ -39,8 +44,9 @@ Build MedLens+ as a safety-first, longitudinal medical report intelligence platf
 - Safety and privacy checklist complete
 
 ## Agent Work Order
-1. Read ticket
-2. Validate architecture alignment
-3. Implement with tests
-4. Update docs and changelog
-5. Open PR with checklist evidence
+1. Read ticket on [Project #2](https://github.com/users/itxSaaad/projects/2)
+2. Branch with correct name (`feat/TKT-NNN-slug` or `chore/scope` per naming doc)
+3. Validate architecture alignment
+4. Implement with tests; commits must pass commitlint locally
+5. Update docs and changelog
+6. Open PR with template + `Closes #NNN`; run `pnpm lint` before push

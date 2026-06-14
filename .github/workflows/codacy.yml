@@ -1,0 +1,23 @@
+name: Codacy Analysis
+
+on:
+  pull_request:
+    branches: [main, develop, staging]
+  push:
+    branches: [main, develop, staging]
+
+jobs:
+  codacy:
+    name: Codacy Static Analysis
+    runs-on: ubuntu-latest
+    if: github.event_name != 'pull_request' || github.event.action != 'closed'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run Codacy analysis
+        uses: codacy/codacy-analysis-cli-action@master
+        with:
+          project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+          upload: true
+          max-allowed-issues: 2147483647

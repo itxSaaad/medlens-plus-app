@@ -1,0 +1,11 @@
+graphify-out/
+node_modules/
+.pnpm-store/
+**/.venv/
+**/__pycache__/
+**/coverage/
+**/.next/
+**/dist/
+**/build/
+uv.lock
+pnpm-lock.yaml

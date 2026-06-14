@@ -1,0 +1,16 @@
+---
+description: CI workflows, Docker, branch protection — no secrets, PR-only merges
+globs: [".github/**", "**/Dockerfile*", "**/docker-compose*.yml"]
+alwaysApply: false
+---
+
+# DevOps and CI
+
+- All merges to `develop`, `staging`, `main` are **manual PR merges** — no workflow auto-merge.
+- Never commit secrets, `.env`, or tokens; use GitHub secrets and env-backed settings.
+- Workflow changes: verify triggers, permissions, and required checks match `docs/ops/BRANCH_PROTECTION_SETUP.md`.
+- Branch/commit/PR naming: `docs/open-source/NAMING_CONVENTIONS.md` (CI-enforced).
+- Dependabot PRs target `develop` only.
+- Docker: multi-stage where applicable; non-root user in production images when possible.
+
+Skill: `.cursor/skills/devops/SKILL.md`

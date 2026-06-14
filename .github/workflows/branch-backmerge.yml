@@ -1,0 +1,46 @@
+name: Branch Backmerge
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  backmerge:
+    name: Backmerge main into staging and develop
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        target: [staging, develop]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Create or update backmerge PR
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TARGET: ${{ matrix.target }}
+        run: |
+          TITLE="chore: backmerge main into ${TARGET}"
+          BODY="## Backmerge PR (does not auto-merge)
+
+          This workflow **only opens or updates a PR**. A maintainer must review, resolve any conflicts, wait for CI, and **merge manually**.
+
+          Goal: keep \`${TARGET}\` in sync with production commits on \`main\`.
+
+          - Resolve merge conflicts in this PR if GitHub reports them
+          - Squash merge after required reviews and checks pass
+          - No GitHub Action merges this branch for you"
+          EXISTING=$(gh pr list --head main --base "$TARGET" --state open --json number --jq '.[0].number // empty')
+          if [ -n "$EXISTING" ]; then
+            gh pr edit "$EXISTING" --title "$TITLE" --body "$BODY"
+            echo "Updated backmerge PR #$EXISTING (main -> $TARGET)"
+          else
+            gh pr create --head main --base "$TARGET" --title "$TITLE" --body "$BODY"
+            echo "Created backmerge PR (main -> $TARGET)"
+          fi

@@ -5,7 +5,8 @@
   "packageManager": "pnpm@10.25.0",
   "scripts": {
     "lint": "pnpm -r --if-present lint && pnpm lint:md",
-    "lint:md": "markdownlint \"**/*.md\" --ignore node_modules --ignore .next",
+    "lint:md": "markdownlint \"**/*.md\" --ignore node_modules --ignore .next --ignore graphify-out",
+    "lint:md:fix": "markdownlint \"**/*.md\" --fix --ignore node_modules --ignore .next --ignore graphify-out",
     "typecheck": "pnpm -r --if-present typecheck",
     "test": "pnpm --filter @medlens/web test:unit && pnpm --filter @medlens/api test",
     "test:integration": "pnpm --filter @medlens/web test:integration && pnpm --filter @medlens/api test:integration",
@@ -16,6 +17,7 @@
     "api:test": "pnpm --filter @medlens/api test",
     "api:test:integration": "pnpm --filter @medlens/api test:integration",
     "release": "semantic-release",
+    "graphify:update": "graphify update . --force",
     "prepare": "husky"
   },
   "devDependencies": {
@@ -25,7 +27,11 @@
     "@semantic-release/github": "^11.0.6",
     "@semantic-release/release-notes-generator": "^14.1.0",
     "husky": "^9.1.7",
+    "lint-staged": "15.4.3",
     "markdownlint-cli": "^0.45.0",
     "semantic-release": "^24.2.7"
+  },
+  "lint-staged": {
+    "*.md": "markdownlint --fix --ignore node_modules --ignore .next --ignore graphify-out"
   }
 }
