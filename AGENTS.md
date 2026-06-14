@@ -21,13 +21,17 @@ Build MedLens+ as a safety-first, longitudinal medical report intelligence platf
 - Add tests for parser, normalization, trends, and safety filters.
 - Any AI flow change must include prompt/version metadata.
 
-## Branch Strategy (3 Long-Lived)
-- `main`: production-ready only
-- `staging`: release candidate validation
-- `develop`: integration branch
+## Branch Strategy (Main-First)
+- Branch **from `main`** (production baseline)
+- Open PRs to **`develop`** (features) or **`main`** (hotfixes)
+- Promotion: `develop` → `staging` → `main` (maintainers)
+- After `main` updates, backmerge keeps `staging` and `develop` in sync with production
+
+## Ticket Source
+- [GitHub Project #2](https://github.com/users/itxSaaad/projects/2) — not local `planning/tickets/`
 
 ## PR Requirements
-- Link a ticket from `planning/tickets/`
+- Link a GitHub issue (`Closes #NNN`) from the [Project Board](https://github.com/users/itxSaaad/projects/2)
 - Mention user impact and safety impact
 - Include test evidence
 - Include privacy/security notes

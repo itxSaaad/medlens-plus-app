@@ -2,6 +2,9 @@
 
 [![CI - Quality And Governance](https://img.shields.io/github/actions/workflow/status/itxSaaad/medlens-plus-app/ci.yml?branch=main&label=CI)](./.github/workflows/ci.yml)
 [![Release](https://img.shields.io/github/actions/workflow/status/itxSaaad/medlens-plus-app/release.yml?branch=main&label=Release)](./.github/workflows/release.yml)
+[![codecov](https://codecov.io/gh/itxSaaad/medlens-plus-app/graph/badge.svg?token=)](https://codecov.io/gh/itxSaaad/medlens-plus-app)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/itxSaaad/medlens-plus-app)](https://app.codacy.com/gh/itxSaaad/medlens-plus-app/dashboard)
+[![Project Board](https://img.shields.io/badge/project-MedLens%2B-blue)](https://github.com/users/itxSaaad/projects/2)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](./LICENSE)
 [![Conventional Commits](https://img.shields.io/badge/commits-conventional-brightgreen.svg)](https://www.conventionalcommits.org/)
 
@@ -31,14 +34,15 @@ MedLens+ is a safety-first, longitudinal medical report intelligence platform th
 - `packages/security` privacy, redaction, and security docs
 - `packages/parsers` extraction module guidance
 - `packages/i18n` localization baseline
-- `planning/` enterprise-style epics, sprints, and tickets
 - `docs/` architecture, product, operations, and OSS governance
+- `graphify-out/` codebase knowledge graph (`graph.json`, `GRAPH_REPORT.md`)
 - `CLAUDE.md`, `CODEX.md`, `.github/copilot-instructions.md` agent-specific instruction entrypoints
 
 ## Engineering Workflow
 
 - Long-lived branches only: `main`, `staging`, `develop`
-- Feature branches merge by PR and are auto-deleted after merge
+- Feature branches merge by PR (squash merge) and are auto-deleted after merge
+- `develop`, `staging`, and `main` are protected and never deleted
 - Exactly three workflow files:
   - `CI - Quality And Governance`
   - `Release - Semantic Versioning And Tags`
@@ -54,6 +58,7 @@ pnpm lint
 pnpm typecheck
 pnpm test
 pnpm build
+pnpm graphify:update   # after structural code changes
 ```
 
 Backend Python quality and tests are executed through workspace scripts and CI using `uv` + FastAPI tooling.
@@ -70,11 +75,17 @@ Backend Python quality and tests are executed through workspace scripts and CI u
 - Quality gates: `docs/open-source/QUALITY_GATES.md`
 - Commit standards: `docs/open-source/COMMIT_STRATEGY.md`
 - OSS operating manual: `docs/open-source/PROJECT_OPERATING_MANUAL.md`
+- Delivery board: `docs/open-source/GITHUB_PROJECTS.md`
+- Tooling setup: `docs/open-source/TOOLING_SETUP.md`
 - Agent baseline: `docs/agent-context/AGENT_SKILLS_BASELINE.md`
+- Rules and skills map: `docs/agent-context/RULES_AND_SKILLS_MAP.md`
+- Skills provenance: `docs/agent-context/SKILLS_PROVENANCE.md`
+- Cursor rules: `.cursor/rules/README.md`
+- Cursor skills: `.cursor/skills/README.md`
 
 ## Contributing
 
-Read `CONTRIBUTING.md`, then pick a ticket from `planning/tickets/`. Every PR must include safety impact, test evidence, and security/privacy notes.
+Read `CONTRIBUTING.md`, then pick a **Ready** issue from the [MedLens+ Project Board](https://github.com/users/itxSaaad/projects/2). Every PR must include safety impact, test evidence, and security/privacy notes.
 
 ## License
 
