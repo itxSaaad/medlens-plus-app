@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+# $1 = previous HEAD, $2 = new HEAD, $3 = branch checkout flag (1 = branch switch)
+if [ "${3:-0}" != "1" ]; then
+  exit 0
+fi
+
+GRAPHIFY_HOOK_FORCE=1 . "$(dirname -- "$0")/graphify-update.sh"
