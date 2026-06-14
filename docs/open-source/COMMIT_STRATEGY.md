@@ -31,4 +31,6 @@ Keep every commit meaningful, reviewable, and safe to cherry-pick into `staging`
 
 ## Enforcement
 - CI enforces commit convention and PR title convention.
+- Branch ticket-id pattern for `feat`/`fix`/`hotfix`: see [`NAMING_CONVENTIONS.md`](./NAMING_CONVENTIONS.md).
+- Commit body lines must be ≤100 characters (commitlint `body-max-line-length`).
 - Maintainers should request split commits when a change is not cherry-pick safe.

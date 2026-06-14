@@ -29,10 +29,18 @@ jobs:
             echo "Bypassing naming validation for permanent branch: $BRANCH_NAME"
             exit 0
           fi
-          if [[ ! "$BRANCH_NAME" =~ ^(feat|fix|chore|docs|refactor|test|ci|release)\/ ]]; then
+          if [[ ! "$BRANCH_NAME" =~ ^(feat|fix|hotfix|chore|docs|refactor|test|ci|release)\/ ]]; then
             echo "Invalid branch name: $BRANCH_NAME"
-            echo "Use one of: feat/*, fix/*, chore/*, docs/*, refactor/*, test/*, ci/*, release/*"
+            echo "Use one of: feat/*, fix/*, hotfix/*, chore/*, docs/*, refactor/*, test/*, ci/*, release/*"
             exit 1
+          fi
+          if [[ "$BRANCH_NAME" =~ ^(feat|fix|hotfix)/ ]]; then
+            if [[ ! "$BRANCH_NAME" =~ ^(feat|fix|hotfix)/TKT-[0-9]+(\.[0-9]+)?-[a-z0-9]+(-[a-z0-9]+)*$ ]]; then
+              echo "Invalid branch name: $BRANCH_NAME"
+              echo "feat/fix/hotfix branches must include ticket id: feat/TKT-013-short-slug"
+              echo "See docs/open-source/NAMING_CONVENTIONS.md"
+              exit 1
+            fi
           fi
 
       - name: Branch naming result summary
@@ -73,7 +81,16 @@ jobs:
           pnpm --filter @medlens/types typecheck
 
       - name: Run frontend unit tests
-        run: pnpm --filter @medlens/web test:unit
+        run: pnpm --filter @medlens/web test:unit -- --coverage
+
+      - name: Upload web coverage to Codecov
+        if: always()
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: apps/web/coverage/coverage-final.json
+          flags: web
+          fail_ci_if_error: false
 
       - name: Build frontend production artifacts
         run: pnpm --filter @medlens/web build
@@ -104,7 +121,16 @@ jobs:
         run: uv run --directory apps/api mypy src
 
       - name: Run backend unit tests
-        run: uv run --directory apps/api pytest -m "not integration"
+        run: uv run --directory apps/api pytest -m "not integration" --cov=src --cov-report=xml:coverage.xml
+
+      - name: Upload API coverage to Codecov
+        if: always()
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: apps/api/coverage.xml
+          flags: api
+          fail_ci_if_error: false
 
       - name: Python quality result summary
         run: |

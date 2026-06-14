@@ -1,0 +1,21 @@
+---
+description: Frontend quality — UX, performance, analytics-safe tags, clinical vs marketing surfaces.
+globs:
+  - apps/web/**
+alwaysApply: false
+---
+
+# Frontend quality (MedLens+)
+
+## In-app health UI
+- `product-ux` + `web-frontend` + `ui-accessibility` + `web-performance`
+- References: `bencium-controlled-ux-designer`, `web-design-guidelines`, `react-best-practices`, `composition-patterns`, AccessLint
+
+## Marketing / landing
+- `product-ux` + `marketing-ui` + discovery stack (`technical-seo`, `content-seo`, `answer-engine-optimization`)
+- `web-performance` before launch; `analytics-tagging` for GTM/pixels (no PHI)
+
+## Authority
+`safety-privacy` and `medical-safety.mdc` override all UI and tracking guidance.
+
+Map: `docs/agent-context/RULES_AND_SKILLS_MAP.md`

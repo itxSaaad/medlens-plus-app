@@ -37,7 +37,7 @@
 
 ### Exit Criteria (Gate A)
 
-- Planning hierarchy active (`epics`, `sprints`, `tickets`)
+- Planning hierarchy active on [GitHub Project #2](https://github.com/users/itxSaaad/projects/2) (`epics`, `sprints`, `tickets`)
 - Safety policy merged and referenced by PR template
 
 ## Phase 1: MVP Core Loop (Weeks 5-12)

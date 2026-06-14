@@ -1,0 +1,2 @@
+#!/usr/bin/env sh
+GRAPHIFY_HOOK_FORCE=1 . "$(dirname -- "$0")/graphify-update.sh"
