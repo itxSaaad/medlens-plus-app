@@ -1,0 +1,33 @@
+---
+description: FastAPI async backend — Pydantic v2, providers, factories, settings for apps/api
+globs: ["apps/api/**"]
+alwaysApply: false
+---
+
+# FastAPI Backend
+
+Stack: Python 3.12+, FastAPI, Pydantic v2, async I/O, Ruff, mypy strict, pytest.
+
+## Architecture (mandatory)
+
+- Interfaces: `apps/api/src/api/core/interfaces.py`
+- Factories: `apps/api/src/api/core/factories.py`
+- Settings: `apps/api/src/api/core/settings.py` — env-backed only
+- Providers live under `apps/api/src/api/providers/` — never hardcode vendor SDKs in routes or workflows
+
+## Conventions
+
+- Async route handlers and async provider methods for I/O.
+- Pydantic models for request/response; separate domain models from API schemas when needed.
+- Raise `HTTPException` with safe user messages; log technical detail without PHI.
+- New providers: implement interface + register in factory; add unit tests with mocks.
+
+## Commands
+
+```bash
+pnpm --filter @medlens/api lint
+pnpm --filter @medlens/api typecheck
+pnpm --filter @medlens/api test
+```
+
+Skill: `.cursor/skills/api-backend/SKILL.md`

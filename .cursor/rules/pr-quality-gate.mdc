@@ -1,0 +1,17 @@
+---
+description: PR quality checklist for app and package changes
+globs: apps/**,packages/**
+alwaysApply: false
+---
+
+# PR Quality Gate
+
+Before finishing changes under `apps/` or `packages/`:
+
+- [ ] Tests added/updated for changed behavior
+- [ ] Types and contracts aligned (schema-first if API changed)
+- [ ] No PII in logs; safety filters intact
+- [ ] Docs/changelog updated if user-facing
+- [ ] `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm build` pass
+
+Skill: `.cursor/skills/code-review/SKILL.md`
