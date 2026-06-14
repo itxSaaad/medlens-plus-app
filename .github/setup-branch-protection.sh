@@ -44,7 +44,6 @@ EOF
 
 echo "Applying classic branch protection..."
 protect_branch develop 0
-protect_branch staging 0
 protect_branch main 0
 
-echo "Done. Squash merge only at repo level; develop/staging/main protected from deletion."
+echo "Done. Squash merge only at repo level; develop/main protected from deletion."

@@ -19,9 +19,8 @@ python .github/maintainer/sync-delivery.py --all
 
 After merging delivery changes to `develop`:
 
-1. Open PR `develop` → `staging`, review, merge manually
-2. Open PR `staging` → `main`, review, merge manually
-3. Merge any backmerge PRs (`main` → `staging`, `main` → `develop`) opened by the backmerge workflow
+1. Open PR `develop` → `main`, review, merge manually
+2. Open PR `main` → `develop` (or merge locally) to backmerge production changes
 
 See [`docs/open-source/BRANCHING_STRATEGY.md`](../open-source/BRANCHING_STRATEGY.md).
 

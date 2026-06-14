@@ -5,8 +5,8 @@
   "packageManager": "pnpm@10.25.0",
   "scripts": {
     "lint": "pnpm -r --if-present lint && pnpm lint:md",
-    "lint:md": "markdownlint \"**/*.md\" --ignore node_modules --ignore .next --ignore graphify-out",
-    "lint:md:fix": "markdownlint \"**/*.md\" --fix --ignore node_modules --ignore .next --ignore graphify-out",
+    "lint:md": "markdownlint \"**/*.md\" --ignore node_modules --ignore \"**/node_modules/**\" --ignore .next --ignore graphify-out --ignore \".cursor/**\" --ignore \".claude/skills/graphify/**\"",
+    "lint:md:fix": "markdownlint \"**/*.md\" --fix --ignore node_modules --ignore \"**/node_modules/**\" --ignore .next --ignore graphify-out --ignore \".cursor/**\" --ignore \".claude/skills/graphify/**\"",
     "typecheck": "pnpm -r --if-present typecheck",
     "test": "pnpm --filter @medlens/web test:unit && pnpm --filter @medlens/api test",
     "test:integration": "pnpm --filter @medlens/web test:integration && pnpm --filter @medlens/api test:integration",
@@ -32,6 +32,6 @@
     "semantic-release": "^24.2.7"
   },
   "lint-staged": {
-    "*.md": "markdownlint --fix --ignore node_modules --ignore .next --ignore graphify-out"
+    "*.md": "markdownlint --fix --ignore node_modules --ignore \"**/node_modules/**\" --ignore .next --ignore graphify-out --ignore \".cursor/**\" --ignore \".claude/skills/graphify/**\""
   }
 }

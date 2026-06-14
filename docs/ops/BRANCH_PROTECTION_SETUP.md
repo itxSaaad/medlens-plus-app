@@ -9,7 +9,7 @@ Run once per repository or after changing required CI checks.
 
 ## Current policy (solo maintainer)
 
-- **PR required** on `develop`, `staging`, and `main`
+- **PR required** on `develop` and `main`
 - **Required CI checks** must pass (see list below)
 - **0 approving reviews** — CODEOWNERS review gate is disabled until a second reviewer exists
 - `.github/CODEOWNERS` is kept for future use; it has no effect while `require_code_owner_reviews` is `false`
@@ -19,7 +19,7 @@ Run once per repository or after changing required CI checks.
 Update [`.github/branch-protection.yml`](../../.github/branch-protection.yml) and [`.github/setup-branch-protection.sh`](../../.github/setup-branch-protection.sh):
 
 - `require_code_owner_reviews: true`
-- `required_approving_review_count: 1` on `develop`, `staging`, and `main` (main was previously 2)
+- `required_approving_review_count: 1` on `develop` and `main` (main was previously 2)
 
 Then re-run the setup script below.
 
@@ -85,11 +85,10 @@ function New-ProtectionBody([int]$ReviewCount) {
 
 @(
     @{ Name = "develop"; Reviews = 0 },
-    @{ Name = "staging"; Reviews = 0 },
     @{ Name = "main"; Reviews = 0 }
 ) | ForEach-Object {
     New-ProtectionBody -ReviewCount $_.Reviews | gh api -X PUT "repos/itxSaaad/medlens-plus-app/branches/$($_.Name)/protection" --input -
 }
 ```
 
-Squash merge only on `develop`, `staging`, and `main`. Feature branches are deleted after merge.
+Squash merge only on `develop` and `main`. Feature branches are deleted after merge.

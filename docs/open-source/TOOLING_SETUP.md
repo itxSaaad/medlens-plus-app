@@ -31,10 +31,10 @@ Install these GitHub Apps on `itxSaaad/medlens-plus-app` and add repository secr
 - **Policy:** Never merge Dependabot PRs directly to `main`; land on `develop` first
 - **No install required** — enabled automatically when the config file is on `main`
 
-## Branch promotion, backmerge, and drift
+## Branch promotion and drift
 
-- **Promotion:** manual PRs only — \`develop\` → \`staging\` → \`main\` (see [`BRANCHING_STRATEGY.md`](./BRANCHING_STRATEGY.md))
-- **Backmerge:** [`.github/workflows/branch-backmerge.yml`](../../.github/workflows/branch-backmerge.yml) — on push to `main`, **opens PRs only** to `staging` and `develop` (no auto-merge)
+- **Promotion:** manual PR only — `develop` → `main` (see [`BRANCHING_STRATEGY.md`](./BRANCHING_STRATEGY.md))
+- **Backmerge:** manual PR or local merge — `main` → `develop` after hotfixes or promotion (no workflow)
 - **Drift detection:** [`.github/workflows/branch-drift.yml`](../../.github/workflows/branch-drift.yml) — weekly advisory issue
 - **Bot PRs:** Dependabot targets `develop`; merge manually after review
 

@@ -24,7 +24,7 @@ Use when picking work, shipping features, opening PRs, or promoting branches.
 - After structural changes: `pnpm graphify:update` and commit graph artifacts
 
 ## PR policy
-- PR-only merges to `develop`, `staging`, `main` — **no auto-merge**
+- PR-only merges to `develop` and `main` — **no auto-merge**
 - Use [PR template](https://github.com/itxSaaad/medlens-plus-app/blob/main/.github/pull_request_template.md)
 - Recommended ≤150 changed files for AI review; modular commits on feature branch
 
@@ -35,11 +35,12 @@ Use when picking work, shipping features, opening PRs, or promoting branches.
 4. Update docs when user-facing
 
 ## Promotion (manual)
+
 ```bash
-gh pr create --head develop --base staging --title "chore: promote develop to staging"
-gh pr create --head staging --base main --title "chore: promote staging to main"
+gh pr create --head develop --base main --title "chore: promote develop to main"
 ```
-Backmerge PRs from `main` → `staging` / `develop` are opened by CI — merge manually.
+
+Backmerge: open PR `main` → `develop` manually after hotfixes or promotion.
 
 ## Release
 - `semantic-release` on `main` tags `vX.Y.Z` after CI

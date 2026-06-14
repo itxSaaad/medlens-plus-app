@@ -40,9 +40,9 @@ MedLens+ is a safety-first, longitudinal medical report intelligence platform th
 
 ## Engineering Workflow
 
-- Long-lived branches only: `main`, `staging`, `develop`
+- Long-lived branches only: `main`, `develop`
 - Feature branches merge by PR (squash merge) and are auto-deleted after merge
-- `develop`, `staging`, and `main` are protected and never deleted
+- `develop` and `main` are protected and never deleted
 - Exactly three workflow files:
   - `CI - Quality And Governance`
   - `Release - Semantic Versioning And Tags`
