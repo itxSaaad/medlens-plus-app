@@ -48,7 +48,6 @@ When `main` moves (hotfix or promotion), the backmerge workflow opens PRs `main`
 - JS Quality - Lint Typecheck Test Build
 - Python Quality - Ruff Mypy Pytest
 - Commit And PR Convention Checks
-- Graphify Sync
 
 ## Enforcement
 - One-time setup: [`docs/ops/BRANCH_PROTECTION_SETUP.md`](../ops/BRANCH_PROTECTION_SETUP.md)

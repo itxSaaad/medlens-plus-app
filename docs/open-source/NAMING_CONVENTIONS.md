@@ -26,7 +26,7 @@ Enforced locally by Husky (`commit-msg`) and in CI (`wagoid/commitlint-github-ac
 
 **Subject line:**
 
-```
+```text
 <type>(<optional-scope>): <short description>
 ```
 
@@ -78,8 +78,8 @@ PR title is checked by `amannn/action-semantic-pull-request` with the same types
 1. Pick a **Ready** issue on [Project #2](https://github.com/users/itxSaaad/projects/2)
 2. Create branch with correct prefix and `TKT-` id (or `chore/` for repo governance)
 3. Commits: conventional, lowercase subject, body lines ≤100 chars
-4. Run `pnpm lint` (includes markdownlint on `**/*.md`)
-5. Run `pnpm graphify:update` manually if structure changed before push; commit graph artifacts if CI requires it (not auto-run on commit)
+4. Staged `*.md` is auto-fixed on commit (Husky + `lint-staged`); CI still runs full `pnpm lint:md`
+5. Run `pnpm graphify:update` manually if you changed structure and maintain graph artifacts
 6. PR title matches conventional format; body uses template
 
 ## CI jobs that enforce this

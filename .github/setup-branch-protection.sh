@@ -25,8 +25,7 @@ protect_branch() {
       "Branch Naming Validation",
       "JS Quality - Lint Typecheck Test Build",
       "Python Quality - Ruff Mypy Pytest",
-      "Commit And PR Convention Checks",
-      "Graphify Sync"
+      "Commit And PR Convention Checks"
     ]
   },
   "enforce_admins": false,

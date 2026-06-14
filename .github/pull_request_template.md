@@ -27,7 +27,7 @@ What changed and why this approach?
 - [ ] Unit tests added/updated
 - [ ] Integration tests updated if infra behavior changed
 - [ ] Docs updated to match current code
-- [ ] `pnpm graphify:update` run if architecture changed
+- [ ] `pnpm graphify:update` run locally if you maintain graph artifacts (optional)
 
 ## Validation Evidence
 Paste key command outputs used for validation.

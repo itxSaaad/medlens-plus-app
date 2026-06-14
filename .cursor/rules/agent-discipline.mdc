@@ -14,4 +14,5 @@ alwaysApply: true
 - Concrete error messages; reuse project error types — no generic catch-all handlers.
 - No over-commenting, generic names, or unnecessary wrappers.
 - **Branches, commits, PR titles:** follow [`docs/open-source/NAMING_CONVENTIONS.md`](../../docs/open-source/NAMING_CONVENTIONS.md) so CI passes.
+- Staged Markdown is auto-fixed on commit (`lint-staged` + markdownlint `--fix` in pre-commit).
 - Run validation before claiming done: `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm build`.

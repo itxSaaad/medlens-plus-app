@@ -15,7 +15,6 @@ This repository enforces merge discipline similar to an enterprise software team
    - JS Quality - Lint Typecheck Test Build
    - Python Quality - Ruff Mypy Pytest
    - Commit And PR Convention Checks
-   - Graphify Sync
 6. Resolve blocking conversations before merge.
 
 ## Recommended PR Size (not enforced by CI)

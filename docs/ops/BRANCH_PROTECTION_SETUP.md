@@ -48,7 +48,6 @@ Before merging any promotion or backmerge PR, confirm no open PR has auto-merge 
 - JS Quality - Lint Typecheck Test Build
 - Python Quality - Ruff Mypy Pytest
 - Commit And PR Convention Checks
-- Graphify Sync
 
 ## Apply protection to GitHub
 
@@ -65,8 +64,7 @@ $checks = @(
     "Branch Naming Validation",
     "JS Quality - Lint Typecheck Test Build",
     "Python Quality - Ruff Mypy Pytest",
-    "Commit And PR Convention Checks",
-    "Graphify Sync"
+    "Commit And PR Convention Checks"
 )
 
 function New-ProtectionBody([int]$ReviewCount) {
