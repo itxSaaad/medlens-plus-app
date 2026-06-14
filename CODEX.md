@@ -26,7 +26,4 @@ Codex operating instructions for MedLens+.
 - `pnpm build`
 
 ## Skill Playbooks
-- `docs/agent-context/skills/01-repo-governance.md`
-- `docs/agent-context/skills/02-mvp-feature-delivery.md`
-- `docs/agent-context/skills/03-safety-and-privacy-gate.md`
-- `docs/agent-context/skills/04-ci-cd-and-releases.md`
+Read `.claude/skills/medlens/SKILL.md` for the index. Modular rules: `.claude/rules/agent-discipline.md`. Map: `docs/agent-context/RULES_AND_SKILLS_MAP.md`.

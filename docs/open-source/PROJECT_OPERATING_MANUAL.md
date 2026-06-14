@@ -60,8 +60,8 @@ Prod restart policy:
 - manual restart (`restart: "no"`)
 
 ## Contributor Expectations
-- Start from `planning/sprints` and `planning/tickets`.
-- Link every PR to ticket.
+- Start from the [GitHub Project Board](https://github.com/users/itxSaaad/projects/2) — filter **Status = Ready**.
+- Link every PR to a GitHub issue (`Closes #NNN`).
 - Update docs with code changes.
 - Respect medical safety language and evidence grounding.
 
