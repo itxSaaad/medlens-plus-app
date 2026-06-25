@@ -17,12 +17,15 @@ Install these GitHub Apps on `itxSaaad/medlens-plus-app` and add repository secr
 - **Install:** [Codecov project](https://codecov.io/gh/itxSaaad/medlens-plus-app)
 - **Secret:** `CODECOV_TOKEN` — copy from Codecov project settings → Repository upload token
 
-## Codacy (quality dashboard)
+## CodeQL (security scanning)
 
-- **Config:** [`.codacy.yml`](../../.codacy.yml) — excludes `graphify-out/**`, `.cursor/**`, graphify skill/hooks, build caches, and lockfiles from analysis
-- **Workflow:** [`.github/workflows/codacy.yml`](../../.github/workflows/codacy.yml)
-- **Install:** [Codacy GitHub App](https://github.com/apps/codacy)
-- **Secret:** `CODACY_PROJECT_TOKEN` — from Codacy → Project → Settings → Integrations
+- **Workflow:** [`.github/workflows/codeql.yml`](../../.github/workflows/codeql.yml)
+- **Config:** [`.github/codeql/codeql-config.yml`](../../.github/codeql/codeql-config.yml)
+- **Languages:** JavaScript/TypeScript (`apps/web`, `packages/*`) and Python (`apps/api`)
+- **Schedule:** Weekly Monday 06:00 UTC + on every PR/push to `main` and `develop`
+- **Policy:** **Advisory** — does not block merges; review alerts under **Security → Code scanning**
+- **Enable (one-time):** **Settings → Code security and analysis** → ensure **Code scanning** is enabled after the workflow is on `main`
+- **Promote to required:** optional after 1–2 clean weeks (add job name to branch protection script)
 
 ## Dependabot (dependency updates)
 
@@ -42,10 +45,15 @@ Install these GitHub Apps on `itxSaaad/medlens-plus-app` and add repository secr
 
 ## Branch promotion and drift
 
-- **Promotion:** manual PR only — `develop` → `main` (see [`BRANCHING_STRATEGY.md`](./BRANCHING_STRATEGY.md))
-- **Backmerge:** manual PR or local merge — `main` → `develop` after hotfixes or promotion (no workflow)
+- **Promotion:** manual PR `develop` → `main` with **semantic squash title** (see [`RELEASE_PROCESS.md`](./RELEASE_PROCESS.md)); run `bash scripts/suggest-promotion-title.sh` first
+- **Develop sync:** [`.github/workflows/sync-develop.yml`](../../.github/workflows/sync-develop.yml) aligns `develop` after `main` pushes
 - **Drift detection:** [`.github/workflows/branch-drift.yml`](../../.github/workflows/branch-drift.yml) — weekly advisory issue
 - **Bot PRs:** Dependabot targets `develop`; merge manually after review
+
+### Manual cleanup after removing Codacy
+
+- Uninstall the [Codacy GitHub App](https://github.com/apps/codacy) from this repository
+- Delete the `CODACY_PROJECT_TOKEN` repository secret (if present)
 
 ## GitHub Copilot (PR review)
 

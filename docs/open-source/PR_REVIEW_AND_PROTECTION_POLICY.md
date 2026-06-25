@@ -33,7 +33,7 @@ Large stacks (e.g. initial skills consolidation) are acceptable when commits are
 
 - **CodeRabbit:** `auto_review.enabled: false` in [`.coderabbit.yaml`](../../.coderabbit.yaml). Trigger with `@coderabbitai review` or `@coderabbitai full review` in a PR comment when ready.
 - **GitHub Copilot:** Do not enable automatic PR review in repo rulesets or Copilot settings. Assign **Copilot** as a reviewer when you want feedback.
-- **Codacy:** On-demand via PR comment / dashboard (no blocking auto-review by default).
+- **CodeQL:** Advisory security scanning on PRs; review alerts in **Security → Code scanning** (does not block merge by default).
 
 Setup details: [`TOOLING_SETUP.md`](./TOOLING_SETUP.md).
 
