@@ -33,16 +33,23 @@ gh_api() {
   local method="$1"
   local path="$2"
   shift 2
-  curl -sS "${AUTH[@]}" -X "$method" "${API}/${path}" "$@"
+  local response
+  response="$(curl -sS -w "\n%{http_code}" "${AUTH[@]}" -X "$method" "${API}/${path}" "$@")"
+  local status="${response##*$'\n'}"
+  local body="${response%$'\n'*}"
+  if [[ "$status" -lt 200 || "$status" -ge 300 ]]; then
+    echo "$body" >&2
+    return 1
+  fi
+  if [[ -n "$body" ]]; then
+    echo "$body"
+  fi
 }
 
 echo "Updating repository merge settings..."
 gh_api PATCH "repos/${REPO}" \
-  -f allow_squash_merge=true \
-  -f allow_merge_commit=false \
-  -f allow_rebase_merge=false \
-  -f allow_auto_merge=false \
-  -f delete_branch_on_merge=true \
+  -H "Content-Type: application/json" \
+  --data-binary '{"allow_squash_merge":true,"allow_merge_commit":false,"allow_rebase_merge":false,"allow_auto_merge":false,"delete_branch_on_merge":true}' \
   >/dev/null
 
 protect_branch_classic() {
@@ -52,7 +59,7 @@ protect_branch_classic() {
 
   local linear_block=""
   if [[ "$linear_history" == "true" ]]; then
-    linear_block='"required_linear_history": {"enabled": true},'
+    linear_block='"required_linear_history": true,'
   fi
 
   gh_api PUT "repos/${REPO}/branches/${branch}/protection" \
@@ -75,9 +82,7 @@ protect_branch_classic() {
     "require_last_push_approval": true,
     "required_approving_review_count": 1
   },
-  "required_conversation_resolution": {
-    "enabled": true
-  },
+  "required_conversation_resolution": true,
   ${linear_block}
   "restrictions": null,
   "allow_force_pushes": false,
@@ -180,20 +185,24 @@ print(json.dumps({
 
   if [[ -n "$existing_id" ]]; then
     echo "  Updating ruleset '${name}' (id=${existing_id})"
-    gh_api PUT "repos/${REPO}/rulesets/${existing_id}" \
+    if ! gh_api PUT "repos/${REPO}/rulesets/${existing_id}" \
       -H "Content-Type: application/json" \
-      --data-binary "$payload" >/dev/null
+      --data-binary "$payload" >/dev/null; then
+      echo "  warning: failed to update ruleset '${name}' (optional on personal repos)" >&2
+    fi
   else
     echo "  Creating ruleset '${name}'"
-    gh_api POST "repos/${REPO}/rulesets" \
+    if ! gh_api POST "repos/${REPO}/rulesets" \
       -H "Content-Type: application/json" \
-      --data-binary "$payload" >/dev/null
+      --data-binary "$payload" >/dev/null; then
+      echo "  warning: failed to create ruleset '${name}' — add BRANCH_SYNC_PAT for sync workflow" >&2
+    fi
   fi
 }
 
-echo "Applying rulesets (GitHub Actions bypass for sync workflow)..."
-upsert_ruleset "Protected branch main" '["refs/heads/main"]' true
-upsert_ruleset "Protected branch develop" '["refs/heads/develop"]' false
+echo "Applying rulesets (optional; GitHub Actions bypass when supported)..."
+upsert_ruleset "Protected branch main" '["refs/heads/main"]' true || true
+upsert_ruleset "Protected branch develop" '["refs/heads/develop"]' false || true
 
 echo "Applying classic branch protection..."
 protect_branch_classic develop false
@@ -202,4 +211,5 @@ protect_branch_classic main true
 echo "Done."
 echo "- Squash merge only; auto-merge disabled; delete branch on merge enabled."
 echo "- CODEOWNERS review required (1 approval) on main and develop."
-echo "- Rulesets allow github-actions[bot] bypass for automated develop fast-forward."
+echo "- Rulesets allow github-actions[bot] bypass when supported (org repos)."
+echo "- Personal repos: add repo secret BRANCH_SYNC_PAT (admin PAT) for sync-develop.yml."
