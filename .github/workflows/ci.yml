@@ -60,15 +60,15 @@ jobs:
     if: github.event_name != 'pull_request' || github.event.action != 'closed'
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v6
+        uses: pnpm/action-setup@b0f76dfb45f55f8421693e4803ac7bb65143bd34 # v6
         with:
           version: 10.25.0
 
       - name: Setup Node.js 22 with pnpm cache
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
         with:
           node-version: 22
           cache: pnpm
@@ -76,30 +76,33 @@ jobs:
       - name: Install workspace dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Lint frontend and markdown
+      - name: Generate Next.js TypeScript declarations
+        run: pnpm --filter @medlens/web exec next typegen
+
+      - name: Restore Turborepo cache
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+        with:
+          path: .turbo
+          key: turbo-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml', 'turbo.json') }}
+          restore-keys: turbo-${{ runner.os }}-
+
+      - name: Lint, typecheck, test, and build web workspace
         run: |
-          pnpm --filter @medlens/web lint
+          pnpm exec turbo run lint typecheck test build --filter=@medlens/web...
           pnpm lint:md
 
-      - name: Typecheck frontend and shared schemas
-        run: |
-          pnpm --filter @medlens/web typecheck
-          pnpm --filter @medlens/types typecheck
-
-      - name: Run frontend unit tests
-        run: pnpm --filter @medlens/web test:unit -- --coverage
+      - name: Audit npm dependencies (advisory)
+        continue-on-error: true
+        run: pnpm audit --audit-level=high
 
       - name: Upload web coverage to Codecov
         if: always()
-        uses: codecov/codecov-action@v7
+        uses: codecov/codecov-action@a99c28d3f0da835de33ff2feb2e15691c7b9641f # v7
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: apps/web/coverage/coverage-final.json
           flags: web
           fail_ci_if_error: false
-
-      - name: Build frontend production artifacts
-        run: pnpm --filter @medlens/web build
 
       - name: JS quality result summary
         run: |
@@ -112,26 +115,41 @@ jobs:
     if: github.event_name != 'pull_request' || github.event.action != 'closed'
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@b0f76dfb45f55f8421693e4803ac7bb65143bd34 # v6
+        with:
+          version: 10.25.0
+
+      - name: Setup Node.js 22 with pnpm cache
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install workspace dependencies
+        run: pnpm install --frozen-lockfile
 
       - name: Setup uv runtime
-        uses: astral-sh/setup-uv@v5
+        uses: astral-sh/setup-uv@e58605a9b6da7c637471fab8847a5e5a6b8df081 # v5
 
       - name: Install backend dependencies
         run: uv sync --directory apps/api --frozen --group dev
 
-      - name: Lint backend with ruff
-        run: uv run --directory apps/api ruff check .
+      - name: Restore Turborepo cache
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+        with:
+          path: .turbo
+          key: turbo-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml', 'turbo.json') }}
+          restore-keys: turbo-${{ runner.os }}-
 
-      - name: Typecheck backend with mypy
-        run: uv run --directory apps/api mypy src
-
-      - name: Run backend unit tests
-        run: uv run --directory apps/api pytest -m "not integration" --cov=src --cov-report=xml:coverage.xml
+      - name: Lint, typecheck, and test API workspace
+        run: pnpm exec turbo run lint typecheck test --filter=@medlens/api
 
       - name: Upload API coverage to Codecov
         if: always()
-        uses: codecov/codecov-action@v7
+        uses: codecov/codecov-action@a99c28d3f0da835de33ff2feb2e15691c7b9641f # v7
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: apps/api/coverage.xml
@@ -152,12 +170,12 @@ jobs:
       && !(github.head_ref == 'develop' && github.base_ref == 'main')
     steps:
       - name: Lint commit messages
-        uses: wagoid/commitlint-github-action@v6
+        uses: wagoid/commitlint-github-action@f133a0d95090ef2609192b4a21f54e20af819ea9 # v6
         with:
           configFile: commitlint.config.cjs
 
       - name: Lint PR title semantics
-        uses: amannn/action-semantic-pull-request@v6
+        uses: amannn/action-semantic-pull-request@48f256284bd46cdaab1048c3721360e808335d50 # v6
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -193,7 +211,7 @@ jobs:
 
       - name: Checkout with history and tags
         if: github.head_ref == 'develop'
-        uses: actions/checkout@v6
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
         with:
           fetch-depth: 0
 
@@ -211,29 +229,32 @@ jobs:
     name: Cleanup Merged Feature Branch
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
-    permissions:
-      contents: write
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+
       - name: Keep only permanent branches
         env:
           BRANCH_TO_DELETE: ${{ github.event.pull_request.head.ref }}
           REPO: ${{ github.repository }}
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_PAT: ${{ secrets.GH_PAT }}
           HEAD_REPO: ${{ github.event.pull_request.head.repo.full_name }}
         run: |
+          # shellcheck source=/dev/null
+          source .github/scripts/github-api.sh
+
           if [[ "$BRANCH_TO_DELETE" == "main" || "$BRANCH_TO_DELETE" == "develop" ]]; then
             echo "Skipping deletion for permanent branch: $BRANCH_TO_DELETE"
             exit 0
           fi
 
-          # Skip cleanup if PR is from a fork
           if [[ "$HEAD_REPO" != "$REPO" ]]; then
             echo "Skipping cleanup: PR from fork ($HEAD_REPO)"
             exit 0
           fi
 
           echo "Deleting merged branch: $BRANCH_TO_DELETE"
-          if gh api -X DELETE "repos/$REPO/git/refs/heads/$BRANCH_TO_DELETE" 2>/dev/null; then
+          if github_api DELETE "/repos/${REPO}/git/refs/heads/${BRANCH_TO_DELETE}" 2>/dev/null; then
             echo "Branch deleted successfully."
           else
             echo "Branch may have already been deleted or does not exist. Continuing gracefully."
