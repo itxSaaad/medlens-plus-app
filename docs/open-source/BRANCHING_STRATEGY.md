@@ -27,11 +27,30 @@ post-promotion              -->  sync workflow fast-forwards develop to main (sa
 
 ## Manual promotion
 
-Open the promotion PR yourself (GitHub UI or `gh`):
+Squash promotion uses the **PR title as the only commit message on `main`**. `semantic-release` will not see individual `develop` commits — the promotion title must match the highest semver in the batch.
+
+Before opening the promotion PR:
 
 ```bash
-gh pr create --head develop --base main --title "chore: promote develop to main"
+bash scripts/suggest-promotion-title.sh
 ```
+
+Promotion PR title rules:
+
+| Batch contains | Minimum PR title type | Example |
+|----------------|----------------------|---------|
+| `feat!` or `BREAKING CHANGE` | `feat!:` | `feat!: promote auth redesign to main` |
+| `feat:` (no breaking) | `feat:` | `feat: promote waitlist admin to main` |
+| `fix:` / `perf:` / `revert:` / `release:` / `chore(deps):` only | `fix:` | `fix: promote bugfix batch to main` |
+| docs/ci/chore-only | `chore:` | `chore: promote develop to main` |
+
+**Never** use `chore: promote develop to main` when the batch contains releasable `feat` or `fix` work — that skips versioning.
+
+```bash
+gh pr create --head develop --base main --title "feat: promote integration batch to main"
+```
+
+Use the PR **body** to list included PRs and issues. CI runs **Promotion Release Semver Check** on `develop` → `main` PRs.
 
 Review, wait for CI, resolve conflicts if any, then squash merge.
 
@@ -81,10 +100,12 @@ Use merge only when trees differ with real conflicts — not for post-promotion 
 - JS Quality - Lint Typecheck Test Build
 - Python Quality - Ruff Mypy Pytest
 - Commit And PR Convention Checks
+- Promotion Release Semver Check (`develop` → `main` promotion PRs only)
 
 ## Enforcement
 - One-time setup: [`docs/ops/BRANCH_PROTECTION_SETUP.md`](../ops/BRANCH_PROTECTION_SETUP.md)
 - Branch, commit, and PR naming: [`NAMING_CONVENTIONS.md`](./NAMING_CONVENTIONS.md)
+- Release promotion titles: [`RELEASE_PROCESS.md`](./RELEASE_PROCESS.md)
 - Squash merge only on `develop` and `main`
 - Auto-merge disabled; Dependabot PRs still require manual merge on `develop`
 - Auto-delete merged feature branches; never delete protected branches

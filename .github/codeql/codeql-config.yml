@@ -1,0 +1,14 @@
+name: "MedLens+ CodeQL config"
+
+paths-ignore:
+  - graphify-out
+  - .cursor
+  - .claude/skills/graphify
+  - "**/node_modules"
+  - "**/.next"
+  - "**/coverage"
+  - "**/dist"
+  - "**/.venv"
+  - "**/__pycache__"
+  - "**/.uv-cache"
+  - "**/pnpm-lock.yaml"
