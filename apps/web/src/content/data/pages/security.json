@@ -1,0 +1,70 @@
+{
+  "slug": "security",
+  "title": "Security",
+  "description": "Your lab reports hold sensitive health data. Here's how we encrypt uploads, restrict access, and respond if something goes wrong.",
+  "seo": {
+    "title": "MedLens+ Security — How We Protect Your Reports",
+    "description": "TLS encryption, at-rest protection, MFA for admins, audit logs, and coordinated vulnerability disclosure for MedLens+ uploads.",
+    "keywords": [
+      "MedLens+ security",
+      "medical data encryption",
+      "health data protection",
+      "PHI handling",
+      "lab report security"
+    ],
+    "ogImage": "/og/default.svg"
+  },
+  "updatedAt": "2026-06-24",
+  "sections": [
+    {
+      "heading": "Why security matters here",
+      "paragraphs": [
+        "Lab reports contain sensitive health information. We treat every upload with the care it deserves — security is part of the architecture, not a bolt-on.",
+        "We review our controls continuously as the platform grows and threats evolve."
+      ]
+    },
+    {
+      "heading": "Encryption",
+      "paragraphs": [
+        "Data in transit is protected with TLS (HTTPS) for all connections between your browser and our servers, and between internal services.",
+        "Data at rest — uploaded reports and extracted values — is encrypted with industry-standard algorithms on our cloud infrastructure.",
+        "Encryption keys are managed with restricted access and rotation practices appropriate for sensitive health-adjacent data."
+      ]
+    },
+    {
+      "heading": "Access control",
+      "paragraphs": [
+        "Production systems and customer data are accessible only to authorized personnel on a need-to-know basis. Multi-factor authentication is required for admin access.",
+        "Your account data is isolated so only you (and caregivers you explicitly authorize, when that feature is available) can view your uploads and timelines.",
+        "We maintain audit logs of administrative access to support accountability and incident investigation."
+      ]
+    },
+    {
+      "heading": "Sensitive data handling",
+      "paragraphs": [
+        "Uploaded lab reports may contain protected health information depending on your jurisdiction. We process this data solely to deliver the features you request.",
+        "We don't sell PHI or use report contents for third-party advertising. Infrastructure providers operate under data processing agreements with appropriate safeguards.",
+        "You can request deletion of your account and uploads. Deletion removes your data from active systems within a reasonable timeframe, subject to legal retention requirements."
+      ]
+    },
+    {
+      "heading": "Application security",
+      "paragraphs": [
+        "We follow secure development practices: code review, dependency monitoring, and regular updates for known vulnerabilities.",
+        "Uploaded files are processed in isolated pipelines. We minimize data exposure during extraction and don't include report contents in application logs.",
+        "Found a vulnerability? Report it responsibly through our contact page. We appreciate coordinated disclosure."
+      ]
+    },
+    {
+      "heading": "Incident response",
+      "paragraphs": [
+        "We maintain procedures to detect, contain, and remediate security events. If a breach affects your personal data, we'll notify you and relevant authorities as required by law.",
+        "No system is perfectly secure. Use a strong password and tell us promptly if you notice suspicious account activity."
+      ]
+    }
+  ],
+  "links": [
+    { "label": "Privacy policy", "href": "/privacy" },
+    { "label": "Terms of service", "href": "/terms" }
+  ]
+}

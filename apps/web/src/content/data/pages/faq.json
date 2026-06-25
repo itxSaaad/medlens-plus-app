@@ -1,0 +1,97 @@
+{
+  "slug": "faq",
+  "title": "Frequently Asked Questions",
+  "description": "Everything you might want to know about MedLens+ — features, safety boundaries, privacy, and how to join early access.",
+  "seo": {
+    "title": "MedLens+ FAQ — Lab Timelines & Early Access",
+    "description": "14 answers on timelines, supported panels, safety boundaries, data handling, and joining the free public beta waitlist.",
+    "keywords": [
+      "MedLens+ FAQ",
+      "lab report organizer questions",
+      "medical report app help",
+      "lab timeline safety"
+    ],
+    "ogImage": "/og/default.svg"
+  },
+  "updatedAt": "2026-06-24",
+  "sections": [
+    {
+      "heading": "Browse by topic",
+      "paragraphs": [
+        "Can't find what you need? Reach us through the contact details on our About page. For personal health questions, please talk to a qualified clinician — we can't provide individual medical advice."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "question": "What is MedLens+?",
+      "answer": "It's a tool that organizes lab and medical reports into timelines. Upload PDFs, see how values changed over time, and prep focused questions for your next visit — using the reference ranges on your actual reports.",
+      "category": "product"
+    },
+    {
+      "question": "Which report types are supported?",
+      "answer": "Early access covers common panels: CBC, liver and kidney function, lipid profile, HbA1c, thyroid, and key vitamins. We're adding more based on waitlist feedback and extraction testing.",
+      "category": "product"
+    },
+    {
+      "question": "How does the timeline work?",
+      "answer": "Upload reports from any lab and we'll extract marker names, values, units, and reference ranges. Values appear chronologically so you can spot trends — like HbA1c moving from 6.8% to 7.2% across three visits.",
+      "category": "product"
+    },
+    {
+      "question": "Can I export a summary for my doctor?",
+      "answer": "Yes. The visit brief pulls recent changes and suggested discussion topics from your uploaded reports. Bring it to your appointment or share it however your clinician prefers.",
+      "category": "product"
+    },
+    {
+      "question": "Can I compare results from different labs?",
+      "answer": "You can view markers across labs, but we'll show a caution when methods or reference ranges may differ. Always confirm significant changes with your healthcare provider.",
+      "category": "product"
+    },
+    {
+      "question": "How does MedLens+ handle reference ranges?",
+      "answer": "We use the intervals printed on each uploaded report — not generic internet values. When ranges vary by age, sex, or method, those distinctions stay tied to the source document.",
+      "category": "product"
+    },
+    {
+      "question": "Does MedLens+ diagnose conditions?",
+      "answer": "No. We never claim you have a specific disease or condition. We show values relative to the ranges on your reports and highlight topics worth discussing with your clinician.",
+      "category": "safety"
+    },
+    {
+      "question": "Does MedLens+ prescribe medication or suggest dose changes?",
+      "answer": "No. We don't prescribe, recommend treatments, or suggest dosage changes. All medical decisions belong between you and your qualified healthcare provider.",
+      "category": "safety"
+    },
+    {
+      "question": "What if a value is flagged high or low?",
+      "answer": "A flag means the value falls outside the reference interval on that report. It's a signal to discuss with your clinician — not a diagnosis. Context like symptoms and medications matters.",
+      "category": "safety"
+    },
+    {
+      "question": "Is my medical data secure?",
+      "answer": "We treat uploads as sensitive data. Encryption, access controls, and handling practices are on our Security page. We don't sell your personal or medical information.",
+      "category": "privacy"
+    },
+    {
+      "question": "Do you use my reports to train AI models?",
+      "answer": "We don't use your uploaded reports to train general-purpose AI models shared with third parties. Processing is scoped to delivering MedLens+ features for your account.",
+      "category": "privacy"
+    },
+    {
+      "question": "Can I delete my data?",
+      "answer": "Yes. Depending on your location, you may have rights to access, correct, delete, or export your data. See our Privacy Policy for details and how to make a request.",
+      "category": "privacy"
+    },
+    {
+      "question": "How do I join early access?",
+      "answer": "Visit the homepage and join the waitlist with your email. No credit card needed. We'll notify you when your spot opens for the free public beta.",
+      "category": "general"
+    },
+    {
+      "question": "Is early access free?",
+      "answer": "Yes. The public beta is free for waitlist members. See our Pricing page for what's included and what to expect after beta.",
+      "category": "general"
+    }
+  ]
+}

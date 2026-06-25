@@ -1,0 +1,72 @@
+{
+  "slug": "privacy",
+  "title": "Privacy Policy",
+  "description": "How MedLens+ collects, uses, and protects your information — waitlist emails, uploaded reports, cookies, and analytics.",
+  "seo": {
+    "title": "MedLens+ Privacy Policy — Your Data, Explained",
+    "description": "Your waitlist email, uploaded reports, and site analytics — what we collect, how long we keep it, and why we never sell medical data.",
+    "keywords": [
+      "MedLens+ privacy policy",
+      "medical data privacy",
+      "lab report data handling",
+      "health app privacy"
+    ],
+    "ogImage": "/og/default.svg"
+  },
+  "updatedAt": "2026-06-24",
+  "sections": [
+    {
+      "heading": "The short version",
+      "paragraphs": [
+        "We collect what we need to run MedLens+ and improve it. We don't sell your personal or medical information. You can ask us to delete your data.",
+        "This policy explains the details. By using our website or joining the waitlist, you agree to the practices described here."
+      ]
+    },
+    {
+      "heading": "What we collect",
+      "paragraphs": [
+        "Waitlist and account info: your email and any profile details you provide voluntarily.",
+        "Uploaded reports: lab reports and medical documents you choose to upload, plus the health information we extract for timeline features.",
+        "Usage data: browser type, device category, pages visited, and interaction events — aggregated, not tied to report contents.",
+        "Support messages: if you contact us, we keep your message to respond and maintain a support record."
+      ]
+    },
+    {
+      "heading": "How we use it",
+      "paragraphs": [
+        "We use collected information to provide and improve MedLens+, process your uploads, send waitlist and product updates you've requested, respond to support, and maintain security.",
+        "We don't use your uploaded reports to train general-purpose AI models shared with third parties. Processing stays scoped to delivering features for your account."
+      ]
+    },
+    {
+      "heading": "The waitlist",
+      "paragraphs": [
+        "When you join, we store your email to notify you about early access and important product updates.",
+        "Every email includes an unsubscribe link. You can also request removal by contacting us. We don't sell waitlist emails to marketers or data brokers."
+      ]
+    },
+    {
+      "heading": "We don't sell your data",
+      "paragraphs": [
+        "MedLens+ doesn't sell, rent, or trade your personal information or uploaded medical data to third parties for their marketing.",
+        "We share data only with service providers who help us operate — hosting, email delivery — under contracts that require them to protect your information."
+      ]
+    },
+    {
+      "heading": "Cookies and analytics",
+      "paragraphs": [
+        "Our site uses cookies for essential functionality, preference storage, and aggregated analytics.",
+        "Where required by law, we ask for consent before non-essential analytics cookies. You can manage preferences through our consent banner or browser settings.",
+        "Analytics data is aggregated. It doesn't include contents of your uploaded medical reports."
+      ]
+    },
+    {
+      "heading": "Retention and your rights",
+      "paragraphs": [
+        "We keep your information while your account is active or as needed to provide services, comply with legal obligations, and resolve disputes.",
+        "Depending on your location, you may have rights to access, correct, delete, or export your personal data. Contact us to exercise them.",
+        "We may update this policy periodically. Material changes get communicated via email or a notice on our website."
+      ]
+    }
+  ]
+}

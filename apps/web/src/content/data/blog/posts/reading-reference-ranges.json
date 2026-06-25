@@ -1,0 +1,58 @@
+{
+  "slug": "reading-reference-ranges",
+  "title": "How to Read Reference Ranges on Your Lab Report",
+  "description": "Those H and L flags on your printout aren't a diagnosis. Here's what the interval means, why Quest and hospital labs differ, and what to ask your clinician.",
+  "seo": {
+    "title": "How to Read Reference Ranges on Lab Reports | MedLens+ Blog",
+    "description": "Flagged on a lab printout? Learn what the interval means, why ranges differ between labs, and smart questions for your next visit.",
+    "keywords": [
+      "reference range lab report",
+      "normal lab values",
+      "out of range blood test",
+      "lab result interpretation"
+    ],
+    "ogImage": "/og/blog.svg"
+  },
+  "author": "MedLens+ Team",
+  "publishedAt": "2026-06-18",
+  "updatedAt": "2026-06-24",
+  "sections": [
+    {
+      "heading": "What is a reference range?",
+      "paragraphs": [
+        "A reference range is the interval printed on your lab report that a laboratory associates with a typical population for a given test. Values outside this interval are often flagged as high or low.",
+        "Reference ranges aren't universal diagnosis thresholds. They're laboratory-specific guidelines that help clinicians identify results worth further review. Only your healthcare provider can interpret what a flagged value means for you personally."
+      ]
+    },
+    {
+      "heading": "Why ranges differ between laboratories",
+      "paragraphs": [
+        "Different labs use different instruments, reagents, and calibration methods. A fasting glucose range at one facility may not match another's. Population demographics — age, sex, pregnancy status — also affect the ranges on your report.",
+        "That's why comparing your value against a generic internet table can create false alarm or false reassurance. The range on your document is the one that matters."
+      ]
+    },
+    {
+      "heading": "High, low, and borderline flags",
+      "paragraphs": [
+        "Reports typically flag values above or below the stated reference interval. Some also mark borderline results. A flag is an attention signal, not a diagnosis.",
+        "A single out-of-range result may prompt repeat testing, medication review, or correlation with symptoms. It may also be benign in context. Discuss any flagged value with your clinician rather than searching for conditions online."
+      ]
+    },
+    {
+      "heading": "Using ranges when tracking over time",
+      "paragraphs": [
+        "When tracking the same marker across visits, check whether the reference range changed between reports. A shift in range can make a value appear to move even when the underlying biology didn't change dramatically.",
+        "MedLens+ preserves per-report ranges on your timeline and warns when you're comparing results from different laboratories. Use these tools to prepare better questions — not to draw independent medical conclusions."
+      ]
+    }
+  ],
+  "links": [
+    { "label": "Reference range glossary", "href": "/glossary/reference-range" },
+    { "label": "Lipid panel explained", "href": "/glossary/lipid-panel" },
+    { "label": "How MedLens+ works", "href": "/how-it-works" }
+  ],
+  "relatedPosts": [
+    { "slug": "organize-lab-reports", "label": "Organize lab reports over time" },
+    { "slug": "prepare-doctor-visit", "label": "Prepare for a doctor visit" }
+  ]
+}

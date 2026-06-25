@@ -1,0 +1,31 @@
+{
+  "name": "MedLens+",
+  "tagline": "Lab reports, finally in one timeline",
+  "nav": [
+    { "label": "Features", "href": "/features" },
+    { "label": "Pricing", "href": "/pricing" },
+    { "label": "How it works", "href": "/how-it-works" },
+    { "label": "Blog", "href": "/blog" },
+    { "label": "FAQ", "href": "/faq" }
+  ],
+  "footer": {
+    "product": [
+      { "label": "Features", "href": "/features" },
+      { "label": "Pricing", "href": "/pricing" },
+      { "label": "How it works", "href": "/how-it-works" },
+      { "label": "Use cases", "href": "/use-cases" }
+    ],
+    "resources": [
+      { "label": "Blog", "href": "/blog" },
+      { "label": "Glossary", "href": "/glossary" },
+      { "label": "FAQ", "href": "/faq" },
+      { "label": "About", "href": "/about" }
+    ],
+    "legal": [
+      { "label": "Privacy", "href": "/privacy" },
+      { "label": "Terms", "href": "/terms" },
+      { "label": "Security", "href": "/security" }
+    ]
+  },
+  "social": [{ "label": "GitHub", "href": "GITHUB_URL" }]
+}

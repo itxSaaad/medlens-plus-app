@@ -1,0 +1,49 @@
+{
+  "slug": "reference-range",
+  "term": "Reference Range",
+  "title": "Reference Range",
+  "description": "The numeric interval printed beside a lab result — specific to that laboratory's method and population, not a universal normal.",
+  "seo": {
+    "title": "Reference Range Definition | MedLens+ Glossary",
+    "description": "A reference range is the interval a lab prints beside your result. Definition, how labs set it, and how it differs from a clinical target.",
+    "keywords": [
+      "reference range definition",
+      "normal lab values",
+      "lab report reference interval"
+    ],
+    "ogImage": "/og/glossary.svg"
+  },
+  "definition": "A reference range is the numeric interval printed alongside a lab test result that reflects the range a laboratory considers typical for its testing method and reference population. Values outside this range are often flagged but require clinical interpretation.",
+  "sections": [
+    {
+      "heading": "How laboratories set reference ranges",
+      "paragraphs": [
+        "Labs establish reference ranges based on their testing method, equipment, and the population sampled during validation. Ranges may differ for age, sex, or pregnancy status.",
+        "The range on your report is specific to that lab and that test run. It should be the basis for any high or low flags you see — not generic values from internet search results."
+      ]
+    },
+    {
+      "heading": "Reference range vs. clinical target",
+      "paragraphs": [
+        "A reference range describes a statistical interval for a population. A clinical target is a goal your clinician sets for you individually — like a target HbA1c discussed in a diabetes care plan.",
+        "These aren't always the same. Your clinician may want a value within a tighter band than the printed reference range, or may interpret a flagged value differently based on your full history."
+      ]
+    },
+    {
+      "heading": "Why this matters for longitudinal tracking",
+      "paragraphs": [
+        "When comparing results over time, check whether the reference range changed between reports. A new lab or updated method can shift the interval and affect how values are flagged.",
+        "MedLens+ stores the reference range from each uploaded report so your timeline reflects the source document. Cross-lab comparisons include cautions because ranges and methods may not be directly comparable."
+      ]
+    }
+  ],
+  "relatedTerms": [
+    { "slug": "hba1c", "label": "HbA1c" },
+    { "slug": "cbc-panel", "label": "CBC Panel" }
+  ],
+  "links": [
+    { "label": "Read the full guide", "href": "/blog/reading-reference-ranges" },
+    { "label": "How MedLens+ works", "href": "/how-it-works" }
+  ],
+  "updatedAt": "2026-06-24"
+}
