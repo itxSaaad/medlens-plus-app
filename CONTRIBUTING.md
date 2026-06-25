@@ -17,7 +17,7 @@ Thanks for contributing.
 6. Open PR to **`develop`** using the [PR template](.github/pull_request_template.md) with `Closes #NNN` or `Relates to #NNN`
 7. Keep PRs **≤150 changed files** when possible (recommended for AI/human review); use modular commits on the feature branch for large stacks
 8. Request **CodeRabbit** (`@coderabbitai review`) and **Copilot** (assign as reviewer) **manually** when the PR is ready — see [`docs/open-source/TOOLING_SETUP.md`](docs/open-source/TOOLING_SETUP.md)
-9. Hotfixes: branch from `main`, PR to **`main`** (then manually backmerge `main` → `develop`)
+9. Hotfixes: branch from `main`, PR to **`main`** (sync workflow opens `main` → `develop` PR when needed — see [`BRANCHING_STRATEGY.md`](docs/open-source/BRANCHING_STRATEGY.md))
 
 ## Commit Convention
 Use Conventional Commits:

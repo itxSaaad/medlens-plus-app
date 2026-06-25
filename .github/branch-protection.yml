@@ -1,11 +1,11 @@
 # Branch Protection Configuration
-# This file documents the branch protection rules for the MedLens+ repository.
+# This file documents branch protection for the MedLens+ repository.
 #
-# These rules are managed via GitHub settings and the GitHub CLI (gh).
-# To apply these rules, see: docs/ops/BRANCH_PROTECTION_SETUP.md
-# Or on Unix: .github/setup-branch-protection.sh
+# Apply via: bash .github/setup-branch-protection.sh
+# Docs: docs/ops/BRANCH_PROTECTION_SETUP.md
 #
-# Rules are applied to branches: main, develop
+# Rulesets (with github-actions bypass for sync-develop.yml) are the source of
+# truth for automated fast-forward. Classic protection mirrors the same policy.
 
 branches:
   main:
@@ -17,20 +17,25 @@ branches:
           - "JS Quality - Lint Typecheck Test Build"
           - "Python Quality - Ruff Mypy Pytest"
           - "Commit And PR Convention Checks"
-      # TODO(solo-maintainer): Re-enable when a second reviewer exists:
-      #   require_code_owner_reviews: true
-      #   required_approving_review_count: 1   # was 2
       required_pull_request_reviews:
         dismiss_stale_reviews: true
-        require_code_owner_reviews: false
-        require_last_push_approval: false
-        required_approving_review_count: 0
+        require_code_owner_reviews: true
+        require_last_push_approval: true
+        required_approving_review_count: 1
+      required_conversation_resolution: true
+      required_linear_history: true
       restrictions: null
-      enforce_admins: false
+      enforce_admins: true
       allow_force_pushes: false
       allow_deletions: false
       allow_auto_merge: false
       delete_branch_on_merge: true
+    ruleset:
+      name: Protected branch main
+      bypass_actors:
+        - actor_type: Integration
+          actor_id: 15368 # github-actions[bot]
+          bypass_mode: always
 
   develop:
     protection:
@@ -41,22 +46,24 @@ branches:
           - "JS Quality - Lint Typecheck Test Build"
           - "Python Quality - Ruff Mypy Pytest"
           - "Commit And PR Convention Checks"
-      # TODO(solo-maintainer): Re-enable when a second reviewer exists:
-      #   require_code_owner_reviews: true
-      #   required_approving_review_count: 1
       required_pull_request_reviews:
         dismiss_stale_reviews: true
-        require_code_owner_reviews: false
-        require_last_push_approval: false
-        required_approving_review_count: 0
+        require_code_owner_reviews: true
+        require_last_push_approval: true
+        required_approving_review_count: 1
+      required_conversation_resolution: true
+      required_linear_history: false
       restrictions: null
-      enforce_admins: false
+      enforce_admins: true
       allow_force_pushes: false
       allow_deletions: false
       allow_auto_merge: false
       delete_branch_on_merge: true
+    ruleset:
+      name: Protected branch develop
+      bypass_actors:
+        - actor_type: Integration
+          actor_id: 15368 # github-actions[bot]
+          bypass_mode: always
 
-# CODEOWNERS file (.github/CODEOWNERS) remains for future use.
-# While require_code_owner_reviews is false, solo maintainer merges via PR + CI only.
-# Auto-merge is disabled; every merge requires explicit human action on the PR.
-# Delete head branch on merge to maintain branch hygiene.
+# CODEOWNERS: @itxSaaad @abdullahzia1 — one approval from a listed owner required.
