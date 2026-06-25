@@ -1,0 +1,63 @@
+{
+  "slug": "organize-lab-reports",
+  "title": "How to Organize Lab Reports Over Time",
+  "description": "Turn scattered lab PDFs into an organized history you'll actually use before every doctor visit.",
+  "seo": {
+    "title": "How to Organize Lab Reports Over Time | MedLens+ Blog",
+    "description": "Practical steps to organize lab reports from multiple visits, track what changed, and walk into appointments with your history at hand.",
+    "keywords": [
+      "organize lab reports",
+      "lab report folder system",
+      "track blood tests over time",
+      "medical report organization"
+    ],
+    "ogImage": "/og/blog.svg"
+  },
+  "author": "MedLens+ Team",
+  "publishedAt": "2026-06-01",
+  "updatedAt": "2026-06-24",
+  "featured": true,
+  "sections": [
+    {
+      "heading": "Why scattered PDFs become a problem",
+      "paragraphs": [
+        "Most of us get lab results as PDF attachments, portal downloads, or printouts after each visit. Over years of care, those files pile up in inboxes, cloud folders, and desk drawers. Each one is useful alone, but the collection rarely tells a coherent story.",
+        "When your clinician asks how a marker changed since last year, finding the right file takes time. Comparing values means opening multiple PDFs side by side and manually noting dates, units, and reference ranges. The data isn't missing — it was just never organized for longitudinal viewing.",
+        "The goal isn't to interpret results yourself. It's to have your history accessible so you and your clinician can have a more focused conversation."
+      ]
+    },
+    {
+      "heading": "Start with a consistent filing system",
+      "paragraphs": [
+        "Whether you use folders on your computer, a cloud drive, or a dedicated app, consistency matters. Name files with the test date and panel type — like 2025-03-14-lipid-panel.pdf. Sort chronologically so the newest report is easy to find.",
+        "Create separate folders for different family members if you manage reports for others. Label each upload with the laboratory name, since reference ranges and methods can differ between providers.",
+        "Keep originals untouched. Organized copies or extracted summaries should reference the source document. That preserves the chain of evidence your clinician expects."
+      ]
+    },
+    {
+      "heading": "Track the same markers across visits",
+      "paragraphs": [
+        "Longitudinal value comes from seeing the same marker over time — fasting glucose, HbA1c, TSH, LDL cholesterol, and others your clinician monitors regularly. Build a simple table or use a timeline tool that plots these values by date.",
+        "Always record the reference range shown on each report, not a generic range from the internet. Labs set ranges based on their methods and patient populations. A value that looks odd against a web search may be within range on your actual report.",
+        "Note when a test was done at a different laboratory than usual. Cross-lab comparisons deserve extra caution and should be confirmed with your healthcare provider."
+      ]
+    },
+    {
+      "heading": "Prepare a summary before your appointment",
+      "paragraphs": [
+        "A day or two before your visit, review your organized history. List markers that shifted since your last appointment, any new tests, and questions you want to ask. Focus on observations — what went up, what went down, what was added — rather than self-diagnosing.",
+        "Bring your source PDFs or a printed summary that references them. Clinicians appreciate patients who arrive prepared, but they'll always interpret results in the context of your full medical history.",
+        "Tools like MedLens+ automate much of this: upload reports, view timelines with per-report ranges, and export a visit brief. The software organizes information; your clinician provides medical judgment."
+      ]
+    }
+  ],
+  "links": [
+    { "label": "Understanding reference ranges", "href": "/glossary/reference-range" },
+    { "label": "Prepare for a doctor visit", "href": "/blog/prepare-doctor-visit" },
+    { "label": "How MedLens+ works", "href": "/how-it-works" }
+  ],
+  "relatedPosts": [
+    { "slug": "prepare-doctor-visit", "label": "Prepare for a doctor visit" },
+    { "slug": "reading-reference-ranges", "label": "Understanding reference ranges" }
+  ]
+}

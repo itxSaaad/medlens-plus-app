@@ -1,3 +1,5 @@
+export * from "./marketing";
+
 export type ProcessingStatus = "queued" | "processing" | "completed" | "failed";
 
 export interface ReportUpload {

@@ -1,0 +1,80 @@
+{
+  "slug": "pricing",
+  "title": "Pricing",
+  "description": "MedLens+ is free during the public beta. Join the waitlist — no credit card, no surprise charges.",
+  "seo": {
+    "title": "MedLens+ Pricing — Free Public Beta",
+    "description": "Early access to MedLens+ is free while we're in public beta. Join the waitlist to organize lab reports into timelines — no payment info needed.",
+    "keywords": [
+      "MedLens+ pricing",
+      "lab report app free beta",
+      "early access waitlist",
+      "medical report organizer cost"
+    ],
+    "ogImage": "/og/pricing.svg"
+  },
+  "updatedAt": "2026-06-24",
+  "pricing": {
+    "tiers": [
+      {
+        "name": "Public beta",
+        "price": "Free",
+        "description": "Full access while we refine the platform with early members. No credit card required.",
+        "features": [
+          "Multi-report upload and extraction",
+          "Longitudinal timeline views",
+          "Reference ranges from your PDFs",
+          "Cross-lab comparison cautions",
+          "Exportable visit briefs",
+          "CBC, lipid, HbA1c, thyroid, and more"
+        ],
+        "highlighted": true
+      }
+    ]
+  },
+  "sections": [
+    {
+      "heading": "Free while we're in beta",
+      "paragraphs": [
+        "We're opening MedLens+ in batches to waitlist members. Early access is completely free — we won't ask for payment details when you sign up.",
+        "You'll get an email when your spot opens. No charges, no auto-enrollment into a paid plan."
+      ]
+    },
+    {
+      "heading": "What's included",
+      "paragraphs": [
+        "Beta members get the core workflow: upload reports, review extracted values, explore your timeline, and export a visit brief before appointments.",
+        "Supported panels include CBC, liver and kidney function, lipid profile, HbA1c, thyroid, and key vitamins. We're expanding coverage based on what you tell us."
+      ]
+    },
+    {
+      "heading": "What happens after beta",
+      "paragraphs": [
+        "We haven't finalized paid plans yet. Waitlist members will hear from us first — with advance notice and preferential terms before anything changes.",
+        "Your beta feedback shapes what we build and how we price it. We'd rather get the product right than rush to a paywall."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "question": "Is it really free right now?",
+      "answer": "Yes. The public beta costs nothing for waitlist members. We don't collect payment information when you join."
+    },
+    {
+      "question": "Will I be charged automatically later?",
+      "answer": "No. We'll never charge you without clear notice and your explicit consent. Any future paid plans will be communicated well in advance."
+    },
+    {
+      "question": "Do waitlist members get a permanent deal?",
+      "answer": "You'll get preferential terms when paid plans launch. We'll share specifics before pricing changes take effect."
+    },
+    {
+      "question": "Is there a limit on uploads?",
+      "answer": "During beta we apply fair-use limits so everyone gets a good experience. Current limits are in your welcome email once you're in."
+    },
+    {
+      "question": "Can I leave the waitlist?",
+      "answer": "Absolutely. Every email has an unsubscribe link. You can also reach us through the contact form on our About page."
+    }
+  ]
+}

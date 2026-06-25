@@ -1,0 +1,60 @@
+{
+  "slug": "thyroid-tracking",
+  "title": "Thyroid Tracking",
+  "description": "Follow TSH and related thyroid markers across visits with a longitudinal timeline and per-report reference ranges.",
+  "seo": {
+    "title": "Thyroid Lab Tracking with MedLens+",
+    "description": "Track TSH and thyroid panel results over time. Turn scattered thyroid lab PDFs into a timeline you'll actually review before visits.",
+    "keywords": [
+      "thyroid lab tracking",
+      "TSH timeline",
+      "thyroid panel history",
+      "track thyroid blood tests"
+    ],
+    "ogImage": "/og/use-cases.svg"
+  },
+  "persona": "Adult on levothyroxine with annual thyroid panels",
+  "sections": [
+    {
+      "heading": "Your TSH was 2.1 last year and 4.8 this time…",
+      "paragraphs": [
+        "Thyroid panels often include TSH, and sometimes free T4, free T3, and antibodies. Values shift with medications, pregnancy, other health changes, or simply over the course of care.",
+        "Without a timeline, comparing this year's TSH to last year's means digging through folders. MedLens+ places each result in chronological context so the shift is obvious at a glance."
+      ]
+    },
+    {
+      "heading": "Ranges that match your lab",
+      "paragraphs": [
+        "TSH reference ranges vary between laboratories. We use the range printed on each uploaded report when flagging values, and warn when you're comparing results from different labs.",
+        "A flagged TSH is a signal to discuss with your clinician — not a label like hypothyroidism or hyperthyroidism."
+      ]
+    },
+    {
+      "heading": "Prep for endocrinology and primary care visits",
+      "paragraphs": [
+        "Before your appointment, review your thyroid timeline and export a brief noting what changed since your last visit. Bring questions, not conclusions: \"My TSH rose after the lab switch — should we retest?\"",
+        "We never recommend levothyroxine dose changes or other treatment adjustments. Medication decisions are exclusively between you and your healthcare provider."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "question": "Does MedLens+ diagnose thyroid disorders?",
+      "answer": "No. We organize thyroid panel results and show how values relate to the reference ranges on your reports. Diagnosis requires clinical evaluation by a qualified healthcare professional."
+    },
+    {
+      "question": "Can I track thyroid antibodies over time?",
+      "answer": "Yes, when antibody results appear on your uploaded reports. We extract and timeline any thyroid-related markers present in supported PDF formats."
+    },
+    {
+      "question": "What if I switched laboratories?",
+      "answer": "We display cross-lab cautions when your thyroid results come from different laboratories. Methods and ranges may differ — confirm significant changes with your clinician."
+    }
+  ],
+  "links": [
+    { "label": "Thyroid panel glossary", "href": "/glossary/thyroid-panel" },
+    { "label": "Reference ranges explained", "href": "/glossary/reference-range" },
+    { "label": "How it works", "href": "/how-it-works" }
+  ],
+  "updatedAt": "2026-06-24"
+}

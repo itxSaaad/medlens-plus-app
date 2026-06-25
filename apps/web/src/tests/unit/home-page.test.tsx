@@ -1,11 +1,26 @@
-import { render, screen } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
+import { render, screen } from "@testing-library/react";
+import { describe, expect, it, vi } from "vitest";
+import HomePage from "@/app/(marketing)/page";
 
-import Home from '../../app/page';
+vi.mock("next/navigation", () => ({
+  usePathname: () => "/",
+  useRouter: () => ({ push: vi.fn() }),
+}));
 
-describe('Home page', () => {
-  it('renders the starter heading', () => {
-    render(<Home />);
-    expect(screen.getByRole('heading')).toHaveTextContent(/to get started/i);
+describe("HomePage", () => {
+  it("renders hero headline and waitlist form", () => {
+    render(<HomePage />);
+
+    expect(
+      screen.getByRole("heading", {
+        level: 1,
+        name: /your lab history, finally in one timeline/i,
+      }),
+    ).toBeInTheDocument();
+
+    expect(
+      screen.getAllByRole("button", { name: /join the waitlist/i }).length,
+    ).toBeGreaterThanOrEqual(1);
+    expect(screen.getByText(/upload pdfs from any lab/i)).toBeInTheDocument();
   });
 });

@@ -1,0 +1,127 @@
+name: Sync Develop To Main
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: sync-develop-to-main
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    name: Align develop with main
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Evaluate branch state
+        id: state
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git fetch origin main develop
+
+          MAIN_SHA=$(git rev-parse origin/main)
+          DEVELOP_SHA=$(git rev-parse origin/develop)
+          echo "main_sha=$MAIN_SHA" >> "$GITHUB_OUTPUT"
+          echo "develop_sha=$DEVELOP_SHA" >> "$GITHUB_OUTPUT"
+
+          if git diff --quiet origin/main origin/develop; then
+            echo "trees_match=true" >> "$GITHUB_OUTPUT"
+            TREES_MATCH=true
+          else
+            echo "trees_match=false" >> "$GITHUB_OUTPUT"
+            TREES_MATCH=false
+          fi
+
+          DEV_AHEAD=$(git rev-list --count origin/main..origin/develop)
+          MAIN_AHEAD=$(git rev-list --count origin/develop..origin/main)
+          echo "dev_ahead=$DEV_AHEAD" >> "$GITHUB_OUTPUT"
+          echo "main_ahead=$MAIN_AHEAD" >> "$GITHUB_OUTPUT"
+
+          if [ "$MAIN_SHA" = "$DEVELOP_SHA" ]; then
+            echo "action=none" >> "$GITHUB_OUTPUT"
+          elif [ "$TREES_MATCH" = true ]; then
+            echo "action=fast_forward" >> "$GITHUB_OUTPUT"
+          elif [ "$MAIN_AHEAD" -gt 0 ]; then
+            echo "action=hotfix_pr" >> "$GITHUB_OUTPUT"
+          else
+            echo "action=promotion_needed" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Fast-forward develop to main
+        if: steps.state.outputs.action == 'fast_forward'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MAIN_SHA: ${{ steps.state.outputs.main_sha }}
+        run: |
+          echo "Trees match; fast-forwarding develop to main ($MAIN_SHA)"
+          gh api \
+            --method PATCH \
+            "repos/${{ github.repository }}/git/refs/heads/develop" \
+            -f sha="$MAIN_SHA" \
+            -F force=false
+
+      - name: Open or update hotfix propagation PR
+        if: steps.state.outputs.action == 'hotfix_pr'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MAIN_AHEAD: ${{ steps.state.outputs.main_ahead }}
+        run: |
+          TITLE="chore: propagate main hotfixes to develop"
+          EXISTING=$(gh pr list \
+            --base develop \
+            --head main \
+            --state open \
+            --json number \
+            --jq '.[0].number // empty')
+
+          BODY="## Hotfix propagation
+
+          \`main\` is **${MAIN_AHEAD}** commit(s) ahead of \`develop\` with a non-empty diff.
+
+          Merge this PR to bring hotfix changes into \`develop\`. Do **not** use this PR after a squash promotion when trees already match — the sync workflow fast-forwards \`develop\` instead.
+
+          See \`docs/open-source/BRANCHING_STRATEGY.md\`.
+          "
+
+          if [ -n "$EXISTING" ]; then
+            gh pr comment "$EXISTING" --body "$BODY"
+            echo "Updated hotfix propagation PR #$EXISTING"
+          else
+            gh pr create \
+              --base develop \
+              --head main \
+              --title "$TITLE" \
+              --body "$BODY" \
+              --label "type:chore" \
+              --label "branch-sync" || \
+            gh pr create \
+              --base develop \
+              --head main \
+              --title "$TITLE" \
+              --body "$BODY"
+          fi
+
+      - name: Log promotion reminder
+        if: steps.state.outputs.action == 'promotion_needed'
+        run: |
+          echo "develop is ahead with unpromoted work; open a develop -> main promotion PR."
+          echo "dev_ahead=${{ steps.state.outputs.dev_ahead }}"
+
+      - name: Sync summary
+        run: |
+          echo "## Sync develop" >> "$GITHUB_STEP_SUMMARY"
+          echo "- action: ${{ steps.state.outputs.action }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- trees_match: ${{ steps.state.outputs.trees_match }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- develop ahead: ${{ steps.state.outputs.dev_ahead }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- main ahead: ${{ steps.state.outputs.main_ahead }}" >> "$GITHUB_STEP_SUMMARY"

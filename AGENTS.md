@@ -26,7 +26,7 @@ Build MedLens+ as a safety-first, longitudinal medical report intelligence platf
 - Open PRs to **`develop`** (features) or **`main`** (hotfixes)
 - **Naming:** [`docs/open-source/NAMING_CONVENTIONS.md`](docs/open-source/NAMING_CONVENTIONS.md) — `feat/TKT-NNN-slug`, conventional commits (body ≤100 chars/line), semantic PR title
 - Promotion: `develop` → `main` (maintainers)
-- After `main` updates, manually backmerge into `develop` to keep integration in sync
+- After `main` updates, `sync-develop.yml` fast-forwards `develop` when trees match (see [`docs/open-source/BRANCHING_STRATEGY.md`](docs/open-source/BRANCHING_STRATEGY.md))
 
 ## Ticket Source
 - [GitHub Project #2](https://github.com/users/itxSaaad/projects/2) — not local `planning/tickets/`

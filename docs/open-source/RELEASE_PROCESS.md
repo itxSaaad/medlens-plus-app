@@ -3,14 +3,14 @@
 ## Workflow Sequence
 
 ```text
-push/merge to main  -->  CI (quality gates)  -->  semantic-release  -->  backmerge PRs
+push/merge to main  -->  CI (quality gates)  -->  semantic-release  -->  sync-develop (FF when trees match)
                                                               |
                                                               +--> deploy gate (skipped by design)
 ```
 
 1. CI workflow validates quality and governance checks on `main`.
 2. Release workflow runs only after **successful** CI on `main`.
-3. Backmerge workflow runs only after **successful** release on `main` and opens PRs to `staging` and `develop`.
+3. [`sync-develop.yml`](../../.github/workflows/sync-develop.yml) aligns `develop` with `main` after each `main` push (fast-forward when file trees match; hotfix PR when `main` is ahead with a diff).
 4. Deploy workflow is currently a reserved skip-only gate (runs after release).
 
 ## Release Automation Behavior

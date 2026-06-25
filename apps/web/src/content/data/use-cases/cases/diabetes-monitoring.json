@@ -1,0 +1,60 @@
+{
+  "slug": "diabetes-monitoring",
+  "title": "Diabetes Monitoring",
+  "description": "Organize HbA1c, glucose, and related lab panels into a timeline for recurring diabetes care conversations.",
+  "seo": {
+    "title": "Diabetes Lab Monitoring with MedLens+",
+    "description": "Track HbA1c and glucose over time with ranges from your actual reports. Prep for endocrinology visits with an organized lab history.",
+    "keywords": [
+      "diabetes lab tracking",
+      "HbA1c timeline",
+      "glucose test history",
+      "diabetes monitoring app"
+    ],
+    "ogImage": "/og/use-cases.svg"
+  },
+  "persona": "Adult managing type 2 diabetes with quarterly lab work",
+  "sections": [
+    {
+      "heading": "Your endocrinologist asks about your A1c trend…",
+      "paragraphs": [
+        "You had labs in January, April, and again last week. Each visit produced a new PDF, but the story is in how HbA1c moved from 6.8% to 7.1% to 7.2% — plus what happened to fasting glucose and lipids along the way.",
+        "MedLens+ organizes these reports into one timeline so you're not scrolling through email attachments five minutes before your appointment."
+      ]
+    },
+    {
+      "heading": "Track what your care team monitors",
+      "paragraphs": [
+        "Upload reports from any laboratory and view HbA1c, glucose, and related markers chronologically. Reference ranges come from your uploaded documents, not generic internet tables.",
+        "We highlight changes and flag incomplete panels. We don't interpret whether your diabetes is \"well controlled\" — that's a clinical judgment your healthcare provider makes."
+      ]
+    },
+    {
+      "heading": "Walk in with context",
+      "paragraphs": [
+        "Export a visit brief summarizing recent shifts in your lab history and discussion topics tied to your reports. Bring focused questions: \"My HbA1c crept up this quarter — is that worth adjusting our plan?\"",
+        "Your care team interprets results in the context of your full treatment plan. MedLens+ provides organizational clarity; your clinician provides medical judgment."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "question": "Can MedLens+ tell me if my diabetes is well controlled?",
+      "answer": "No. We show how your lab values changed over time relative to the reference ranges on your reports. Whether that indicates good control is a clinical judgment your healthcare provider makes."
+    },
+    {
+      "question": "Which diabetes-related tests are supported?",
+      "answer": "Early access covers HbA1c, fasting glucose, lipid panels, and kidney function markers commonly ordered in diabetes monitoring. We're expanding based on extraction quality and community feedback."
+    },
+    {
+      "question": "Can I share my timeline with my doctor?",
+      "answer": "Yes. The visit brief exports a focused summary you can bring to appointments or share through your clinician's preferred channel. Your original PDFs remain available as source documents."
+    }
+  ],
+  "links": [
+    { "label": "HbA1c glossary", "href": "/glossary/hba1c" },
+    { "label": "Prepare for a doctor visit", "href": "/blog/prepare-doctor-visit" },
+    { "label": "How it works", "href": "/how-it-works" }
+  ],
+  "updatedAt": "2026-06-24"
+}

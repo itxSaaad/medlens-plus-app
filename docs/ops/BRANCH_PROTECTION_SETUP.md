@@ -4,43 +4,26 @@ Run once per repository or after changing required CI checks.
 
 ## Prerequisites
 
-- `gh` CLI authenticated with `admin:repo` or equivalent
 - Repository admin access
+- PAT with `admin:repo` embedded in `git remote get-url origin` **or** `GITHUB_TOKEN` exported
+- No `gh auth login` required — the setup script uses `curl` + PAT from git remote
 
-## Current policy (solo maintainer)
+## Current policy
 
 - **PR required** on `develop` and `main`
 - **Required CI checks** must pass (see list below)
-- **0 approving reviews** — CODEOWNERS review gate is disabled until a second reviewer exists
-- `.github/CODEOWNERS` is kept for future use; it has no effect while `require_code_owner_reviews` is `false`
-
-### Re-enable CODEOWNERS reviews later
-
-Update [`.github/branch-protection.yml`](../../.github/branch-protection.yml) and [`.github/setup-branch-protection.sh`](../../.github/setup-branch-protection.sh):
-
-- `require_code_owner_reviews: true`
-- `required_approving_review_count: 1` on `develop` and `main` (main was previously 2)
-
-Then re-run the setup script below.
+- **1 CODEOWNERS approval** on `develop` and `main` (`@itxSaaad`, `@abdullahzia1`)
+- **Conversation resolution** required before merge
+- **Last-push approval** required (prevents self-approve after pushing)
+- **Admins included** in protection (`enforce_admins: true`)
+- **Rulesets** with `github-actions[bot]` bypass for automated `develop` fast-forward ([`sync-develop.yml`](../../.github/workflows/sync-develop.yml))
+- **`main` only:** required linear history
 
 ## Merge settings
 
 Squash merge only. **Auto-merge disabled** — every PR must be merged manually after CI passes.
 
-```powershell
-$mergeSettings = @{
-    allow_squash_merge = $true
-    allow_merge_commit = $false
-    allow_rebase_merge = $false
-    allow_auto_merge = $false
-    delete_branch_on_merge = $true
-} | ConvertTo-Json
-$mergeSettings | gh api -X PATCH repos/itxSaaad/medlens-plus-app --input -
-```
-
-Also verify in GitHub UI: **Settings → General → Pull Requests** → uncheck **Allow auto-merge**.
-
-Before merging any promotion or backmerge PR, confirm no open PR has auto-merge queued (should be impossible once disabled).
+The setup script applies merge settings via API. Also verify in GitHub UI: **Settings → General → Pull Requests** → uncheck **Allow auto-merge**.
 
 ## Required status checks
 
@@ -51,44 +34,29 @@ Before merging any promotion or backmerge PR, confirm no open PR has auto-merge 
 
 ## Apply protection to GitHub
 
-**Unix / Git Bash:**
-
 ```bash
 bash .github/setup-branch-protection.sh
 ```
 
-**PowerShell (equivalent):**
+Optional repo override:
 
-```powershell
-$checks = @(
-    "Branch Naming Validation",
-    "JS Quality - Lint Typecheck Test Build",
-    "Python Quality - Ruff Mypy Pytest",
-    "Commit And PR Convention Checks"
-)
-
-function New-ProtectionBody([int]$ReviewCount) {
-    return @{
-        required_status_checks = @{ strict = $true; contexts = $checks }
-        enforce_admins = $false
-        required_pull_request_reviews = @{
-            dismiss_stale_reviews = $true
-            require_code_owner_reviews = $false
-            require_last_push_approval = $false
-            required_approving_review_count = $ReviewCount
-        }
-        restrictions = $null
-        allow_force_pushes = $false
-        allow_deletions = $false
-    } | ConvertTo-Json -Depth 6
-}
-
-@(
-    @{ Name = "develop"; Reviews = 0 },
-    @{ Name = "main"; Reviews = 0 }
-) | ForEach-Object {
-    New-ProtectionBody -ReviewCount $_.Reviews | gh api -X PUT "repos/itxSaaad/medlens-plus-app/branches/$($_.Name)/protection" --input -
-}
+```bash
+bash .github/setup-branch-protection.sh owner/repo
 ```
 
-Squash merge only on `develop` and `main`. Feature branches are deleted after merge.
+The script:
+
+1. Patches repository merge settings (squash only, no auto-merge)
+2. Creates/updates rulesets for `main` and `develop` with GitHub Actions bypass
+3. Applies classic branch protection mirroring the same policy
+
+Configuration reference: [`.github/branch-protection.yml`](../../.github/branch-protection.yml)
+
+## After changing CI job names
+
+Re-run `bash .github/setup-branch-protection.sh` so required status check contexts stay in sync.
+
+## Deferred hardening
+
+- Add **Integration Tests** job to required checks after stable green runs on PRs
+- Enable **signed commits** only when all maintainers use commit signing

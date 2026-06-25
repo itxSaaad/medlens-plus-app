@@ -1,0 +1,60 @@
+{
+  "slug": "caregiver-family",
+  "title": "Caregivers & Family",
+  "description": "Help a parent, partner, or family member organize lab reports and prepare for specialist visits with a clear longitudinal view.",
+  "seo": {
+    "title": "Caregiver Lab Report Organization | MedLens+",
+    "description": "Help family members turn scattered lab PDFs into organized timelines. Less folder chaos before specialist appointments.",
+    "keywords": [
+      "caregiver medical reports",
+      "organize parent lab results",
+      "family health records",
+      "elderly lab report tracking"
+    ],
+    "ogImage": "/og/use-cases.svg"
+  },
+  "persona": "Adult child coordinating a parent's specialist appointments",
+  "sections": [
+    {
+      "heading": "The specialist has fifteen minutes and three years of labs…",
+      "paragraphs": [
+        "You're coordinating appointments for a parent or partner, collecting lab PDFs from different portals, and trying to brief a specialist who's never seen this patient before.",
+        "When reports span years and multiple laboratories, the organizational burden falls on you. MedLens+ turns those uploads into a clear timeline so every appointment starts with history at hand — not a scramble through email attachments."
+      ]
+    },
+    {
+      "heading": "Organize without overstepping",
+      "paragraphs": [
+        "Upload reports with consistent naming and dates. Review extracted values together with the person you care for when possible, so everyone understands what the timeline shows.",
+        "We present observations and flags relative to report ranges. We don't tell you what disease someone has or what treatment they need. Clinical decisions remain with the patient and their healthcare team."
+      ]
+    },
+    {
+      "heading": "Walk into appointments prepared",
+      "paragraphs": [
+        "Export a visit brief highlighting recent changes, incomplete panels, and cross-lab cautions. Arrive with source PDFs and a short list of questions the patient wants addressed.",
+        "Specialists appreciate organized histories. MedLens+ reduces the administrative load on caregivers while respecting the line between organization and medical advice."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "question": "Can I manage reports for a family member?",
+      "answer": "During early access, account holders upload reports they're authorized to manage. Always respect the patient's privacy and involve them in care decisions when possible."
+    },
+    {
+      "question": "Is it safe to upload someone else's medical reports?",
+      "answer": "Only upload reports you have permission to manage. We treat all uploads as sensitive data with encryption and access controls described on our Security page."
+    },
+    {
+      "question": "Can MedLens+ replace a caregiver's judgment?",
+      "answer": "No. We organize reports and highlight changes. We don't diagnose conditions, recommend treatments, or replace conversations with the patient's healthcare providers."
+    }
+  ],
+  "links": [
+    { "label": "Organize lab reports guide", "href": "/blog/organize-lab-reports" },
+    { "label": "Security practices", "href": "/security" },
+    { "label": "How it works", "href": "/how-it-works" }
+  ],
+  "updatedAt": "2026-06-24"
+}

@@ -1,0 +1,15 @@
+{
+  "title": "Glossary",
+  "description": "Plain-language definitions of common lab tests and panels — educational content to support conversations with your clinician.",
+  "seo": {
+    "title": "MedLens+ Glossary — Lab Test Definitions",
+    "description": "Educational definitions for CBC, lipid panels, HbA1c, thyroid tests, reference ranges, and other common lab markers.",
+    "keywords": [
+      "lab test glossary",
+      "blood test definitions",
+      "medical lab terminology",
+      "CBC lipid HbA1c explained"
+    ],
+    "ogImage": "/og/glossary.svg"
+  }
+}

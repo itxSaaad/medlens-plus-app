@@ -1,0 +1,68 @@
+{
+  "slug": "terms",
+  "title": "Terms of Service",
+  "description": "The rules for using MedLens+ — including what the product is (and isn't), acceptable use, and liability limits.",
+  "seo": {
+    "title": "MedLens+ Terms of Service",
+    "description": "Terms for using MedLens+. It's an organization tool, not medical advice. Read about acceptable use, your content, and beta service terms.",
+    "keywords": [
+      "MedLens+ terms of service",
+      "medical disclaimer",
+      "health app terms",
+      "lab report app legal"
+    ],
+    "ogImage": "/og/default.svg"
+  },
+  "updatedAt": "2026-06-24",
+  "sections": [
+    {
+      "heading": "Agreement",
+      "paragraphs": [
+        "By using MedLens+ — our website, waitlist, or application — you agree to these Terms of Service. If you don't agree, please don't use the service.",
+        "We may update these terms from time to time. Continued use after changes means you accept the revised terms."
+      ]
+    },
+    {
+      "heading": "Not medical advice",
+      "paragraphs": [
+        "MedLens+ is an information organization tool. It's not a medical device, diagnostic service, or substitute for professional healthcare.",
+        "We don't diagnose disease, prescribe medication, suggest dosage changes, or claim you have any specific condition. Timelines, summaries, and visit briefs are for informational and organizational purposes only.",
+        "Always seek advice from a qualified healthcare professional for medical questions, symptoms, or treatment decisions. Never ignore professional medical advice because of something you read in MedLens+."
+      ]
+    },
+    {
+      "heading": "Acceptable use",
+      "paragraphs": [
+        "Use MedLens+ for lawful personal or authorized caregiving purposes. Don't use it to provide medical advice to others, run an unauthorized clinical service, or present our output as a professional diagnosis.",
+        "Don't attempt to access other users' accounts, interfere with security, upload malicious content, scrape the service at scale, or reverse engineer the software except where law permits.",
+        "You're responsible for the accuracy of information you provide and for keeping your account credentials confidential."
+      ]
+    },
+    {
+      "heading": "Your uploads",
+      "paragraphs": [
+        "You keep ownership of reports and content you upload. By uploading, you grant MedLens+ a limited license to process, store, and display that content solely to provide the service to you.",
+        "You confirm you have the right to upload what you submit — including when uploading on behalf of a family member you care for."
+      ]
+    },
+    {
+      "heading": "Beta service",
+      "paragraphs": [
+        "MedLens+ is currently an early access beta. Features, availability, and supported report types may change without notice.",
+        "We aim for reliability but can't guarantee uninterrupted access. Maintenance and outages happen."
+      ]
+    },
+    {
+      "heading": "Liability",
+      "paragraphs": [
+        "To the fullest extent permitted by law, MedLens+ and its operators aren't liable for indirect, incidental, special, or consequential damages from your use of the service.",
+        "Our total liability for any claim is limited to what you paid us in the twelve months before the claim — or zero during free beta access.",
+        "Some jurisdictions don't allow certain limitations. In those cases, our liability is limited to the maximum extent permitted by applicable law."
+      ]
+    },
+    {
+      "heading": "Contact",
+      "paragraphs": ["Questions about these terms? Reach out through our contact page."]
+    }
+  ]
+}

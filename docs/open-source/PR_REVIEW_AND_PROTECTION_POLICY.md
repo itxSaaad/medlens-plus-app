@@ -7,9 +7,9 @@ This repository enforces merge discipline similar to an enterprise software team
 1. No direct pushes to `main` or `develop`.
 2. Every code change must come via pull request.
 3. Use the [PR template](../../.github/pull_request_template.md) for the body (ticket link, problem, solution, checklists, validation evidence).
-4. Approval requirements (current solo-maintainer mode — see [`docs/ops/BRANCH_PROTECTION_SETUP.md`](../ops/BRANCH_PROTECTION_SETUP.md)):
-   - `develop`, `main`: **0 approvals** (PR + required CI only)
-   - **Future:** re-enable CODEOWNERS + 1 approval per branch when a second reviewer exists
+4. Approval requirements (see [`docs/ops/BRANCH_PROTECTION_SETUP.md`](../ops/BRANCH_PROTECTION_SETUP.md)):
+   - `develop`, `main`: **1 CODEOWNERS approval** (`@itxSaaad`, `@abdullahzia1`)
+   - Last-push approval required; blocking conversations must be resolved before merge
 5. Required checks must pass before merge:
    - Branch Naming Validation
    - JS Quality - Lint Typecheck Test Build
@@ -37,9 +37,9 @@ Large stacks (e.g. initial skills consolidation) are acceptable when commits are
 
 Setup details: [`TOOLING_SETUP.md`](./TOOLING_SETUP.md).
 
-## CODEOWNERS (future)
+## CODEOWNERS
 
-When `require_code_owner_reviews` is re-enabled, CODEOWNERS paths in [`.github/CODEOWNERS`](../../.github/CODEOWNERS) apply. Until then, maintainers merge after CI without approval gate.
+CODEOWNERS paths in [`.github/CODEOWNERS`](../../.github/CODEOWNERS) require approval from a listed owner on every PR to `main` or `develop`.
 
 ## Branch Promotion Rules
 

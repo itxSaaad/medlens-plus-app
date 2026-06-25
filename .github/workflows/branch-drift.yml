@@ -19,7 +19,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Compare branch commit counts
+      - name: Compare branch state
         id: drift
         run: |
           git fetch origin develop main
@@ -27,10 +27,49 @@ jobs:
           MAIN_AHEAD=$(git rev-list --count origin/develop..origin/main)
           echo "dev_ahead=$DEV_AHEAD" >> "$GITHUB_OUTPUT"
           echo "main_ahead=$MAIN_AHEAD" >> "$GITHUB_OUTPUT"
-          if [ "$DEV_AHEAD" -gt 0 ] || [ "$MAIN_AHEAD" -gt 0 ]; then
-            echo "drift=true" >> "$GITHUB_OUTPUT"
+
+          if git diff --quiet origin/main origin/develop; then
+            echo "trees_match=true" >> "$GITHUB_OUTPUT"
           else
+            echo "trees_match=false" >> "$GITHUB_OUTPUT"
+          fi
+
+          MAIN_SHA=$(git rev-parse origin/main)
+          DEVELOP_SHA=$(git rev-parse origin/develop)
+          if [ "$MAIN_SHA" = "$DEVELOP_SHA" ]; then
+            echo "aligned=true" >> "$GITHUB_OUTPUT"
             echo "drift=false" >> "$GITHUB_OUTPUT"
+            echo "state=aligned" >> "$GITHUB_OUTPUT"
+          elif git diff --quiet origin/main origin/develop; then
+            echo "aligned=false" >> "$GITHUB_OUTPUT"
+            echo "drift=true" >> "$GITHUB_OUTPUT"
+            echo "state=graph_only" >> "$GITHUB_OUTPUT"
+          elif [ "$DEV_AHEAD" -gt 0 ] && [ "$MAIN_AHEAD" -eq 0 ]; then
+            echo "aligned=false" >> "$GITHUB_OUTPUT"
+            echo "drift=true" >> "$GITHUB_OUTPUT"
+            echo "state=promotion_needed" >> "$GITHUB_OUTPUT"
+          elif [ "$MAIN_AHEAD" -gt 0 ]; then
+            echo "aligned=false" >> "$GITHUB_OUTPUT"
+            echo "drift=true" >> "$GITHUB_OUTPUT"
+            echo "state=hotfix_needed" >> "$GITHUB_OUTPUT"
+          else
+            echo "aligned=false" >> "$GITHUB_OUTPUT"
+            echo "drift=true" >> "$GITHUB_OUTPUT"
+            echo "state=mixed" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Close drift issue when aligned
+        if: steps.drift.outputs.aligned == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TITLE="Branch sync required"
+          EXISTING=$(gh issue list --search "repo:${{ github.repository }} in:title \"$TITLE\" state:open" --json number --jq '.[0].number // empty')
+          if [ -n "$EXISTING" ]; then
+            gh issue close "$EXISTING" --comment "Branches are aligned at the same commit. No action required."
+            echo "Closed issue #$EXISTING"
+          else
+            echo "No open drift issue to close."
           fi
 
       - name: Open or update drift issue
@@ -39,18 +78,35 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           DEV_AHEAD: ${{ steps.drift.outputs.dev_ahead }}
           MAIN_AHEAD: ${{ steps.drift.outputs.main_ahead }}
+          STATE: ${{ steps.drift.outputs.state }}
+          TREES_MATCH: ${{ steps.drift.outputs.trees_match }}
         run: |
           TITLE="Branch sync required"
+
+          case "$STATE" in
+            graph_only)
+              ACTION="**Graph-only drift** (file trees match; commit SHAs differ). The [\`sync-develop.yml\`](.github/workflows/sync-develop.yml) workflow fast-forwards \`develop\` to \`main\` on the next \`main\` push — **do not** open a manual backmerge PR."
+              ;;
+            promotion_needed)
+              ACTION="**Promotion needed:** \`develop\` is ahead with unpromoted work. Open PR \`develop\` → \`main\` (see \`docs/open-source/BRANCHING_STRATEGY.md\`)."
+              ;;
+            hotfix_needed)
+              ACTION="**Hotfix propagation needed:** \`main\` is ahead with changes not on \`develop\`. Merge the open \`main\` → \`develop\` hotfix PR or wait for [\`sync-develop.yml\`](.github/workflows/sync-develop.yml) to open one."
+              ;;
+            *)
+              ACTION="**Mixed drift:** review both promotion and hotfix propagation steps in \`docs/open-source/BRANCHING_STRATEGY.md\`."
+              ;;
+          esac
+
           BODY="## Branch drift detected
 
-          - \`develop\` is **${DEV_AHEAD}** commit(s) ahead of \`main\` (unpromoted work)
-          - \`main\` is **${MAIN_AHEAD}** commit(s) ahead of \`develop\` (needs backmerge)
+          - \`develop\` is **${DEV_AHEAD}** commit(s) ahead of \`main\`
+          - \`main\` is **${MAIN_AHEAD}** commit(s) ahead of \`develop\`
+          - File trees match: **${TREES_MATCH}**
 
-          ### What to do (manual PRs only)
+          ### Recommended action
 
-          1. **Promotion:** if \`develop\` is ahead, open and merge PR \`develop\` → \`main\` (see \`docs/open-source/BRANCHING_STRATEGY.md\`).
-          2. **Backmerge:** if \`main\` is ahead, open and merge PR \`main\` → \`develop\` manually (see \`docs/open-source/BRANCHING_STRATEGY.md\`).
-          3. No workflow merges branches for you — review, resolve conflicts, and merge each PR manually.
+          ${ACTION}
           "
           EXISTING=$(gh issue list --search "repo:${{ github.repository }} in:title \"$TITLE\" state:open" --json number --jq '.[0].number // empty')
           if [ -n "$EXISTING" ]; then

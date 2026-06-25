@@ -1,0 +1,45 @@
+{
+  "slug": "hba1c",
+  "term": "HbA1c",
+  "title": "HbA1c (Glycated Hemoglobin)",
+  "description": "What the HbA1c blood test measures, how it appears on lab reports, and why tracking it over time helps before clinical visits.",
+  "seo": {
+    "title": "What Is HbA1c? | MedLens+ Glossary",
+    "description": "HbA1c reflects average blood glucose over two to three months. Learn how it appears on lab reports and why trends matter.",
+    "keywords": ["HbA1c definition", "glycated hemoglobin test", "A1c blood test explained"],
+    "ogImage": "/og/glossary.svg"
+  },
+  "definition": "HbA1c (hemoglobin A1c or glycated hemoglobin) is a blood test that reflects average blood glucose levels over roughly the past two to three months. It appears on many routine and diabetes-monitoring panels.",
+  "sections": [
+    {
+      "heading": "What HbA1c measures",
+      "paragraphs": [
+        "Glucose in your bloodstream can attach to hemoglobin in red blood cells. The HbA1c test measures the percentage of hemoglobin that's glycated, giving a longer-term view than a single fasting glucose reading.",
+        "Because red blood cells turn over over weeks, HbA1c is commonly used in ongoing monitoring schedules. Your clinician determines its role in your specific care plan."
+      ]
+    },
+    {
+      "heading": "Reading HbA1c on your report",
+      "paragraphs": [
+        "HbA1c is usually reported as a percentage (like 5.8%) or in IFCC units (mmol/mol) depending on the laboratory. The reference range printed on your report applies to that lab's method.",
+        "Don't compare your value against generic online charts. Use the interval on your document and discuss any flagged results with your healthcare provider."
+      ]
+    },
+    {
+      "heading": "Tracking HbA1c over time",
+      "paragraphs": [
+        "Seeing HbA1c values chronologically — 6.8% in January, 7.1% in June, 7.2% in November — helps you and your clinician spot trends across months.",
+        "MedLens+ plots HbA1c on your timeline with the ranges from each uploaded report. We organize your history; your clinician interprets what the trend means for your care."
+      ]
+    }
+  ],
+  "relatedTerms": [
+    { "slug": "reference-range", "label": "Reference Range" },
+    { "slug": "lipid-panel", "label": "Lipid Panel" }
+  ],
+  "links": [
+    { "label": "Diabetes monitoring use case", "href": "/use-cases/diabetes-monitoring" },
+    { "label": "Prepare for a doctor visit", "href": "/blog/prepare-doctor-visit" }
+  ],
+  "updatedAt": "2026-06-24"
+}

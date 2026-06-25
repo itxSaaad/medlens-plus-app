@@ -1,0 +1,49 @@
+{
+  "slug": "cbc-panel",
+  "term": "CBC Panel",
+  "title": "CBC (Complete Blood Count)",
+  "description": "What a complete blood count measures, its common components, and how CBC results show up on your lab reports.",
+  "seo": {
+    "title": "What Is a CBC Panel? | MedLens+ Glossary",
+    "description": "A complete blood count (CBC) measures red cells, white cells, hemoglobin, and platelets. Learn what's on a typical CBC report.",
+    "keywords": [
+      "CBC panel definition",
+      "complete blood count explained",
+      "CBC blood test components"
+    ],
+    "ogImage": "/og/glossary.svg"
+  },
+  "definition": "A complete blood count (CBC) is one of the most common blood tests. It measures components of your blood including red blood cells, white blood cells, hemoglobin, hematocrit, and platelets.",
+  "sections": [
+    {
+      "heading": "What's on a typical CBC report",
+      "paragraphs": [
+        "A standard CBC includes white blood cell count (WBC), red blood cell count (RBC), hemoglobin, hematocrit, mean corpuscular volume (MCV), and platelet count. Some reports add differential counts that break down white cell types.",
+        "Each component has its own reference range on your report. A flag on one line doesn't automatically explain a clinical condition — your clinician interprets results in full context."
+      ]
+    },
+    {
+      "heading": "Why CBC gets ordered repeatedly",
+      "paragraphs": [
+        "CBC appears in routine checkups, pre-procedure screening, medication monitoring, and follow-up of various conditions. Repeat CBCs over months or years build a history that's much easier to discuss when organized chronologically.",
+        "Tracking CBC components on a timeline helps you notice when values shift between visits and prepare questions for your provider."
+      ]
+    },
+    {
+      "heading": "Organizing CBC results",
+      "paragraphs": [
+        "When you upload CBC reports to MedLens+, we extract markers and place them on your timeline with the reference ranges stated on each document.",
+        "We highlight changes and missing components but don't interpret what those changes mean clinically. Always discuss CBC findings with a qualified healthcare professional."
+      ]
+    }
+  ],
+  "relatedTerms": [
+    { "slug": "reference-range", "label": "Reference Range" },
+    { "slug": "lipid-panel", "label": "Lipid Panel" }
+  ],
+  "links": [
+    { "label": "Organize your lab reports", "href": "/blog/organize-lab-reports" },
+    { "label": "How MedLens+ works", "href": "/how-it-works" }
+  ],
+  "updatedAt": "2026-06-24"
+}
