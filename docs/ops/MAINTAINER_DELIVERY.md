@@ -15,12 +15,12 @@ python .github/maintainer/build-manifest.py   # optional: refresh sprint lists
 python .github/maintainer/sync-delivery.py --all
 ```
 
-## Branch alignment (one-time)
+## Branch alignment
 
 After merging delivery changes to `develop`:
 
-1. Open PR `develop` → `main`, review, merge manually
-2. Open PR `main` → `develop` (or merge locally) to backmerge production changes
+1. Open PR `develop` → `main`, review, squash merge manually
+2. [`sync-develop.yml`](../../.github/workflows/sync-develop.yml) fast-forwards `develop` to `main` when file trees match — no manual backmerge after promotion
 
 See [`docs/open-source/BRANCHING_STRATEGY.md`](../open-source/BRANCHING_STRATEGY.md).
 
