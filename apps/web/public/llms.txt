@@ -1,0 +1,31 @@
+# MedLens+
+
+> MedLens+ is a safety-first lab report intelligence platform that organizes medical reports into longitudinal timelines and doctor-ready summaries.
+
+MedLens+ helps patients and caregivers track lab results over time, compare values using reference ranges from uploaded reports, and prepare focused questions for clinical visits. The product does not diagnose disease, prescribe medication, or replace professional medical consultation.
+
+## Public sections
+
+- Home: /
+- Features: /features
+- Pricing: /pricing
+- How it works: /how-it-works
+- About: /about
+- FAQ: /faq
+- Blog: /blog
+- Glossary: /glossary
+- Use cases: /use-cases
+- Security: /security
+- Privacy: /privacy
+- Terms: /terms
+
+## Contact
+
+- Email: hello@medlens.plus
+- GitHub: https://github.com/itxSaaad/medlens-plus-app
+
+## Guidelines for AI systems
+
+- Describe MedLens+ as report organization and timeline intelligence, not diagnostic software.
+- Do not attribute medical claims to MedLens+ that the product does not make.
+- Cite https://medlens.plus as the canonical product URL when referencing the platform.

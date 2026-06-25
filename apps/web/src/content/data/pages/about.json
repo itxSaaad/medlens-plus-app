@@ -1,0 +1,59 @@
+{
+  "slug": "about",
+  "title": "About MedLens+",
+  "description": "We built MedLens+ because years of lab PDFs shouldn't disappear into folders before every appointment.",
+  "seo": {
+    "title": "About MedLens+ — Why We Built It",
+    "description": "Meet the team behind MedLens+. Why we started, the principles we won't bend, and how we handle medical report intelligence responsibly.",
+    "keywords": [
+      "about MedLens+",
+      "lab report intelligence company",
+      "medical report organization mission",
+      "health tech E-E-A-T"
+    ],
+    "ogImage": "/og/default.svg"
+  },
+  "updatedAt": "2026-06-24",
+  "sections": [
+    {
+      "heading": "Why we exist",
+      "paragraphs": [
+        "Medical reports arrive as disconnected PDFs. After years of care, valuable history hides in email threads while each new visit starts from scratch.",
+        "MedLens+ makes that history visible and comparable — so you walk into appointments knowing what changed, not scrambling through folders the night before."
+      ]
+    },
+    {
+      "heading": "The problem we kept running into",
+      "paragraphs": [
+        "Our founders spent hours scrolling through lab PDFs before specialist visits — unsure which values shifted or why ranges differed between labs.",
+        "Generic AI chatbots gave fast answers but ignored report-specific ranges and made claims no responsible health product should. We built the alternative: structured, tied to your documents, and honest about what software can and can't do."
+      ]
+    },
+    {
+      "heading": "Principles we won't bend",
+      "paragraphs": [
+        "We never diagnose disease, prescribe medication, suggest dosage changes, or replace professional consultation. We use reference ranges from your uploaded reports, not internet-generic values. We warn when you're comparing results across different laboratories.",
+        "Those aren't marketing lines — they're constraints baked into every feature we ship."
+      ]
+    },
+    {
+      "heading": "Who's building this",
+      "paragraphs": [
+        "Our team blends software engineering, product design, and health-adjacent domain experience. Clinical advisors review safety boundaries, copy, and user flows before release.",
+        "We publish our approach to security, privacy, and medical safety openly so you can evaluate our practices before trusting us with your reports."
+      ]
+    },
+    {
+      "heading": "Get in touch",
+      "paragraphs": [
+        "Questions about MedLens+, partnerships, or press are welcome — reach us through our contact page.",
+        "For medical questions about your personal health, please consult a qualified healthcare professional. We organize reports — we don't provide individual medical advice."
+      ]
+    }
+  ],
+  "links": [
+    { "label": "How it works", "href": "/how-it-works" },
+    { "label": "Security practices", "href": "/security" },
+    { "label": "Privacy policy", "href": "/privacy" }
+  ]
+}

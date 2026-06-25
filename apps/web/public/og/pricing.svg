@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" fill="none">
+  <rect width="1200" height="630" fill="#0F172A"/>
+  <g transform="translate(548,72) scale(3.2)">
+    <circle cx="13" cy="13" r="9.5" stroke="#0D9488" stroke-width="2"/>
+    <path d="M20.5 20.5 L28 28" stroke="#0D9488" stroke-width="2" stroke-linecap="round"/>
+    <path d="M8.5 17.5 Q13 11.5 17.5 17.5" stroke="#0D9488" stroke-width="1.75"/>
+    <circle cx="13" cy="12.5" r="2" fill="#0D9488"/>
+  </g>
+  <text x="600" y="300" text-anchor="middle" font-family="Georgia, serif" font-size="48" fill="#FFFFFF">Free during early access</text>
+  <text x="600" y="360" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" fill="#94A3B8">MedLens+ pricing</text>
+</svg>

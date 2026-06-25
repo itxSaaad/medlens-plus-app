@@ -1,0 +1,99 @@
+{
+  "slug": "features",
+  "title": "Features",
+  "description": "Timelines, per-report reference ranges, cross-lab cautions, and visit briefs — everything MedLens+ does to organize your lab history.",
+  "seo": {
+    "title": "MedLens+ Features — Lab Timelines & Visit Prep",
+    "description": "From PDF upload to visit brief: timelines with per-report ranges, cross-lab warnings, and exportable summaries for your next appointment.",
+    "keywords": [
+      "lab report timeline",
+      "track blood tests over time",
+      "lab report organizer features",
+      "doctor visit preparation",
+      "longitudinal lab tracking"
+    ],
+    "ogImage": "/og/features.svg"
+  },
+  "updatedAt": "2026-06-24",
+  "bento": [
+    {
+      "title": "Longitudinal timeline",
+      "description": "Plot the same markers across months and years. Every point links back to the PDF it came from.",
+      "icon": "timeline",
+      "span": "wide"
+    },
+    {
+      "title": "Ranges from your reports",
+      "description": "Flags use the intervals printed on each upload — not generic web tables that may not match your lab.",
+      "icon": "range",
+      "span": "default"
+    },
+    {
+      "title": "Cross-lab cautions",
+      "description": "Switching from Quest to a hospital lab? We'll flag when methods and ranges might not line up.",
+      "icon": "caution",
+      "span": "default"
+    },
+    {
+      "title": "Panel completeness",
+      "description": "Spot missing markers so you know when a follow-up test might be worth discussing.",
+      "icon": "alert",
+      "span": "default"
+    },
+    {
+      "title": "Visit brief export",
+      "description": "Walk in with a one-page summary of recent shifts and questions tied to your actual reports.",
+      "icon": "file",
+      "span": "tall"
+    },
+    {
+      "title": "Clear boundaries",
+      "description": "We organize and explain. Clinical decisions stay between you and your provider.",
+      "icon": "shield",
+      "span": "default"
+    }
+  ],
+  "sections": [
+    {
+      "heading": "One timeline for every visit",
+      "paragraphs": [
+        "Lab results usually arrive as PDFs — email attachments, portal downloads, printouts in a drawer. Over years of care, the collection grows but the story stays fragmented.",
+        "MedLens+ pulls structured values from your uploads and places them on a chronological timeline. Select LDL cholesterol and you'll see it went from 118 last March to 142 this November, with each point linked to its source report."
+      ]
+    },
+    {
+      "heading": "Your lab's ranges, not the internet's",
+      "paragraphs": [
+        "Reference intervals differ by laboratory, method, and sometimes age or sex. A fasting glucose range on one report may not match another facility's printout.",
+        "We flag values against the interval on each uploaded document. That respects the context your clinician already works with — and avoids the false alarms that come from comparing against the wrong table."
+      ]
+    },
+    {
+      "heading": "Smarter comparisons across labs",
+      "paragraphs": [
+        "Comparing TSH from two different labs can mislead when methods differ. MedLens+ shows a caution whenever you're viewing markers across reports from separate providers.",
+        "The goal isn't to draw conclusions on your own. It's to arrive with better questions: \"I switched labs — can we compare these TSH values reliably?\""
+      ]
+    },
+    {
+      "heading": "Know what's missing",
+      "paragraphs": [
+        "Incomplete panels make trends harder to read. If your lipid profile skipped HDL on one visit, we'll note the gap on your timeline.",
+        "Knowing what's absent helps you ask whether a repeat test makes sense — a conversation for you and your clinician, not a recommendation from software."
+      ]
+    },
+    {
+      "heading": "A brief worth bringing",
+      "paragraphs": [
+        "Before your appointment, export a focused summary: recent changes, flagged values relative to your report ranges, and two or three discussion topics.",
+        "Your clinician still interprets results in full context. The brief just means less time scrolling through folders and more time on what matters."
+      ]
+    }
+  ],
+  "links": [
+    { "label": "How it works", "href": "/how-it-works" },
+    { "label": "Understanding reference ranges", "href": "/glossary/reference-range" },
+    { "label": "Prepare for your next visit", "href": "/blog/prepare-doctor-visit" },
+    { "label": "Join the waitlist", "href": "/#waitlist" }
+  ]
+}

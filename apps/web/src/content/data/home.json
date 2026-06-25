@@ -1,0 +1,196 @@
+{
+  "seo": {
+    "title": "MedLens+ — Turn lab reports into visit-ready timelines",
+    "description": "Upload scattered lab PDFs and see what changed over time. MedLens+ builds timelines from your reports so you're ready for your next appointment.",
+    "keywords": [
+      "lab report organizer",
+      "track blood tests over time",
+      "medical report intelligence"
+    ],
+    "ogImage": "/og/home.svg"
+  },
+  "hero": {
+    "eyebrow": "Public beta — join early access",
+    "headline": "Your lab history, finally in one timeline.",
+    "subheadline": "Upload PDFs from any lab. MedLens+ pulls out the numbers, tracks what moved since your last visit, and helps you walk in with better questions.",
+    "ctaLabel": "Join the waitlist",
+    "privacyNote": "We'll only email you about early access. No spam, no selling your data."
+  },
+  "socialProof": [
+    { "label": "CBC, LFT, KFT, Lipid, HbA1c, Thyroid panels" },
+    { "label": "Built for tracking results over months and years" },
+    { "label": "Uses the reference ranges on your actual reports" },
+    { "label": "Not a substitute for professional medical advice" }
+  ],
+  "problem": {
+    "title": "Every visit adds another PDF to the pile",
+    "items": [
+      {
+        "title": "No single timeline",
+        "description": "Each test lands as a separate file. Comparing LDL from March to November means opening three folders, not glancing at one chart."
+      },
+      {
+        "title": "Ranges vary by lab",
+        "description": "The interval on your Quest report isn't the same as the one on a hospital printout. Generic web ranges can make a normal result look alarming."
+      },
+      {
+        "title": "Visits feel rushed",
+        "description": "You want to ask about that HbA1c bump, but digging through email attachments the night before takes longer than the appointment itself."
+      }
+    ]
+  },
+  "productPreview": {
+    "title": "See what changed, not just today's numbers",
+    "description": "MedLens+ extracts values from your uploads, plots them on a timeline, and highlights shifts since your last test — always using the ranges printed on your documents."
+  },
+  "steps": {
+    "title": "How it works",
+    "items": [
+      {
+        "title": "Upload reports",
+        "description": "Drop in PDFs or photos from any lab. We extract structured values and keep your originals secure.",
+        "icon": "upload"
+      },
+      {
+        "title": "Compare over time",
+        "description": "View markers on a timeline, spot trends, and get a heads-up when you're comparing results from different labs.",
+        "icon": "timeline"
+      },
+      {
+        "title": "Prep for your visit",
+        "description": "Export a focused brief with the changes that matter and questions worth asking — all tied back to your uploaded reports.",
+        "icon": "file"
+      }
+    ]
+  },
+  "features": {
+    "title": "Clarity over chatbot noise",
+    "items": [
+      {
+        "title": "Multi-report timeline",
+        "description": "Track the same markers across months and years in one longitudinal view.",
+        "icon": "timeline"
+      },
+      {
+        "title": "Your report's ranges",
+        "description": "Flags use the reference intervals on your uploads, not generic tables from the internet.",
+        "icon": "range"
+      },
+      {
+        "title": "Missing-data detection",
+        "description": "Know when a panel looks incomplete so you can ask your clinician about gaps.",
+        "icon": "alert"
+      },
+      {
+        "title": "Visit brief",
+        "description": "Export a summary and suggested questions before your next appointment.",
+        "icon": "file"
+      },
+      {
+        "title": "Cross-lab caution",
+        "description": "Clear warnings when you're comparing results from different laboratories or methods.",
+        "icon": "caution"
+      },
+      {
+        "title": "Built-in boundaries",
+        "description": "We organize your reports. We don't tell you what disease you have or what to take.",
+        "icon": "shield"
+      }
+    ]
+  },
+  "comparison": {
+    "title": "Why not just a folder of PDFs?",
+    "rows": [
+      {
+        "feature": "Longitudinal timeline",
+        "medlens": true,
+        "pdfs": false,
+        "genericAi": "Partial"
+      },
+      {
+        "feature": "Uses your report reference ranges",
+        "medlens": true,
+        "pdfs": false,
+        "genericAi": false
+      },
+      {
+        "feature": "Cross-lab comparison warnings",
+        "medlens": true,
+        "pdfs": false,
+        "genericAi": false
+      },
+      {
+        "feature": "Doctor visit preparation",
+        "medlens": true,
+        "pdfs": false,
+        "genericAi": "Partial"
+      },
+      { "feature": "No diagnostic claims", "medlens": true, "pdfs": true, "genericAi": "Varies" },
+      {
+        "feature": "Structured extraction from PDFs",
+        "medlens": true,
+        "pdfs": false,
+        "genericAi": "Partial"
+      }
+    ]
+  },
+  "useCases": {
+    "title": "Who it's for",
+    "items": [
+      {
+        "slug": "diabetes-monitoring",
+        "title": "Diabetes monitoring",
+        "description": "Track HbA1c, glucose, and related panels across recurring visits.",
+        "href": "/use-cases/diabetes-monitoring"
+      },
+      {
+        "slug": "thyroid-tracking",
+        "title": "Thyroid tracking",
+        "description": "Follow TSH and related markers as doses or circumstances change.",
+        "href": "/use-cases/thyroid-tracking"
+      },
+      {
+        "slug": "caregiver-family",
+        "title": "Caregivers & family",
+        "description": "Help a parent or partner organize reports before specialist visits.",
+        "href": "/use-cases/caregiver-family"
+      }
+    ]
+  },
+  "trust": {
+    "title": "How we handle health information",
+    "description": "MedLens+ explains what your reports show. We don't tell you what condition you have, what medication to take, or whether you need treatment.",
+    "items": [
+      "Never diagnoses disease or prescribes medication",
+      "Always uses reference ranges from your uploaded reports",
+      "Warns when comparing results from different labs",
+      "Encourages discussion with qualified healthcare professionals"
+    ]
+  },
+  "faq": {
+    "title": "Quick answers",
+    "items": [
+      {
+        "question": "What does MedLens+ actually do?",
+        "answer": "It turns scattered lab PDFs into a timeline you can review before appointments. You'll see how values changed, which ranges applied on each report, and a short list of topics worth raising with your clinician."
+      },
+      {
+        "question": "Which report types work in beta?",
+        "answer": "We're starting with common panels: CBC, liver and kidney function, lipid profile, HbA1c, thyroid, and key vitamins. More formats roll out as waitlist feedback comes in."
+      },
+      {
+        "question": "Is early access free?",
+        "answer": "Yes. The public beta is free for waitlist members — no credit card required. See our pricing page for what's included."
+      },
+      {
+        "question": "Where can I read more?",
+        "answer": "The full FAQ covers privacy, safety, and data handling in detail. Our blog and glossary have practical guides on organizing reports and reading reference ranges."
+      }
+    ]
+  },
+  "finalCta": {
+    "title": "Join the public beta",
+    "description": "Be among the first to turn years of lab PDFs into a timeline built for real clinical conversations.",
+    "ctaLabel": "Join the waitlist"
+  }
+}

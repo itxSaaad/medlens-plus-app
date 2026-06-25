@@ -1,0 +1,49 @@
+{
+  "slug": "lipid-panel",
+  "term": "Lipid Panel",
+  "title": "Lipid Panel (Cholesterol Panel)",
+  "description": "What a lipid panel measures, common markers like LDL and HDL, and how to track cholesterol results across visits.",
+  "seo": {
+    "title": "What Is a Lipid Panel? | MedLens+ Glossary",
+    "description": "A lipid panel measures total cholesterol, LDL, HDL, and triglycerides. Learn what's on the report and how to track results over time.",
+    "keywords": [
+      "lipid panel definition",
+      "cholesterol blood test",
+      "LDL HDL triglycerides explained"
+    ],
+    "ogImage": "/og/glossary.svg"
+  },
+  "definition": "A lipid panel (also called a cholesterol panel or lipid profile) measures fats in your bloodstream, commonly including total cholesterol, LDL cholesterol, HDL cholesterol, and triglycerides.",
+  "sections": [
+    {
+      "heading": "What's on a lipid panel",
+      "paragraphs": [
+        "Standard lipid panels report total cholesterol, low-density lipoprotein (LDL), high-density lipoprotein (HDL), and triglycerides. Some reports add non-HDL cholesterol or calculated ratios.",
+        "Each component has a reference range specific to the laboratory that processed your sample. Fasting requirements vary — check your report or lab instructions for whether fasting was required."
+      ]
+    },
+    {
+      "heading": "Why lipid panels get repeated",
+      "paragraphs": [
+        "Clinicians often order lipid panels at regular intervals to monitor cardiovascular risk factors over time. Lifestyle changes, medications, and other factors can shift values between visits.",
+        "Seeing your lipid history chronologically — like LDL moving from 118 to 142 across two years — helps you prepare for trend discussions with your provider."
+      ]
+    },
+    {
+      "heading": "Tracking lipids with your report's ranges",
+      "paragraphs": [
+        "MedLens+ extracts lipid markers from uploaded reports and plots them on your timeline using the reference ranges printed on each document.",
+        "When you switch laboratories, cross-lab cautions remind you that methods and ranges may differ. Confirm meaningful changes with your healthcare provider before drawing conclusions."
+      ]
+    }
+  ],
+  "relatedTerms": [
+    { "slug": "reference-range", "label": "Reference Range" },
+    { "slug": "hba1c", "label": "HbA1c" }
+  ],
+  "links": [
+    { "label": "Understanding reference ranges", "href": "/blog/reading-reference-ranges" },
+    { "label": "Diabetes monitoring use case", "href": "/use-cases/diabetes-monitoring" }
+  ],
+  "updatedAt": "2026-06-24"
+}

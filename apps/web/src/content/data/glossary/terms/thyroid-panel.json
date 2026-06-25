@@ -1,0 +1,45 @@
+{
+  "slug": "thyroid-panel",
+  "term": "Thyroid Panel",
+  "title": "Thyroid Panel",
+  "description": "What thyroid blood tests measure, common markers like TSH and free T4, and how to track thyroid results across visits.",
+  "seo": {
+    "title": "What Is a Thyroid Panel? | MedLens+ Glossary",
+    "description": "Thyroid panels measure TSH, free T4, and sometimes free T3 and antibodies. Learn what each marker means on your lab report.",
+    "keywords": ["thyroid panel definition", "TSH blood test explained", "thyroid function test"],
+    "ogImage": "/og/glossary.svg"
+  },
+  "definition": "A thyroid panel is a group of blood tests that assess thyroid function. The most common initial test is TSH (thyroid-stimulating hormone); expanded panels may include free T4, free T3, and thyroid antibodies.",
+  "sections": [
+    {
+      "heading": "Common thyroid markers",
+      "paragraphs": [
+        "TSH is typically the primary screening marker. Free T4 (thyroxine) and free T3 (triiodothyronine) measure circulating thyroid hormones. Antibody tests such as anti-TPO may appear when autoimmune conditions are being evaluated.",
+        "Reference ranges for thyroid markers vary by laboratory and method. Use the ranges on your specific report when reviewing flagged values."
+      ]
+    },
+    {
+      "heading": "Why thyroid tests get monitored over time",
+      "paragraphs": [
+        "Thyroid function can change with age, pregnancy, medications, and other factors. People on thyroid-related medications often have repeat panels to assess how values trend over months.",
+        "Organizing thyroid results chronologically helps you see whether TSH and related markers shifted between visits — a useful starting point for questions, not a basis for adjusting medication on your own."
+      ]
+    },
+    {
+      "heading": "Thyroid tracking in MedLens+",
+      "paragraphs": [
+        "Upload thyroid panel reports and we'll extract markers onto your timeline with the reference ranges from each document. Cross-lab cautions apply when comparing results from different laboratories.",
+        "We never recommend dosage changes or interpret what thyroid results mean for your treatment. Those decisions belong between you and your qualified healthcare provider."
+      ]
+    }
+  ],
+  "relatedTerms": [
+    { "slug": "reference-range", "label": "Reference Range" },
+    { "slug": "cbc-panel", "label": "CBC Panel" }
+  ],
+  "links": [
+    { "label": "Thyroid tracking use case", "href": "/use-cases/thyroid-tracking" },
+    { "label": "Prepare for a doctor visit", "href": "/blog/prepare-doctor-visit" }
+  ],
+  "updatedAt": "2026-06-24"
+}

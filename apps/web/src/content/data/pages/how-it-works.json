@@ -1,0 +1,59 @@
+{
+  "slug": "how-it-works",
+  "title": "How It Works",
+  "description": "Upload lab PDFs, review extracted values, explore your timeline, and export a visit brief — four steps to organized lab history.",
+  "seo": {
+    "title": "How MedLens+ Works — 4 Steps to a Lab Timeline",
+    "description": "Upload lab PDFs, see extracted values on a timeline, compare across visits, and export a brief before your next appointment — the full four-step workflow.",
+    "keywords": [
+      "how to organize lab reports",
+      "lab report timeline app",
+      "prepare for doctor visit",
+      "track blood tests over time"
+    ],
+    "ogImage": "/og/home.svg"
+  },
+  "updatedAt": "2026-06-24",
+  "sections": [
+    {
+      "heading": "Step 1: Upload your reports",
+      "paragraphs": [
+        "Add lab reports as PDFs or images from any laboratory — CBC, liver and kidney panels, lipid profiles, HbA1c, thyroid tests, and key vitamins.",
+        "Your originals stay secure. We extract marker names, values, units, and reference ranges exactly as printed on each document."
+      ]
+    },
+    {
+      "heading": "Step 2: Review what we extracted",
+      "paragraphs": [
+        "After processing, check the structured data pulled from each report. Values are matched to the reference ranges on your document — not generic web tables.",
+        "If a field looks off or a panel seems incomplete, note it before it enters your timeline. Good source data makes better longitudinal views."
+      ]
+    },
+    {
+      "heading": "Step 3: Explore your timeline",
+      "paragraphs": [
+        "Values land on a chronological timeline so you can see how markers shift across visits. Tap LDL and watch it move from 118 to 142 over eighteen months.",
+        "When reports come from different labs, you'll see a cross-lab caution. The timeline shows what changed; your clinician explains why."
+      ]
+    },
+    {
+      "heading": "Step 4: Prep for your visit",
+      "paragraphs": [
+        "Export a brief summarizing recent shifts, flagged values relative to your report ranges, and a few discussion topics worth raising.",
+        "Your provider still drives medical decisions. The brief just means you arrive with context instead of a folder of unsorted PDFs."
+      ]
+    },
+    {
+      "heading": "Built for ongoing care",
+      "paragraphs": [
+        "MedLens+ fits recurring lab work — annual checkups, chronic condition monitoring, specialist follow-ups, caregiver coordination. Each new upload extends your timeline automatically.",
+        "Over time, your organized history becomes the thing you reach for before every clinical conversation."
+      ]
+    }
+  ],
+  "links": [
+    { "label": "See all features", "href": "/features" },
+    { "label": "Organize your lab reports", "href": "/blog/organize-lab-reports" },
+    { "label": "Reference range glossary", "href": "/glossary/reference-range" }
+  ]
+}

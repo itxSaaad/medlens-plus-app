@@ -1,0 +1,58 @@
+{
+  "slug": "prepare-doctor-visit",
+  "title": "How to Prepare for a Doctor Visit with Lab Reports",
+  "description": "Review your lab history, spot what changed, and arrive with focused questions — without playing doctor on your own.",
+  "seo": {
+    "title": "Prepare for a Doctor Visit with Lab Reports | MedLens+ Blog",
+    "description": "How to review lab reports before a visit, note what shifted, and walk in with two or three focused questions for your clinician.",
+    "keywords": [
+      "prepare for doctor visit",
+      "lab reports appointment",
+      "questions for doctor lab results",
+      "doctor visit checklist"
+    ],
+    "ogImage": "/og/blog.svg"
+  },
+  "author": "MedLens+ Team",
+  "publishedAt": "2026-06-10",
+  "updatedAt": "2026-06-24",
+  "sections": [
+    {
+      "heading": "Give yourself time before the appointment",
+      "paragraphs": [
+        "Rushed prep leads to missed details. Set aside thirty minutes a few days before your visit to review recent lab reports and any timeline you've built from prior tests.",
+        "Gather reports from the current visit and at least one prior comparison point. If you use MedLens+ or a similar organizer, review your longitudinal view so changes are visible at a glance."
+      ]
+    },
+    {
+      "heading": "Note what changed, not what it means",
+      "paragraphs": [
+        "Write down markers that moved since your last test — higher, lower, newly added, or no longer tested. Use the reference ranges printed on each report to note whether values fall inside or outside the stated interval.",
+        "Avoid concluding what a change signifies. \"My cholesterol went up since March\" is a useful observation. \"I must have heart disease\" is a diagnosis your clinician should make — not you or any software tool."
+      ]
+    },
+    {
+      "heading": "Turn observations into questions",
+      "paragraphs": [
+        "Try phrases like: \"My LDL was 142 this time versus 118 last year — should we discuss this at my current range?\" or \"I had a thyroid panel at a different lab — can we compare these TSH values reliably?\"",
+        "Prioritize two or three topics if time is limited. Bring a printed summary or device with source PDFs accessible so your clinician can verify values directly."
+      ]
+    },
+    {
+      "heading": "What to bring and what to expect",
+      "paragraphs": [
+        "Bring original reports or verified copies, a list of current medications, and your prepared questions. If a family member attends with you, share your summary in advance so you're aligned.",
+        "Your clinician interprets results in context — symptoms, medications, family history, and physical examination — that no report organizer can fully capture. MedLens+ helps you arrive prepared; your provider drives medical decisions."
+      ]
+    }
+  ],
+  "links": [
+    { "label": "Organize lab reports over time", "href": "/blog/organize-lab-reports" },
+    { "label": "HbA1c glossary entry", "href": "/glossary/hba1c" },
+    { "label": "Diabetes monitoring use case", "href": "/use-cases/diabetes-monitoring" }
+  ],
+  "relatedPosts": [
+    { "slug": "organize-lab-reports", "label": "Organize lab reports over time" },
+    { "slug": "reading-reference-ranges", "label": "Understanding reference ranges" }
+  ]
+}

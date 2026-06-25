@@ -1,0 +1,15 @@
+{
+  "title": "Blog",
+  "description": "Practical guides on organizing lab reports, prepping for visits, and understanding common test panels — written for real patients, not textbooks.",
+  "seo": {
+    "title": "MedLens+ Blog — Lab Report Guides",
+    "description": "Guides on filing lab PDFs, prepping for appointments, and making sense of flagged results — written for patients, not med school textbooks.",
+    "keywords": [
+      "lab report blog",
+      "organize blood tests",
+      "doctor visit preparation",
+      "understanding lab results"
+    ],
+    "ogImage": "/og/blog.svg"
+  }
+}
