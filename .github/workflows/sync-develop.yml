@@ -1,13 +1,14 @@
 name: Sync Develop To Main
 
 on:
-  push:
+  workflow_run:
+    workflows: ["Release - Semantic Versioning And Tags"]
+    types: [completed]
     branches: [main]
   workflow_dispatch:
 
 permissions:
-  contents: write
-  pull-requests: write
+  contents: read
 
 concurrency:
   group: sync-develop-to-main
@@ -17,89 +18,65 @@ jobs:
   sync:
     name: Align develop with main
     runs-on: ubuntu-latest
+    if: >-
+      github.event_name == 'workflow_dispatch'
+      || (github.event.workflow_run.conclusion == 'success'
+          && github.event.workflow_run.head_branch == 'main')
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
         with:
           fetch-depth: 0
 
       - name: Evaluate branch state
         id: state
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git fetch origin main develop
-
-          MAIN_SHA=$(git rev-parse origin/main)
-          DEVELOP_SHA=$(git rev-parse origin/develop)
-          echo "main_sha=$MAIN_SHA" >> "$GITHUB_OUTPUT"
-          echo "develop_sha=$DEVELOP_SHA" >> "$GITHUB_OUTPUT"
-
-          if git diff --quiet origin/main origin/develop; then
-            echo "trees_match=true" >> "$GITHUB_OUTPUT"
-            TREES_MATCH=true
-          else
-            echo "trees_match=false" >> "$GITHUB_OUTPUT"
-            TREES_MATCH=false
-          fi
-
-          DEV_AHEAD=$(git rev-list --count origin/main..origin/develop)
-          MAIN_AHEAD=$(git rev-list --count origin/develop..origin/main)
-          echo "dev_ahead=$DEV_AHEAD" >> "$GITHUB_OUTPUT"
-          echo "main_ahead=$MAIN_AHEAD" >> "$GITHUB_OUTPUT"
-
-          if [ "$MAIN_SHA" = "$DEVELOP_SHA" ]; then
-            echo "action=none" >> "$GITHUB_OUTPUT"
-          elif [ "$TREES_MATCH" = true ]; then
-            echo "action=fast_forward" >> "$GITHUB_OUTPUT"
-          elif [ "$MAIN_AHEAD" -gt 0 ]; then
-            echo "action=hotfix_pr" >> "$GITHUB_OUTPUT"
-          else
-            echo "action=promotion_needed" >> "$GITHUB_OUTPUT"
-          fi
+          while IFS= read -r line; do
+            echo "$line" >> "$GITHUB_OUTPUT"
+          done < <(bash .github/scripts/evaluate-branch-sync.sh origin/main origin/develop)
 
       - name: Fast-forward develop to main
         if: steps.state.outputs.action == 'fast_forward'
         env:
-          GH_TOKEN: ${{ secrets.BRANCH_SYNC_PAT || secrets.GITHUB_TOKEN }}
+          GH_PAT: ${{ secrets.GH_PAT }}
           MAIN_SHA: ${{ steps.state.outputs.main_sha }}
         run: |
+          # shellcheck source=/dev/null
+          source .github/scripts/github-api.sh
+
           echo "Trees match; aligning develop to main ($MAIN_SHA)"
-          if gh api \
-            --method PATCH \
-            "repos/${{ github.repository }}/git/refs/heads/develop" \
-            -f sha="$MAIN_SHA" \
-            -F force=false 2>/tmp/sync-develop-ff.err; then
+          PAYLOAD=$(jq -n --arg sha "$MAIN_SHA" '{sha: $sha, force: false}')
+
+          if github_api PATCH "/repos/${GITHUB_REPOSITORY}/git/refs/heads/develop" \
+            -H "Content-Type: application/json" \
+            --data-binary "$PAYLOAD" 2>/tmp/sync-develop-ff.err; then
             echo "Fast-forwarded develop to main"
             exit 0
           fi
 
-          if ! grep -q "not a fast forward" /tmp/sync-develop-ff.err; then
+          if ! grep -qi "not a fast forward" /tmp/sync-develop-ff.err; then
             cat /tmp/sync-develop-ff.err >&2
             exit 1
           fi
 
           echo "Graph-only drift after squash promotion; resetting develop ref (trees match)"
-          gh api \
-            --method PATCH \
-            "repos/${{ github.repository }}/git/refs/heads/develop" \
-            -f sha="$MAIN_SHA" \
-            -F force=true
+          FORCE_PAYLOAD=$(jq -n --arg sha "$MAIN_SHA" '{sha: $sha, force: true}')
+          github_api PATCH "/repos/${GITHUB_REPOSITORY}/git/refs/heads/develop" \
+            -H "Content-Type: application/json" \
+            --data-binary "$FORCE_PAYLOAD"
 
       - name: Open or update hotfix propagation PR
         if: steps.state.outputs.action == 'hotfix_pr'
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_PAT: ${{ secrets.GH_PAT }}
           MAIN_AHEAD: ${{ steps.state.outputs.main_ahead }}
         run: |
-          TITLE="chore: propagate main hotfixes to develop"
-          EXISTING=$(gh pr list \
-            --base develop \
-            --head main \
-            --state open \
-            --json number \
-            --jq '.[0].number // empty')
+          # shellcheck source=/dev/null
+          source .github/scripts/github-api.sh
 
+          OWNER="${GITHUB_REPOSITORY%%/*}"
+          TITLE="chore: propagate main hotfixes to develop"
           BODY="## Hotfix propagation
 
           \`main\` is **${MAIN_AHEAD}** commit(s) ahead of \`develop\` with a non-empty diff.
@@ -109,22 +86,26 @@ jobs:
           See \`docs/open-source/BRANCHING_STRATEGY.md\`.
           "
 
+          EXISTING=$(github_api GET "/repos/${GITHUB_REPOSITORY}/pulls?base=develop&head=${OWNER}:main&state=open" \
+            | jq -r '.[0].number // empty')
+
           if [ -n "$EXISTING" ]; then
-            gh pr comment "$EXISTING" --body "$BODY"
-            echo "Updated hotfix propagation PR #$EXISTING"
+            github_api POST "/repos/${GITHUB_REPOSITORY}/issues/${EXISTING}/comments" \
+              -H "Content-Type: application/json" \
+              --data-binary "$(jq -n --arg body "$BODY" '{body: $body}')"
+            echo "Updated hotfix propagation PR #${EXISTING}"
           else
-            gh pr create \
-              --base develop \
-              --head main \
-              --title "$TITLE" \
-              --body "$BODY" \
-              --label "type:chore" \
-              --label "branch-sync" || \
-            gh pr create \
-              --base develop \
-              --head main \
-              --title "$TITLE" \
-              --body "$BODY"
+            CREATE_PAYLOAD=$(jq -n \
+              --arg title "$TITLE" \
+              --arg body "$BODY" \
+              --arg head "main" \
+              --arg base "develop" \
+              '{title: $title, body: $body, head: $head, base: $base}')
+            PR=$(github_api POST "/repos/${GITHUB_REPOSITORY}/pulls" \
+              -H "Content-Type: application/json" \
+              --data-binary "$CREATE_PAYLOAD")
+            PR_NUMBER=$(echo "$PR" | jq -r '.number')
+            echo "Opened hotfix propagation PR #${PR_NUMBER}"
           fi
 
       - name: Log promotion reminder
@@ -135,8 +116,10 @@ jobs:
 
       - name: Sync summary
         run: |
-          echo "## Sync develop" >> "$GITHUB_STEP_SUMMARY"
-          echo "- action: ${{ steps.state.outputs.action }}" >> "$GITHUB_STEP_SUMMARY"
-          echo "- trees_match: ${{ steps.state.outputs.trees_match }}" >> "$GITHUB_STEP_SUMMARY"
-          echo "- develop ahead: ${{ steps.state.outputs.dev_ahead }}" >> "$GITHUB_STEP_SUMMARY"
-          echo "- main ahead: ${{ steps.state.outputs.main_ahead }}" >> "$GITHUB_STEP_SUMMARY"
+          {
+            echo "## Sync develop"
+            echo "- action: ${{ steps.state.outputs.action }}"
+            echo "- trees_match: ${{ steps.state.outputs.trees_match }}"
+            echo "- develop ahead: ${{ steps.state.outputs.dev_ahead }}"
+            echo "- main ahead: ${{ steps.state.outputs.main_ahead }}"
+          } >> "$GITHUB_STEP_SUMMARY"

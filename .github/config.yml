@@ -1,0 +1,14 @@
+# Probot Request Info — https://github.com/apps/request-info
+requestInfoReplyComment: >
+  Thanks for opening this! Please complete the issue/PR template:
+  link the ticket, describe the change, and include validation evidence.
+  See docs/open-source/PR_REVIEW_AND_PROTECTION_POLICY.md.
+
+requestInfoDefaultTitles:
+  - update readme.md
+  - update readme
+  - changes
+  - wip
+  - draft
+
+requestInfoLabelToAdd: needs-more-info

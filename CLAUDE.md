@@ -14,6 +14,8 @@ Claude Code instructions for MedLens+.
 | `apps/web` | Next.js 16 — see `apps/web/CLAUDE.md` |
 | `apps/api` | FastAPI — see `apps/api/CLAUDE.md` |
 | `packages/types` | Shared TS contracts |
+| `packages/logger` | Shared logging utilities |
+| `turbo.json` | Turborepo task pipeline (lint, typecheck, test, build) |
 | `packages/schemas` | OpenAPI / JSON schema strategy |
 | `packages/parsers` | Extraction guidance |
 | `packages/agents` | Agent layer standards |
@@ -30,6 +32,8 @@ Claude Code instructions for MedLens+.
 ```bash
 pnpm lint && pnpm typecheck && pnpm test && pnpm build
 ```
+
+Turborepo orchestrates workspace tasks (`turbo.json`). CI caches `.turbo/` via GitHub Actions.
 
 ## Skills and rules
 - Index: `.claude/skills/medlens/SKILL.md`

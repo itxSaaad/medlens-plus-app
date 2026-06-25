@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# Apply repository merge settings, rulesets, and branch protection for MedLens+.
+# Apply repository merge settings, rulesets (best-effort), and classic branch protection.
+# Classic protection is authoritative on personal repos; rulesets may fail (Actions bypass).
 # Uses PAT from git remote origin URL (no gh auth login required).
 set -euo pipefail
 
@@ -195,7 +196,7 @@ print(json.dumps({
     if ! gh_api POST "repos/${REPO}/rulesets" \
       -H "Content-Type: application/json" \
       --data-binary "$payload" >/dev/null; then
-      echo "  warning: failed to create ruleset '${name}' — add BRANCH_SYNC_PAT for sync workflow" >&2
+      echo "  warning: failed to create ruleset '${name}' — classic protection still applies" >&2
     fi
   fi
 }
@@ -211,5 +212,6 @@ protect_branch_classic main true
 echo "Done."
 echo "- Squash merge only; auto-merge disabled; delete branch on merge enabled."
 echo "- CODEOWNERS review required (1 approval) on main and develop."
-echo "- Rulesets allow github-actions[bot] bypass when supported (org repos)."
-echo "- Personal repos: add repo secret BRANCH_SYNC_PAT (admin PAT) for sync-develop.yml."
+echo "- Classic branch protection is authoritative (personal repos)."
+echo "- Rulesets with github-actions bypass are best-effort (org repos)."
+echo "- Add repo secret GH_PAT for sync-develop and project automation (docs/ops/GITHUB_AUTOMATION_PAT.md)."

@@ -30,11 +30,34 @@ Install these GitHub Apps on `itxSaaad/medlens-plus-app` and add repository secr
 ## Dependabot (dependency updates)
 
 - **Config:** [`.github/dependabot.yml`](../../.github/dependabot.yml)
-- **Target branch:** `develop` (all npm, pip, and GitHub Actions updates)
+- **Target branch:** `develop` (all npm, pip, and GitHub Actions version updates)
 - **Policy:** Never merge Dependabot PRs directly to `main`; land on `develop` first
 - **No install required** — enabled automatically when the config file is on `main`
 - **CI:** Branch naming validation bypasses `dependabot/*`; Dependabot `chore(deps):` / `chore(deps-dev):` commits already pass commitlint
 - **Lockfile conflicts:** When several npm Dependabot PRs overlap, open one manual branch with all version bumps and run `pnpm install` once — do **not** hand-merge `pnpm-lock.yaml` conflict hunks; delete the lockfile and regenerate if needed
+
+### Main-first limitation
+
+Dependabot **cannot** create a branch from `main` while opening the PR to `develop`. Version updates always branch from the `target-branch` commit (`develop` HEAD).
+
+| Update type | PR target | Branch source |
+| ----------- | --------- | ------------- |
+| Version updates | `develop` | `develop` HEAD |
+| Security updates | **`main`** (default branch) | `main` HEAD |
+
+**Workaround for version updates:** Keep `develop` aligned with `main` via [`sync-develop.yml`](../../.github/workflows/sync-develop.yml) so Dependabot reads the same lockfiles as production.
+
+**Security PRs to `main`:** [`dependabot-retarget.yml`](../../.github/workflows/dependabot-retarget.yml) comments with retarget instructions. Manually change the PR base to `develop` or cherry-pick the bump — do not merge security PRs directly to `main`.
+
+## Turborepo (monorepo task orchestration)
+
+- **Config:** [`turbo.json`](../../turbo.json)
+- **Tasks:** `lint`, `typecheck`, `test`, `build`, `test:integration` across pnpm workspaces
+- **Root commands:** `pnpm lint`, `typecheck`, `test`, `build` delegate to `turbo run`
+- **CI cache:** GitHub Actions restores `.turbo/` keyed on `pnpm-lock.yaml` + `turbo.json` (no Vercel Remote Cache)
+- **Filter examples:**
+  - `pnpm exec turbo run build --filter=@medlens/web...` — web + upstream packages
+  - `pnpm exec turbo run lint typecheck test --filter=@medlens/api` — API only
 
 ## Local formatting
 
@@ -46,14 +69,27 @@ Install these GitHub Apps on `itxSaaad/medlens-plus-app` and add repository secr
 ## Branch promotion and drift
 
 - **Promotion:** manual PR `develop` → `main` with **semantic squash title** (see [`RELEASE_PROCESS.md`](./RELEASE_PROCESS.md)); run `bash scripts/suggest-promotion-title.sh` first
-- **Develop sync:** [`.github/workflows/sync-develop.yml`](../../.github/workflows/sync-develop.yml) aligns `develop` after `main` pushes
+- **Develop sync:** [`.github/workflows/sync-develop.yml`](../../.github/workflows/sync-develop.yml) aligns `develop` **after release** on `main` (requires `GH_PAT`)
 - **Drift detection:** [`.github/workflows/branch-drift.yml`](../../.github/workflows/branch-drift.yml) — weekly advisory issue
 - **Bot PRs:** Dependabot targets `develop`; merge manually after review
 
 ### Manual cleanup after removing Codacy
 
+See [`docs/ops/SUPPLY_CHAIN_SECURITY.md`](../ops/SUPPLY_CHAIN_SECURITY.md#codacy-removal-manual-ui) for the full checklist:
+
 - Uninstall the [Codacy GitHub App](https://github.com/apps/codacy) from this repository
 - Delete the `CODACY_PROJECT_TOKEN` repository secret (if present)
+
+### Request Info bot
+
+- **Config:** [`.github/config.yml`](../../.github/config.yml)
+- **Install:** [Request Info app](https://github.com/apps/request-info) → configure for `medlens-plus-app`
+- **Label:** create `needs-more-info` under **Issues → Labels** if missing
+
+### GitHub automation PAT
+
+- **Secret:** `GH_PAT` — see [`docs/ops/GITHUB_AUTOMATION_PAT.md`](../ops/GITHUB_AUTOMATION_PAT.md)
+- **Replaces:** `BRANCH_SYNC_PAT` (delete after migration)
 
 ## GitHub Copilot (PR review)
 
