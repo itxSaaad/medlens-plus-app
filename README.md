@@ -3,7 +3,7 @@
 [![CI - Quality And Governance](https://img.shields.io/github/actions/workflow/status/itxSaaad/medlens-plus-app/ci.yml?branch=main&label=CI)](./.github/workflows/ci.yml)
 [![Release](https://img.shields.io/github/actions/workflow/status/itxSaaad/medlens-plus-app/release.yml?branch=main&label=Release)](./.github/workflows/release.yml)
 [![codecov](https://codecov.io/gh/itxSaaad/medlens-plus-app/graph/badge.svg?token=)](https://codecov.io/gh/itxSaaad/medlens-plus-app)
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/itxSaaad/medlens-plus-app)](https://app.codacy.com/gh/itxSaaad/medlens-plus-app/dashboard)
+[![CodeQL](https://github.com/itxSaaad/medlens-plus-app/actions/workflows/codeql.yml/badge.svg?branch=main)](https://github.com/itxSaaad/medlens-plus-app/actions/workflows/codeql.yml)
 [![Project Board](https://img.shields.io/badge/project-MedLens%2B-blue)](https://github.com/users/itxSaaad/projects/2)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](./LICENSE)
 [![Conventional Commits](https://img.shields.io/badge/commits-conventional-brightgreen.svg)](https://www.conventionalcommits.org/)

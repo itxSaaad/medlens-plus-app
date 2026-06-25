@@ -176,6 +176,37 @@ jobs:
           echo "## Commit And PR Conventions" >> "$GITHUB_STEP_SUMMARY"
           echo "- Commit messages and PR title format are compliant." >> "$GITHUB_STEP_SUMMARY"
 
+  promotion-release-semver:
+    name: Promotion Release Semver Check
+    runs-on: ubuntu-latest
+    if: >-
+      github.event_name == 'pull_request'
+      && github.event.action != 'closed'
+      && github.base_ref == 'main'
+    steps:
+      - name: Skip non-promotion PRs to main
+        if: github.head_ref != 'develop'
+        run: |
+          echo "Not a develop→main promotion PR; semver title check not required."
+          echo "## Promotion Release Semver" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Skipped (head branch is not develop)." >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Checkout with history and tags
+        if: github.head_ref == 'develop'
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Validate promotion PR title
+        if: github.head_ref == 'develop'
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          git fetch origin develop main --tags
+          bash scripts/validate-promotion-title.sh "$PR_TITLE"
+          echo "## Promotion Release Semver" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Promotion PR title matches expected release bump from develop batch." >> "$GITHUB_STEP_SUMMARY"
+
   cleanup-merged-branch:
     name: Cleanup Merged Feature Branch
     runs-on: ubuntu-latest
