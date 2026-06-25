@@ -16,7 +16,8 @@ Run once per repository or after changing required CI checks.
 - **Conversation resolution** required before merge
 - **Last-push approval** required (prevents self-approve after pushing)
 - **Admins included** in protection (`enforce_admins: true`)
-- **Rulesets** with `github-actions[bot]` bypass for automated `develop` fast-forward ([`sync-develop.yml`](../../.github/workflows/sync-develop.yml))
+- **Rulesets** with `github-actions[bot]` bypass when supported (organization repos)
+- **Personal repos:** add repository secret `BRANCH_SYNC_PAT` (admin-scoped PAT) so [`sync-develop.yml`](../../.github/workflows/sync-develop.yml) can align `develop` after squash promotion
 - **`main` only:** required linear history
 
 ## Merge settings
@@ -58,5 +59,6 @@ Re-run `bash .github/setup-branch-protection.sh` so required status check contex
 
 ## Deferred hardening
 
+- Add repository secret `BRANCH_SYNC_PAT` on personal repos (required for automated develop align)
 - Add **Integration Tests** job to required checks after stable green runs on PRs
 - Enable **signed commits** only when all maintainers use commit signing
