@@ -61,15 +61,30 @@ jobs:
       - name: Fast-forward develop to main
         if: steps.state.outputs.action == 'fast_forward'
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.BRANCH_SYNC_PAT || secrets.GITHUB_TOKEN }}
           MAIN_SHA: ${{ steps.state.outputs.main_sha }}
         run: |
-          echo "Trees match; fast-forwarding develop to main ($MAIN_SHA)"
+          echo "Trees match; aligning develop to main ($MAIN_SHA)"
+          if gh api \
+            --method PATCH \
+            "repos/${{ github.repository }}/git/refs/heads/develop" \
+            -f sha="$MAIN_SHA" \
+            -F force=false 2>/tmp/sync-develop-ff.err; then
+            echo "Fast-forwarded develop to main"
+            exit 0
+          fi
+
+          if ! grep -q "not a fast forward" /tmp/sync-develop-ff.err; then
+            cat /tmp/sync-develop-ff.err >&2
+            exit 1
+          fi
+
+          echo "Graph-only drift after squash promotion; resetting develop ref (trees match)"
           gh api \
             --method PATCH \
             "repos/${{ github.repository }}/git/refs/heads/develop" \
             -f sha="$MAIN_SHA" \
-            -F force=false
+            -F force=true
 
       - name: Open or update hotfix propagation PR
         if: steps.state.outputs.action == 'hotfix_pr'
