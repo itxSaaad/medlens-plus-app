@@ -13,10 +13,11 @@ Run once per repository or after changing required CI checks.
 
 - **PR required** on `develop` and `main`
 - **Required CI checks** must pass (see list below)
-- **1 CODEOWNERS approval** on `develop` and `main` (`@itxSaaad`, `@abdullahzia1`)
+- **1 CODEOWNERS approval from `@itxSaaad`** on `develop` and `main` for collaborator PRs
+- **Repo owner (`@itxSaaad`) may merge own PRs** without external approval (`enforce_admins: false`)
 - **Conversation resolution** required before merge
-- **Last-push approval** required (prevents self-approve after pushing)
-- **Admins included** in protection (`enforce_admins: true`)
+- **Last-push approval** required for collaborators (prevents self-approve after pushing)
+- **Admins excluded** from protection (`enforce_admins: false`) so the sole owner can self-merge; Write collaborators are still subject to CODEOWNERS review
 - **Classic branch protection** is authoritative on personal repos
 - **Rulesets** with `github-actions[bot]` bypass are best-effort (often rejected on personal repos)
 - **`GH_PAT`** (fine-grained PAT) lets [`sync-develop.yml`](../../.github/workflows/sync-develop.yml) align `develop` after release

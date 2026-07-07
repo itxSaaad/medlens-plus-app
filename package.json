@@ -21,7 +21,9 @@
     "api:test:integration": "pnpm --filter @medlens/api test:integration",
     "release": "semantic-release",
     "graphify:update": "graphify update . --force",
-    "prepare": "husky"
+    "prepare": "husky",
+    "setup": "pnpm install",
+    "postinstall": "node scripts/sync-python-deps.mjs"
   },
   "devDependencies": {
     "@commitlint/cli": "^21.0.2",

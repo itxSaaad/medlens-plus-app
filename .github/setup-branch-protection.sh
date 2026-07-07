@@ -6,6 +6,7 @@ set -euo pipefail
 
 REPO="${1:-itxSaaad/medlens-plus-app}"
 GITHUB_ACTIONS_INTEGRATION_ID="${GITHUB_ACTIONS_INTEGRATION_ID:-15368}"
+CODEOWNER_LOGIN="${CODEOWNER_LOGIN:-itxSaaad}"
 
 pat_from_git_remote() {
   local remote_url
@@ -76,7 +77,7 @@ protect_branch_classic() {
       "Commit And PR Convention Checks"
     ]
   },
-  "enforce_admins": true,
+  "enforce_admins": false,
   "required_pull_request_reviews": {
     "dismiss_stale_reviews": true,
     "require_code_owner_reviews": true,
@@ -92,10 +93,15 @@ protect_branch_classic() {
 EOF
 }
 
+resolve_codeowner_user_id() {
+  gh_api GET "users/${CODEOWNER_LOGIN}" | python3 -c "import json, sys; print(json.load(sys.stdin)['id'])"
+}
+
 upsert_ruleset() {
   local name="$1"
   local include_refs="$2"
   local linear_history="$3"
+  local codeowner_user_id="$4"
 
   local rules='[
     {"type": "deletion"},
@@ -169,20 +175,28 @@ for rs in json.load(sys.stdin):
 import json, sys
 rules = json.loads(sys.argv[1])
 includes = json.loads(sys.argv[2])
-actor_id = int(sys.argv[3])
+actions_actor_id = int(sys.argv[3])
+codeowner_user_id = int(sys.argv[4])
 print(json.dumps({
-  'name': sys.argv[4],
+  'name': sys.argv[5],
   'target': 'branch',
   'enforcement': 'active',
   'conditions': {'ref_name': {'include': includes, 'exclude': []}},
   'rules': rules,
-  'bypass_actors': [{
-    'actor_id': actor_id,
-    'actor_type': 'Integration',
-    'bypass_mode': 'always'
-  }]
+  'bypass_actors': [
+    {
+      'actor_id': actions_actor_id,
+      'actor_type': 'Integration',
+      'bypass_mode': 'always'
+    },
+    {
+      'actor_id': codeowner_user_id,
+      'actor_type': 'User',
+      'bypass_mode': 'always'
+    }
+  ]
 }))
-" "$rules" "$include_refs" "$GITHUB_ACTIONS_INTEGRATION_ID" "$name")"
+" "$rules" "$include_refs" "$GITHUB_ACTIONS_INTEGRATION_ID" "$codeowner_user_id" "$name")"
 
   if [[ -n "$existing_id" ]]; then
     echo "  Updating ruleset '${name}' (id=${existing_id})"
@@ -201,9 +215,12 @@ print(json.dumps({
   fi
 }
 
-echo "Applying rulesets (optional; GitHub Actions bypass when supported)..."
-upsert_ruleset "Protected branch main" '["refs/heads/main"]' true || true
-upsert_ruleset "Protected branch develop" '["refs/heads/develop"]' false || true
+echo "Resolving CODEOWNER user id for @${CODEOWNER_LOGIN}..."
+CODEOWNER_USER_ID="$(resolve_codeowner_user_id)"
+
+echo "Applying rulesets (optional; GitHub Actions + owner bypass when supported)..."
+upsert_ruleset "Protected branch main" '["refs/heads/main"]' true "$CODEOWNER_USER_ID" || true
+upsert_ruleset "Protected branch develop" '["refs/heads/develop"]' false "$CODEOWNER_USER_ID" || true
 
 echo "Applying classic branch protection..."
 protect_branch_classic develop false
@@ -211,7 +228,8 @@ protect_branch_classic main true
 
 echo "Done."
 echo "- Squash merge only; auto-merge disabled; delete branch on merge enabled."
-echo "- CODEOWNERS review required (1 approval) on main and develop."
+echo "- Sole CODEOWNER: @${CODEOWNER_LOGIN}; collaborator PRs require owner approval."
+echo "- Repo owner may self-merge (enforce_admins: false); collaborators cannot bypass."
 echo "- Classic branch protection is authoritative (personal repos)."
-echo "- Rulesets with github-actions bypass are best-effort (org repos)."
+echo "- Rulesets with github-actions + owner bypass are best-effort (org repos)."
 echo "- Add repo secret GH_PAT for sync-develop and project automation (docs/ops/GITHUB_AUTOMATION_PAT.md)."

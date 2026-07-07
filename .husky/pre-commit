@@ -1,4 +1,3 @@
 #!/usr/bin/env sh
 # Format and lint staged files only; full repo gates run in CI.
 pnpm exec lint-staged
-pnpm typecheck

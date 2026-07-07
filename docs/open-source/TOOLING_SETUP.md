@@ -65,6 +65,7 @@ Dependabot **cannot** create a branch from `main` while opening the PR to `devel
 - **Check only:** `pnpm format:check` (Prettier dry run)
 - **Editor:** `.editorconfig` + `.vscode/settings.json` (format on save; Prettier, Ruff, Markdownlint)
 - **On commit:** Husky `pre-commit` runs `lint-staged` on **staged files only** (skips graphify, `.cursor`, graphify skills); full `pnpm lint` runs in CI
+- **Python deps:** `pnpm install` runs `uv sync --directory apps/api --frozen --group dev` automatically when `uv` is on PATH (via `postinstall`)
 
 ## Branch promotion and drift
 
