@@ -7,7 +7,6 @@ on:
 
 permissions:
   contents: read
-  issues: write
 
 jobs:
   detect-drift:
@@ -15,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
         with:
           fetch-depth: 0
 
@@ -23,51 +22,34 @@ jobs:
         id: drift
         run: |
           git fetch origin develop main
-          DEV_AHEAD=$(git rev-list --count origin/main..origin/develop)
-          MAIN_AHEAD=$(git rev-list --count origin/develop..origin/main)
-          echo "dev_ahead=$DEV_AHEAD" >> "$GITHUB_OUTPUT"
-          echo "main_ahead=$MAIN_AHEAD" >> "$GITHUB_OUTPUT"
-
-          if git diff --quiet origin/main origin/develop; then
-            echo "trees_match=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "trees_match=false" >> "$GITHUB_OUTPUT"
-          fi
-
-          MAIN_SHA=$(git rev-parse origin/main)
-          DEVELOP_SHA=$(git rev-parse origin/develop)
-          if [ "$MAIN_SHA" = "$DEVELOP_SHA" ]; then
-            echo "aligned=true" >> "$GITHUB_OUTPUT"
-            echo "drift=false" >> "$GITHUB_OUTPUT"
-            echo "state=aligned" >> "$GITHUB_OUTPUT"
-          elif git diff --quiet origin/main origin/develop; then
-            echo "aligned=false" >> "$GITHUB_OUTPUT"
-            echo "drift=true" >> "$GITHUB_OUTPUT"
-            echo "state=graph_only" >> "$GITHUB_OUTPUT"
-          elif [ "$DEV_AHEAD" -gt 0 ] && [ "$MAIN_AHEAD" -eq 0 ]; then
-            echo "aligned=false" >> "$GITHUB_OUTPUT"
-            echo "drift=true" >> "$GITHUB_OUTPUT"
-            echo "state=promotion_needed" >> "$GITHUB_OUTPUT"
-          elif [ "$MAIN_AHEAD" -gt 0 ]; then
-            echo "aligned=false" >> "$GITHUB_OUTPUT"
-            echo "drift=true" >> "$GITHUB_OUTPUT"
-            echo "state=hotfix_needed" >> "$GITHUB_OUTPUT"
-          else
-            echo "aligned=false" >> "$GITHUB_OUTPUT"
-            echo "drift=true" >> "$GITHUB_OUTPUT"
-            echo "state=mixed" >> "$GITHUB_OUTPUT"
-          fi
+          EVAL=$(bash .github/scripts/evaluate-branch-sync.sh origin/main origin/develop)
+          while IFS= read -r line; do
+            echo "$line" >> "$GITHUB_OUTPUT"
+          done <<< "$EVAL"
+          STATE=$(echo "$EVAL" | grep '^drift_state=' | cut -d= -f2)
+          echo "state=$STATE" >> "$GITHUB_OUTPUT"
 
       - name: Close drift issue when aligned
         if: steps.drift.outputs.aligned == 'true'
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_PAT: ${{ secrets.GH_PAT }}
         run: |
+          # shellcheck source=/dev/null
+          source .github/scripts/github-api.sh
+
           TITLE="Branch sync required"
-          EXISTING=$(gh issue list --search "repo:${{ github.repository }} in:title \"$TITLE\" state:open" --json number --jq '.[0].number // empty')
+          ENCODED_TITLE=$(printf '%s' "$TITLE" | jq -sRr @uri)
+          EXISTING=$(github_api GET "/search/issues?q=repo:${GITHUB_REPOSITORY}+is:open+in:title+${ENCODED_TITLE}" \
+            | jq -r '.items[0].number // empty')
+
           if [ -n "$EXISTING" ]; then
-            gh issue close "$EXISTING" --comment "Branches are aligned at the same commit. No action required."
-            echo "Closed issue #$EXISTING"
+            github_api PATCH "/repos/${GITHUB_REPOSITORY}/issues/${EXISTING}" \
+              -H "Content-Type: application/json" \
+              --data-binary '{"state":"closed","state_reason":"completed"}'
+            github_api POST "/repos/${GITHUB_REPOSITORY}/issues/${EXISTING}/comments" \
+              -H "Content-Type: application/json" \
+              --data-binary '{"body":"Branches are aligned at the same commit. No action required."}'
+            echo "Closed issue #${EXISTING}"
           else
             echo "No open drift issue to close."
           fi
@@ -75,17 +57,21 @@ jobs:
       - name: Open or update drift issue
         if: steps.drift.outputs.drift == 'true'
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_PAT: ${{ secrets.GH_PAT }}
           DEV_AHEAD: ${{ steps.drift.outputs.dev_ahead }}
           MAIN_AHEAD: ${{ steps.drift.outputs.main_ahead }}
           STATE: ${{ steps.drift.outputs.state }}
           TREES_MATCH: ${{ steps.drift.outputs.trees_match }}
         run: |
+          # shellcheck source=/dev/null
+          source .github/scripts/github-api.sh
+
           TITLE="Branch sync required"
+          ENCODED_TITLE=$(printf '%s' "$TITLE" | jq -sRr @uri)
 
           case "$STATE" in
             graph_only)
-              ACTION="**Graph-only drift** (file trees match; commit SHAs differ). The [\`sync-develop.yml\`](.github/workflows/sync-develop.yml) workflow fast-forwards \`develop\` to \`main\` on the next \`main\` push — **do not** open a manual backmerge PR."
+              ACTION="**Graph-only drift** (file trees match; commit SHAs differ). [\`sync-develop.yml\`](.github/workflows/sync-develop.yml) aligns \`develop\` after **release completes** on \`main\` — **do not** open a manual backmerge PR."
               ;;
             promotion_needed)
               ACTION="**Promotion needed:** \`develop\` is ahead with unpromoted work. Open PR \`develop\` → \`main\` (see \`docs/open-source/BRANCHING_STRATEGY.md\`)."
@@ -108,10 +94,22 @@ jobs:
 
           ${ACTION}
           "
-          EXISTING=$(gh issue list --search "repo:${{ github.repository }} in:title \"$TITLE\" state:open" --json number --jq '.[0].number // empty')
+
+          EXISTING=$(github_api GET "/search/issues?q=repo:${GITHUB_REPOSITORY}+is:open+in:title+${ENCODED_TITLE}" \
+            | jq -r '.items[0].number // empty')
+
           if [ -n "$EXISTING" ]; then
-            gh issue comment "$EXISTING" --body "$BODY"
-            echo "Updated issue #$EXISTING"
+            github_api POST "/repos/${GITHUB_REPOSITORY}/issues/${EXISTING}/comments" \
+              -H "Content-Type: application/json" \
+              --data-binary "$(jq -n --arg body "$BODY" '{body: $body}')"
+            echo "Updated issue #${EXISTING}"
           else
-            gh issue create --title "$TITLE" --body "$BODY" --label "type:story" --label "priority:P1"
+            CREATE_PAYLOAD=$(jq -n \
+              --arg title "$TITLE" \
+              --arg body "$BODY" \
+              '{title: $title, body: $body, labels: ["type:story", "priority:P1"]}')
+            ISSUE=$(github_api POST "/repos/${GITHUB_REPOSITORY}/issues" \
+              -H "Content-Type: application/json" \
+              --data-binary "$CREATE_PAYLOAD")
+            echo "Created issue #$(echo "$ISSUE" | jq -r '.number')"
           fi
