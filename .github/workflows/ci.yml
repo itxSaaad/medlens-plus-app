@@ -116,6 +116,8 @@ jobs:
 
       - name: Setup uv runtime
         uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
 
       - name: Install backend dependencies
         run: uv sync --directory apps/api --frozen --group dev
@@ -151,11 +153,28 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
 
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
       - name: Build API image
-        run: docker build -f apps/api/Dockerfile -t medlens-api:scan .
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: apps/api/Dockerfile
+          tags: medlens-api:scan
+          load: true
+          cache-from: type=gha,scope=api
+          cache-to: type=gha,mode=max,scope=api
 
       - name: Build web image
-        run: docker build -f apps/web/Dockerfile -t medlens-web:scan .
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: apps/web/Dockerfile
+          tags: medlens-web:scan
+          load: true
+          cache-from: type=gha,scope=web
+          cache-to: type=gha,mode=max,scope=web
 
       - name: Scan API image
         uses: aquasecurity/trivy-action@master
