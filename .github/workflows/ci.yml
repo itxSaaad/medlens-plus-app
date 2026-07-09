@@ -158,7 +158,7 @@ jobs:
         run: docker build -f apps/web/Dockerfile -t medlens-web:scan .
 
       - name: Scan API image
-        uses: aquasecurity/trivy-action@0.28.0
+        uses: aquasecurity/trivy-action@master
         continue-on-error: true
         with:
           image-ref: medlens-api:scan
@@ -166,7 +166,7 @@ jobs:
           exit-code: "0"
 
       - name: Scan web image
-        uses: aquasecurity/trivy-action@0.28.0
+        uses: aquasecurity/trivy-action@master
         continue-on-error: true
         with:
           image-ref: medlens-web:scan
