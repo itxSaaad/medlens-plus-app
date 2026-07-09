@@ -143,6 +143,41 @@ jobs:
           echo "## Python Quality" >> "$GITHUB_STEP_SUMMARY"
           echo "- Ruff, mypy, and unit tests completed successfully." >> "$GITHUB_STEP_SUMMARY"
 
+  container-scan:
+    name: Container Image Vulnerability Scan
+    runs-on: ubuntu-latest
+    if: github.event_name != 'pull_request' || github.event.action != 'closed'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+
+      - name: Build API image
+        run: docker build -f apps/api/Dockerfile -t medlens-api:scan .
+
+      - name: Build web image
+        run: docker build -f apps/web/Dockerfile -t medlens-web:scan .
+
+      - name: Scan API image
+        uses: aquasecurity/trivy-action@0.28.0
+        continue-on-error: true
+        with:
+          image-ref: medlens-api:scan
+          severity: HIGH,CRITICAL
+          exit-code: "0"
+
+      - name: Scan web image
+        uses: aquasecurity/trivy-action@0.28.0
+        continue-on-error: true
+        with:
+          image-ref: medlens-web:scan
+          severity: HIGH,CRITICAL
+          exit-code: "0"
+
+      - name: Container scan result summary
+        run: |
+          echo "## Container Image Scan" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Trivy scan completed (informational, non-blocking pending severity triage)." >> "$GITHUB_STEP_SUMMARY"
+
   commit-conventions:
     name: Commit And PR Convention Checks
     runs-on: ubuntu-latest

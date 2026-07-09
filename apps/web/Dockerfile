@@ -1,24 +1,34 @@
-FROM node:22-alpine AS deps
+# syntax=docker/dockerfile:1
+FROM node:22-slim AS deps
 WORKDIR /app
-RUN apk add --no-cache wget
+RUN apt-get update && apt-get install -y --no-install-recommends wget && rm -rf /var/lib/apt/lists/*
+RUN --mount=type=cache,target=/root/.npm npm install -g pnpm@10.25.0
 COPY package.json pnpm-lock.yaml* pnpm-workspace.yaml ./
 COPY apps/web/package.json apps/web/package.json
 COPY packages/types/package.json packages/types/package.json
-RUN corepack enable && pnpm install --frozen-lockfile=false
+COPY packages/logger/package.json packages/logger/package.json
+RUN --mount=type=cache,target=/root/.local/share/pnpm/store \
+    pnpm install --frozen-lockfile=false --ignore-scripts
 
-FROM node:22-alpine AS builder
+FROM node:22-slim AS builder
 WORKDIR /app
+RUN --mount=type=cache,target=/root/.npm npm install -g pnpm@10.25.0
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-RUN corepack enable && pnpm --filter @medlens/web build
+RUN pnpm --filter @medlens/web build
 
-FROM node:22-alpine AS runner
+FROM node:22-slim AS runner
 WORKDIR /app
-RUN apk add --no-cache wget
+RUN apt-get update && apt-get install -y --no-install-recommends wget && rm -rf /var/lib/apt/lists/*
+RUN --mount=type=cache,target=/root/.npm npm install -g pnpm@10.25.0
 ENV NODE_ENV=production
 COPY --from=builder /app/apps/web/.next ./apps/web/.next
 COPY --from=builder /app/apps/web/public ./apps/web/public
 COPY --from=builder /app/apps/web/package.json ./apps/web/package.json
 COPY --from=builder /app/node_modules ./node_modules
+RUN chown -R node:node /app
+USER node
 EXPOSE 3000
+HEALTHCHECK --interval=15s --timeout=5s --retries=10 \
+    CMD wget -q -O - http://localhost:3000/api/health || exit 1
 CMD ["pnpm", "--filter", "@medlens/web", "start"]
