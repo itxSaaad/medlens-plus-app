@@ -8,8 +8,9 @@ This repository enforces merge discipline similar to an enterprise software team
 2. Every code change must come via pull request.
 3. Use the [PR template](../../.github/pull_request_template.md) for the body (ticket link, problem, solution, checklists, validation evidence).
 4. Approval requirements (see [`docs/ops/BRANCH_PROTECTION_SETUP.md`](../ops/BRANCH_PROTECTION_SETUP.md)):
-   - `develop`, `main`: **1 CODEOWNERS approval** (`@itxSaaad`, `@abdullahzia1`)
-   - Last-push approval required; blocking conversations must be resolved before merge
+   - `develop`, `main`: **1 CODEOWNERS approval from `@itxSaaad`** for collaborator PRs
+   - Repo owner (`@itxSaaad`) may merge own PRs without external approval
+   - Last-push approval required for collaborators; blocking conversations must be resolved before merge
 5. Required checks must pass before merge:
    - Branch Naming Validation
    - JS Quality - Lint Typecheck Test Build
@@ -39,7 +40,7 @@ Setup details: [`TOOLING_SETUP.md`](./TOOLING_SETUP.md).
 
 ## CODEOWNERS
 
-CODEOWNERS paths in [`.github/CODEOWNERS`](../../.github/CODEOWNERS) require approval from a listed owner on every PR to `main` or `develop`.
+[`@itxSaaad`](https://github.com/itxSaaad) is the sole code owner. Every collaborator PR to `main` or `develop` requires approval from `@itxSaaad`. The repo owner may merge their own PRs without external approval. See [`.github/CODEOWNERS`](../../.github/CODEOWNERS).
 
 ## Branch Promotion Rules
 

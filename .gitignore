@@ -2,6 +2,9 @@
 node_modules/
 .next/
 dist/
+apps/web/temp/
+apps/web/tmp/
+apps/web/next-env.d.ts
 
 # Python
 .venv/
@@ -13,6 +16,9 @@ __pycache__/
 .env.*
 !.env.example
 !**/.env.example
+
+# Turborepo
+.turbo/
 
 # OS
 .DS_Store
