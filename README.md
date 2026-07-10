@@ -1,7 +1,6 @@
 # MedLens+
 
 [![CI - Quality And Governance](https://img.shields.io/github/actions/workflow/status/itxSaaad/medlens-plus-app/ci.yml?branch=main&label=CI)](./.github/workflows/ci.yml)
-[![Release](https://img.shields.io/github/actions/workflow/status/itxSaaad/medlens-plus-app/release.yml?branch=main&label=Release)](./.github/workflows/release.yml)
 [![codecov](https://codecov.io/gh/itxSaaad/medlens-plus-app/graph/badge.svg?token=)](https://codecov.io/gh/itxSaaad/medlens-plus-app)
 [![CodeQL](https://github.com/itxSaaad/medlens-plus-app/actions/workflows/codeql.yml/badge.svg?branch=main)](https://github.com/itxSaaad/medlens-plus-app/actions/workflows/codeql.yml)
 [![Project Board](https://img.shields.io/badge/project-MedLens%2B-blue)](https://github.com/users/itxSaaad/projects/2)
@@ -43,12 +42,10 @@ MedLens+ is a safety-first, longitudinal medical report intelligence platform th
 - Long-lived branches only: `main`, `develop`
 - Feature branches merge by PR (squash merge) and are auto-deleted after merge
 - `develop` and `main` are protected and never deleted
-- Exactly three workflow files:
-  - `CI - Quality And Governance`
-  - `Release - Semantic Versioning And Tags`
-  - `Deploy - Reserved Enterprise Pipeline` (skip gate for now)
+- `CI - Quality And Governance` (`ci.yml`) runs quality checks on every PR and push; on push to `main` it also calls `release.yml` and `deploy.yml` as reusable workflows (`needs:`-gated `workflow_call` jobs, not cross-workflow `workflow_run` chaining, which proved unreliable — see [`docs/open-source/RELEASE_PROCESS.md`](docs/open-source/RELEASE_PROCESS.md)). Release and deploy stay in their own files for separation of concerns and remain independently runnable via `workflow_dispatch`.
+- Supporting workflows: `codeql.yml` (security scanning), `sync-develop.yml` (backmerge PR automation), `branch-drift.yml` (weekly drift check), `integration-gate.yml`, `dependabot-retarget.yml`, `project-automation.yml`
 
-Current deployment strategy is git-integrated platform deployment (Vercel/Render). The deploy workflow is intentionally a placeholder gate until managed environments are enabled.
+Current deployment strategy is git-integrated platform deployment (Vercel/Render). The deploy gate is intentionally a placeholder until managed environments are enabled.
 
 ## Prerequisites
 

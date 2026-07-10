@@ -4,13 +4,11 @@ env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 on:
-  workflow_run:
-    workflows: ["Release - Semantic Versioning And Tags"]
-    types: [completed]
-    branches: [main]
+  workflow_call:
+  workflow_dispatch:
 
 concurrency:
-  group: deploy-${{ github.event.workflow_run.head_branch }}
+  group: deploy-main
   cancel-in-progress: true
 
 jobs:

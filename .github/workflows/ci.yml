@@ -18,7 +18,10 @@ jobs:
   branch-naming:
     name: Branch Naming Validation
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request' && github.event.action != 'closed'
+    if: >-
+      github.event_name == 'pull_request'
+      && github.event.action != 'closed'
+      && github.event.action != 'edited'
     steps:
       - name: Validate source branch naming convention
         env:
@@ -57,7 +60,9 @@ jobs:
   js-quality:
     name: JS Quality - Lint Typecheck Test Build
     runs-on: ubuntu-latest
-    if: github.event_name != 'pull_request' || github.event.action != 'closed'
+    if: >-
+      github.event_name != 'pull_request'
+      || (github.event.action != 'closed' && github.event.action != 'edited')
     steps:
       - name: Checkout repository
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
@@ -112,7 +117,9 @@ jobs:
   python-quality:
     name: Python Quality - Ruff Mypy Pytest
     runs-on: ubuntu-latest
-    if: github.event_name != 'pull_request' || github.event.action != 'closed'
+    if: >-
+      github.event_name != 'pull_request'
+      || (github.event.action != 'closed' && github.event.action != 'edited')
     steps:
       - name: Checkout repository
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
@@ -166,7 +173,9 @@ jobs:
   container-scan:
     name: Container Image Vulnerability Scan
     runs-on: ubuntu-latest
-    if: github.event_name != 'pull_request' || github.event.action != 'closed'
+    if: >-
+      github.event_name != 'pull_request'
+      || (github.event.action != 'closed' && github.event.action != 'edited')
     steps:
       - name: Checkout repository
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
@@ -318,3 +327,31 @@ jobs:
         run: |
           echo "## Branch Cleanup" >> "$GITHUB_STEP_SUMMARY"
           echo "- Merged feature branch cleanup completed." >> "$GITHUB_STEP_SUMMARY"
+
+  # release.yml and deploy.yml are separate files (separation of concerns:
+  # quality gating vs. release vs. deploy are distinct responsibilities) but
+  # are invoked here as reusable workflows (`workflow_call`) with `needs:`,
+  # not via `workflow_run` event-chaining. workflow_run silently no-ops if
+  # the upstream run is cancelled (observed in production — see
+  # docs/open-source/RELEASE_PROCESS.md); a `needs:` dependency on a
+  # `workflow_call` job cannot silently miss like that, since it's a direct
+  # synchronous part of this same workflow run.
+  release:
+    name: Release
+    needs: [js-quality, python-quality, container-scan]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    uses: ./.github/workflows/release.yml
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+    secrets: inherit
+
+  deploy:
+    name: Deploy
+    needs: [release]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    uses: ./.github/workflows/deploy.yml
+    permissions:
+      contents: read
+    secrets: inherit
