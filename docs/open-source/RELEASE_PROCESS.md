@@ -6,21 +6,22 @@
 develop integration  -->  promotion PR (semantic squash title)  -->  main
         |                                                      |
         +--> feat/fix PRs to develop (squash)                  v
-                                                    CI on main push
-                                                              |
-                                                    semantic-release (tag + GitHub Release)
-                                                              |
-                                                    sync-develop (align develop SHA; after release)
-                                                              |
-                                                    deploy gate (skipped by design)
+                                                    push to main
+                                                    (independent, parallel fan-out)
+                                              /                              \
+                            CI on main push                    sync-develop.yml
+                                    |                        (opens/updates main -> develop
+                            semantic-release                  backmerge PR, merge-commit only)
+                            (tag + GitHub Release)
+                                    |
+                            deploy gate (skipped by design)
 ```
 
 1. Feature work lands on `develop` via squash PRs with conventional commits.
 2. Maintainers promote with a **semantic PR title** on `develop` → `main` (squash merge).
-3. CI workflow validates quality and governance checks on `main`.
-4. Release workflow runs only after **successful** CI on `main`.
-5. [`sync-develop.yml`](../../.github/workflows/sync-develop.yml) aligns `develop` with `main` **after release completes** (not on every raw `main` push). Requires repository secret `GH_PAT` — see [`docs/ops/GITHUB_AUTOMATION_PAT.md`](../ops/GITHUB_AUTOMATION_PAT.md).
-6. Deploy workflow is currently a reserved skip-only gate (runs after release).
+3. CI workflow validates quality and governance checks on `main`; release workflow runs only after **successful** CI on `main`.
+4. [`sync-develop.yml`](../../.github/workflows/sync-develop.yml) triggers **directly on every push to `main`**, independently of CI/release — it used to chain off the release workflow's completion, but a workflow_run chain silently no-ops if any upstream run gets cancelled (e.g. a concurrency-group collision), so it was decoupled to fire reliably on its own. It opens/updates a `main` → `develop` PR; a human merges it with **Create a merge commit** (never squash — `develop` has no force-push/direct-push path). Requires repository secret `GH_PAT` — see [`docs/ops/GITHUB_AUTOMATION_PAT.md`](../ops/GITHUB_AUTOMATION_PAT.md).
+5. Deploy workflow is currently a reserved skip-only gate (runs after release).
 
 ## Promotion and versioning (critical)
 
@@ -49,7 +50,7 @@ bash scripts/suggest-promotion-title.sh
 - [ ] All required CI checks green (including Promotion Release Semver Check)
 - [ ] CODEOWNERS approval obtained
 - [ ] Squash merge to `main`
-- [ ] Confirm `sync-develop` aligned `develop` (or same SHA after release version commit)
+- [ ] Merge the `main` → `develop` backmerge PR opened by `sync-develop.yml` using **Create a merge commit** (never squash)
 
 ## Release Automation Behavior
 
@@ -62,7 +63,7 @@ bash scripts/suggest-promotion-title.sh
   - `docs:`, `chore:`, `refactor:`, `test:`, `ci:`, `build:` => no release
 - Root `package.json` version is updated during release (`npmPublish: false`).
 - GitHub Release notes are generated automatically.
-- Release tags (`vX.Y.Z`) stay on `main`; `develop` aligns to the same tree via sync workflow.
+- Release tags (`vX.Y.Z`) stay on `main`; `develop` aligns to the same tree via a human-merged backmerge PR opened by the sync workflow (merge commit, not a direct push — `develop`'s branch protection has no bypass).
 
 ## What triggers a release vs no-op
 

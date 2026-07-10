@@ -1,9 +1,7 @@
 name: Sync Develop To Main
 
 on:
-  workflow_run:
-    workflows: ["Release - Semantic Versioning And Tags"]
-    types: [completed]
+  push:
     branches: [main]
   workflow_dispatch:
 
@@ -18,10 +16,6 @@ jobs:
   sync:
     name: Align develop with main
     runs-on: ubuntu-latest
-    if: >-
-      github.event_name == 'workflow_dispatch'
-      || (github.event.workflow_run.conclusion == 'success'
-          && github.event.workflow_run.head_branch == 'main')
     steps:
       - name: Checkout repository
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
@@ -36,52 +30,36 @@ jobs:
             echo "$line" >> "$GITHUB_OUTPUT"
           done < <(bash .github/scripts/evaluate-branch-sync.sh origin/main origin/develop)
 
-      - name: Fast-forward develop to main
-        if: steps.state.outputs.action == 'fast_forward'
-        env:
-          GH_PAT: ${{ secrets.GH_PAT }}
-          MAIN_SHA: ${{ steps.state.outputs.main_sha }}
-        run: |
-          # shellcheck source=/dev/null
-          source .github/scripts/github-api.sh
-
-          echo "Trees match; aligning develop to main ($MAIN_SHA)"
-          PAYLOAD=$(jq -n --arg sha "$MAIN_SHA" '{sha: $sha, force: false}')
-
-          if github_api PATCH "/repos/${GITHUB_REPOSITORY}/git/refs/heads/develop" \
-            -H "Content-Type: application/json" \
-            --data-binary "$PAYLOAD" 2>/tmp/sync-develop-ff.err; then
-            echo "Fast-forwarded develop to main"
-            exit 0
-          fi
-
-          if ! grep -qi "not a fast forward" /tmp/sync-develop-ff.err; then
-            cat /tmp/sync-develop-ff.err >&2
-            exit 1
-          fi
-
-          echo "Graph-only drift after squash promotion; resetting develop ref (trees match)"
-          FORCE_PAYLOAD=$(jq -n --arg sha "$MAIN_SHA" '{sha: $sha, force: true}')
-          github_api PATCH "/repos/${GITHUB_REPOSITORY}/git/refs/heads/develop" \
-            -H "Content-Type: application/json" \
-            --data-binary "$FORCE_PAYLOAD"
-
-      - name: Open or update hotfix propagation PR
-        if: steps.state.outputs.action == 'hotfix_pr'
+      - name: Open or update backmerge PR
+        if: steps.state.outputs.action == 'fast_forward' || steps.state.outputs.action == 'hotfix_pr'
         env:
           GH_PAT: ${{ secrets.GH_PAT }}
           MAIN_AHEAD: ${{ steps.state.outputs.main_ahead }}
+          SYNC_ACTION: ${{ steps.state.outputs.action }}
         run: |
           # shellcheck source=/dev/null
           source .github/scripts/github-api.sh
 
           OWNER="${GITHUB_REPOSITORY%%/*}"
-          TITLE="chore: propagate main hotfixes to develop"
-          BODY="## Hotfix propagation
 
-          \`main\` is **${MAIN_AHEAD}** commit(s) ahead of \`develop\` with a non-empty diff.
+          # develop's branch protection forbids force-pushes, so `develop` can
+          # never be fast-forwarded directly by automation. Both drift cases
+          # (graph-only, post squash-promotion; and hotfix, real diff) resolve
+          # the same way: a human-reviewed PR merged with a *merge commit*
+          # (never squash — squashing here recreates the drift every cycle).
+          if [ "$SYNC_ACTION" = "fast_forward" ]; then
+            TITLE="chore: sync develop with main (post-promotion)"
+            REASON="Graph-only drift after a squash promotion to \`main\` — file trees already match, this PR has an empty diff and exists only to align commit ancestry."
+          else
+            TITLE="chore: propagate main hotfixes to develop"
+            REASON="\`main\` is **${MAIN_AHEAD}** commit(s) ahead of \`develop\` with a real (non-empty) diff — likely a hotfix merged directly to \`main\`."
+          fi
 
-          Merge this PR to bring hotfix changes into \`develop\`. Do **not** use this PR after a squash promotion when trees already match — the sync workflow fast-forwards \`develop\` instead.
+          BODY="## Backmerge: main -> develop
+
+          ${REASON}
+
+          **Merge this PR with \"Create a merge commit\" — do not squash.** Squashing produces a new commit with no shared ancestry to \`develop\`, which reintroduces the drift this workflow exists to prevent.
 
           See \`docs/open-source/BRANCHING_STRATEGY.md\`.
           "
@@ -93,7 +71,7 @@ jobs:
             github_api POST "/repos/${GITHUB_REPOSITORY}/issues/${EXISTING}/comments" \
               -H "Content-Type: application/json" \
               --data-binary "$(jq -n --arg body "$BODY" '{body: $body}')"
-            echo "Updated hotfix propagation PR #${EXISTING}"
+            echo "Updated backmerge PR #${EXISTING}"
           else
             CREATE_PAYLOAD=$(jq -n \
               --arg title "$TITLE" \
@@ -105,7 +83,7 @@ jobs:
               -H "Content-Type: application/json" \
               --data-binary "$CREATE_PAYLOAD")
             PR_NUMBER=$(echo "$PR" | jq -r '.number')
-            echo "Opened hotfix propagation PR #${PR_NUMBER}"
+            echo "Opened backmerge PR #${PR_NUMBER}"
           fi
 
       - name: Log promotion reminder
