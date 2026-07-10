@@ -71,7 +71,7 @@ jobs:
 
           case "$STATE" in
             graph_only)
-              ACTION="**Graph-only drift** (file trees match; commit SHAs differ). [\`sync-develop.yml\`](.github/workflows/sync-develop.yml) aligns \`develop\` after **release completes** on \`main\` — **do not** open a manual backmerge PR."
+              ACTION="**Graph-only drift** (file trees match; commit SHAs differ). [\`sync-develop.yml\`](.github/workflows/sync-develop.yml) opens/updates a \`main\` -> \`develop\` PR on every push to \`main\`. Merge it with **Create a merge commit** (never squash) — see \`docs/open-source/BRANCHING_STRATEGY.md\`."
               ;;
             promotion_needed)
               ACTION="**Promotion needed:** \`develop\` is ahead with unpromoted work. Open PR \`develop\` → \`main\` (see \`docs/open-source/BRANCHING_STRATEGY.md\`)."
