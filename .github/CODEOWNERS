@@ -1,8 +1,2 @@
-* @itxSaaad @abdullahzia1
-
-/packages/agents/ @itxSaaad @abdullahzia1
-/packages/security/ @itxSaaad @abdullahzia1
-/packages/schemas/ @itxSaaad @abdullahzia1
-/apps/api/src/api/core/ @itxSaaad @abdullahzia1
-/apps/api/src/api/workflows/ @itxSaaad @abdullahzia1
-/docs/architecture/ @itxSaaad @abdullahzia1
+# MedLens+ — sole code owner; collaborator PRs require @itxSaaad approval
+* @itxSaaad

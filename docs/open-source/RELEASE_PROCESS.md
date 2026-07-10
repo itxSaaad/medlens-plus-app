@@ -10,7 +10,7 @@ develop integration  -->  promotion PR (semantic squash title)  -->  main
                                                               |
                                                     semantic-release (tag + GitHub Release)
                                                               |
-                                                    sync-develop (align develop SHA)
+                                                    sync-develop (align develop SHA; after release)
                                                               |
                                                     deploy gate (skipped by design)
 ```
@@ -19,7 +19,7 @@ develop integration  -->  promotion PR (semantic squash title)  -->  main
 2. Maintainers promote with a **semantic PR title** on `develop` → `main` (squash merge).
 3. CI workflow validates quality and governance checks on `main`.
 4. Release workflow runs only after **successful** CI on `main`.
-5. [`sync-develop.yml`](../../.github/workflows/sync-develop.yml) aligns `develop` with `main` after each `main` push.
+5. [`sync-develop.yml`](../../.github/workflows/sync-develop.yml) aligns `develop` with `main` **after release completes** (not on every raw `main` push). Requires repository secret `GH_PAT` — see [`docs/ops/GITHUB_AUTOMATION_PAT.md`](../ops/GITHUB_AUTOMATION_PAT.md).
 6. Deploy workflow is currently a reserved skip-only gate (runs after release).
 
 ## Promotion and versioning (critical)

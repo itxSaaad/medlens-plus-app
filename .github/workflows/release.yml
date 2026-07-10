@@ -25,18 +25,18 @@ jobs:
     if: github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main'
     steps:
       - name: Checkout main branch with full history
-        uses: actions/checkout@v6
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
         with:
           ref: main
           fetch-depth: 0
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v6
+        uses: pnpm/action-setup@b0f76dfb45f55f8421693e4803ac7bb65143bd34 # v6
         with:
           version: 10.25.0
 
       - name: Setup Node.js 22
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
         with:
           node-version: 22
           cache: pnpm
@@ -51,6 +51,8 @@ jobs:
 
       - name: Release summary
         run: |
-          echo "## Release" >> "$GITHUB_STEP_SUMMARY"
-          echo "- semantic-release executed on main." >> "$GITHUB_STEP_SUMMARY"
-          echo "- Versioning uses Conventional Commits and semantic tags (vX.Y.Z)." >> "$GITHUB_STEP_SUMMARY"
+          {
+            echo "## Release"
+            echo "- semantic-release executed on main."
+            echo "- Versioning uses Conventional Commits and semantic tags (vX.Y.Z)."
+          } >> "$GITHUB_STEP_SUMMARY"

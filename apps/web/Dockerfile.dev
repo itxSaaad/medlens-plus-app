@@ -1,10 +1,15 @@
-FROM node:22-alpine
+# syntax=docker/dockerfile:1
+FROM node:22-slim
 WORKDIR /app
-RUN apk add --no-cache wget
-RUN corepack enable
+RUN apt-get update && apt-get install -y --no-install-recommends wget && rm -rf /var/lib/apt/lists/*
+RUN --mount=type=cache,target=/root/.npm npm install -g pnpm@10.25.0
 COPY package.json pnpm-workspace.yaml ./
 COPY apps/web/package.json apps/web/package.json
 COPY packages/types/package.json packages/types/package.json
-RUN pnpm install --frozen-lockfile=false
+COPY packages/logger/package.json packages/logger/package.json
+RUN --mount=type=cache,target=/root/.local/share/pnpm/store \
+    pnpm install --frozen-lockfile=false --ignore-scripts
 EXPOSE 3000
+HEALTHCHECK --interval=15s --timeout=5s --retries=10 \
+    CMD wget -q -O - http://localhost:3000/api/health || exit 1
 CMD ["pnpm", "--filter", "@medlens/web", "dev", "--hostname", "0.0.0.0", "--port", "3000"]

@@ -25,7 +25,7 @@ branches:
       required_conversation_resolution: true
       required_linear_history: true
       restrictions: null
-      enforce_admins: true
+      enforce_admins: false # repo owner (@itxSaaad) may self-merge; collaborators still need CODEOWNERS approval
       allow_force_pushes: false
       allow_deletions: false
       allow_auto_merge: false
@@ -35,6 +35,9 @@ branches:
       bypass_actors:
         - actor_type: Integration
           actor_id: 15368 # github-actions[bot]
+          bypass_mode: always
+        - actor_type: User
+          actor_login: itxSaaad # sole CODEOWNER; owner self-merge bypass (best-effort in rulesets)
           bypass_mode: always
 
   develop:
@@ -54,7 +57,7 @@ branches:
       required_conversation_resolution: true
       required_linear_history: false
       restrictions: null
-      enforce_admins: true
+      enforce_admins: false # repo owner (@itxSaaad) may self-merge; collaborators still need CODEOWNERS approval
       allow_force_pushes: false
       allow_deletions: false
       allow_auto_merge: false
@@ -65,5 +68,8 @@ branches:
         - actor_type: Integration
           actor_id: 15368 # github-actions[bot]
           bypass_mode: always
+        - actor_type: User
+          actor_login: itxSaaad # sole CODEOWNER; owner self-merge bypass (best-effort in rulesets)
+          bypass_mode: always
 
-# CODEOWNERS: @itxSaaad @abdullahzia1 — one approval from a listed owner required.
+# CODEOWNERS: @itxSaaad only — collaborator PRs require owner approval; owner may self-merge (enforce_admins: false).

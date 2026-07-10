@@ -50,10 +50,21 @@ MedLens+ is a safety-first, longitudinal medical report intelligence platform th
 
 Current deployment strategy is git-integrated platform deployment (Vercel/Render). The deploy workflow is intentionally a placeholder gate until managed environments are enabled.
 
+## Prerequisites
+
+Works on Windows, Linux, and macOS.
+
+- **Node.js 22+** and **pnpm 10.25.0** (`corepack enable`)
+- **Python 3.12+**
+- **uv** — install once per machine:
+  - macOS/Linux: `curl -LsSf https://astral.sh/uv/install.sh | sh`
+  - Windows (PowerShell): `powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"`
+- **Git for Windows** (includes Git Bash) — required for Husky hooks on Windows
+
 ## Quick Start
 
 ```bash
-pnpm install
+pnpm install   # installs Node deps + syncs apps/api Python dev deps via uv (if uv is on PATH)
 pnpm lint
 pnpm typecheck
 pnpm test
