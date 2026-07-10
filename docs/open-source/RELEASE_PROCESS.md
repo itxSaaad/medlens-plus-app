@@ -9,19 +9,20 @@ develop integration  -->  promotion PR (semantic squash title)  -->  main
                                                     push to main
                                                     (independent, parallel fan-out)
                                               /                              \
-                            CI on main push                    sync-develop.yml
+                    ci.yml: js/python/container checks       sync-develop.yml
                                     |                        (opens/updates main -> develop
-                            semantic-release                  backmerge PR, merge-commit only)
-                            (tag + GitHub Release)
+                    ci.yml calls release.yml (needs: quality)  backmerge PR, merge-commit only)
+                    reusable workflow: tag + GitHub Release
                                     |
-                            deploy gate (skipped by design)
+                    ci.yml calls deploy.yml (needs: release)
+                    reusable workflow: skipped by design
 ```
 
 1. Feature work lands on `develop` via squash PRs with conventional commits.
 2. Maintainers promote with a **semantic PR title** on `develop` → `main` (squash merge).
-3. CI workflow validates quality and governance checks on `main`; release workflow runs only after **successful** CI on `main`.
-4. [`sync-develop.yml`](../../.github/workflows/sync-develop.yml) triggers **directly on every push to `main`**, independently of CI/release — it used to chain off the release workflow's completion, but a workflow_run chain silently no-ops if any upstream run gets cancelled (e.g. a concurrency-group collision), so it was decoupled to fire reliably on its own. It opens/updates a `main` → `develop` PR; a human merges it with **Create a merge commit** (never squash — `develop` has no force-push/direct-push path). Requires repository secret `GH_PAT` — see [`docs/ops/GITHUB_AUTOMATION_PAT.md`](../ops/GITHUB_AUTOMATION_PAT.md).
-5. Deploy workflow is currently a reserved skip-only gate (runs after release).
+3. `ci.yml` runs quality checks on the `main` push, then calls [`release.yml`](../../.github/workflows/release.yml) and [`deploy.yml`](../../.github/workflows/deploy.yml) as **reusable workflows** (`on: workflow_call`) via `jobs.release.uses:` / `jobs.deploy.uses:`, gated by `needs: [js-quality, python-quality, container-scan]` and `needs: release` respectively. Release and deploy stay in their own files — separate concerns, separately reviewable — but run as part of the same workflow run as jobs, not as independently triggered workflows. This matters: they used to be chained via `workflow_run` (CI → Release → Deploy), and that chain silently no-ops whenever the upstream run is cancelled (e.g. a concurrency-group collision), with no error surfaced. A `needs:` dependency on a `workflow_call` job can't silently miss an event like that — it's a direct part of the same run.
+4. [`sync-develop.yml`](../../.github/workflows/sync-develop.yml) triggers **directly on every push to `main`**, independently of `ci.yml`. It opens/updates a `main` → `develop` PR; a human merges it with **Create a merge commit** (never squash — `develop` has no force-push/direct-push path). Requires repository secret `GH_PAT` — see [`docs/ops/GITHUB_AUTOMATION_PAT.md`](../ops/GITHUB_AUTOMATION_PAT.md).
+5. `deploy.yml` is currently a reserved skip-only workflow (called after `release.yml` succeeds on `main`). Both remain runnable standalone via `workflow_dispatch` for manual retries.
 
 ## Promotion and versioning (critical)
 

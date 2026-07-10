@@ -5,6 +5,10 @@ on:
     branches: [develop, main]
     types: [opened, synchronize, reopened]
 
+concurrency:
+  group: integration-gate-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 
