@@ -6,21 +6,23 @@
 develop integration  -->  promotion PR (semantic squash title)  -->  main
         |                                                      |
         +--> feat/fix PRs to develop (squash)                  v
-                                                    CI on main push
-                                                              |
-                                                    semantic-release (tag + GitHub Release)
-                                                              |
-                                                    sync-develop (align develop SHA; after release)
-                                                              |
-                                                    deploy gate (skipped by design)
+                                                    push to main
+                                                    (independent, parallel fan-out)
+                                              /                              \
+                    ci.yml: js/python/container checks       sync-develop.yml
+                                    |                        (opens/updates main -> develop
+                    ci.yml calls release.yml (needs: quality)  backmerge PR, merge-commit only)
+                    reusable workflow: tag + GitHub Release
+                                    |
+                    ci.yml calls deploy.yml (needs: release)
+                    reusable workflow: skipped by design
 ```
 
 1. Feature work lands on `develop` via squash PRs with conventional commits.
 2. Maintainers promote with a **semantic PR title** on `develop` → `main` (squash merge).
-3. CI workflow validates quality and governance checks on `main`.
-4. Release workflow runs only after **successful** CI on `main`.
-5. [`sync-develop.yml`](../../.github/workflows/sync-develop.yml) aligns `develop` with `main` **after release completes** (not on every raw `main` push). Requires repository secret `GH_PAT` — see [`docs/ops/GITHUB_AUTOMATION_PAT.md`](../ops/GITHUB_AUTOMATION_PAT.md).
-6. Deploy workflow is currently a reserved skip-only gate (runs after release).
+3. `ci.yml` runs quality checks on the `main` push, then calls [`release.yml`](../../.github/workflows/release.yml) and [`deploy.yml`](../../.github/workflows/deploy.yml) as **reusable workflows** (`on: workflow_call`) via `jobs.release.uses:` / `jobs.deploy.uses:`, gated by `needs: [js-quality, python-quality, container-scan]` and `needs: release` respectively. Release and deploy stay in their own files — separate concerns, separately reviewable — but run as part of the same workflow run as jobs, not as independently triggered workflows. This matters: they used to be chained via `workflow_run` (CI → Release → Deploy), and that chain silently no-ops whenever the upstream run is cancelled (e.g. a concurrency-group collision), with no error surfaced. A `needs:` dependency on a `workflow_call` job can't silently miss an event like that — it's a direct part of the same run.
+4. [`sync-develop.yml`](../../.github/workflows/sync-develop.yml) triggers **directly on every push to `main`**, independently of `ci.yml`. It opens/updates a `main` → `develop` PR; a human merges it with **Create a merge commit** (never squash — `develop` has no force-push/direct-push path). Requires repository secret `GH_PAT` — see [`docs/ops/GITHUB_AUTOMATION_PAT.md`](../ops/GITHUB_AUTOMATION_PAT.md).
+5. `deploy.yml` is currently a reserved skip-only workflow (called after `release.yml` succeeds on `main`). Both remain runnable standalone via `workflow_dispatch` for manual retries.
 
 ## Promotion and versioning (critical)
 
@@ -49,7 +51,7 @@ bash scripts/suggest-promotion-title.sh
 - [ ] All required CI checks green (including Promotion Release Semver Check)
 - [ ] CODEOWNERS approval obtained
 - [ ] Squash merge to `main`
-- [ ] Confirm `sync-develop` aligned `develop` (or same SHA after release version commit)
+- [ ] Merge the `main` → `develop` backmerge PR opened by `sync-develop.yml` using **Create a merge commit** (never squash)
 
 ## Release Automation Behavior
 
@@ -62,7 +64,7 @@ bash scripts/suggest-promotion-title.sh
   - `docs:`, `chore:`, `refactor:`, `test:`, `ci:`, `build:` => no release
 - Root `package.json` version is updated during release (`npmPublish: false`).
 - GitHub Release notes are generated automatically.
-- Release tags (`vX.Y.Z`) stay on `main`; `develop` aligns to the same tree via sync workflow.
+- Release tags (`vX.Y.Z`) stay on `main`; `develop` aligns to the same tree via a human-merged backmerge PR opened by the sync workflow (merge commit, not a direct push — `develop`'s branch protection has no bypass).
 
 ## What triggers a release vs no-op
 
