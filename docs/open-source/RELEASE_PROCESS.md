@@ -3,59 +3,52 @@
 ## Workflow Sequence
 
 ```text
-develop integration  -->  promotion PR (semantic squash title)  -->  main
-        |                                                      |
-        +--> feat/fix PRs to develop (squash)                  v
-                                                    push to main
-                                                    (independent, parallel fan-out)
-                                              /                              \
-                    ci.yml: js/python/container checks       sync-develop.yml
-                                    |                        (opens/updates main -> develop
-                    ci.yml calls release.yml (needs: quality)  backmerge PR, merge-commit only)
-                    reusable workflow: tag + GitHub Release
-                                    |
-                    ci.yml calls deploy.yml (needs: release)
-                    reusable workflow: skipped by design
+develop integration  -->  promotion PR (rebase merge)  -->  main
+        |                                             |
+        +--> feat/fix PRs to develop (squash)          v
+                                        rebase-merge fast-forwards main to
+                                        develop's exact tip (no new commit,
+                                        no divergence — see BRANCHING_STRATEGY.md)
+                                                    |
+                                            push to main
+                                          (independent, parallel fan-out)
+                                    /                              \
+            ci.yml: js/python/container checks       sync-develop.yml
+                            |                        (no-op in the normal case —
+            ci.yml calls release.yml (needs: quality)  main already equals develop;
+            reusable workflow: tag + GitHub Release     opens a backmerge PR only
+                            |                            after a hotfix diverges them)
+            ci.yml calls deploy.yml (needs: release)
+            reusable workflow: skipped by design
 ```
 
-1. Feature work lands on `develop` via squash PRs with conventional commits.
-2. Maintainers promote with a **semantic PR title** on `develop` → `main` (squash merge).
+1. Feature work lands on `develop` via squash PRs with conventional commits. Squashing here is fine — `develop` isn't tagged or released from, and one commit per feature keeps its history readable.
+2. Maintainers promote `develop` → `main` merged with **"Rebase and merge"** — not squash, not a merge commit. Every individual conventional commit lands on `main` unchanged. When `develop` has no independent divergence from `main` (the normal case — see "Why promotion uses rebase-merge" in `BRANCHING_STRATEGY.md`), GitHub performs a true fast-forward: `main` becomes the exact same commit as `develop`, zero new commits created.
 3. `ci.yml` runs quality checks on the `main` push, then calls [`release.yml`](../../.github/workflows/release.yml) and [`deploy.yml`](../../.github/workflows/deploy.yml) as **reusable workflows** (`on: workflow_call`) via `jobs.release.uses:` / `jobs.deploy.uses:`, gated by `needs: [js-quality, python-quality, container-scan]` and `needs: release` respectively. Release and deploy stay in their own files — separate concerns, separately reviewable — but run as part of the same workflow run as jobs, not as independently triggered workflows. This matters: they used to be chained via `workflow_run` (CI → Release → Deploy), and that chain silently no-ops whenever the upstream run is cancelled (e.g. a concurrency-group collision), with no error surfaced. A `needs:` dependency on a `workflow_call` job can't silently miss an event like that — it's a direct part of the same run.
-4. [`sync-develop.yml`](../../.github/workflows/sync-develop.yml) triggers **directly on every push to `main`**, independently of `ci.yml`. It opens/updates a `main` → `develop` PR; a human merges it with **Create a merge commit** (never squash — `develop` has no force-push/direct-push path). Requires repository secret `GH_PAT` — see [`docs/ops/GITHUB_AUTOMATION_PAT.md`](../ops/GITHUB_AUTOMATION_PAT.md).
+4. [`sync-develop.yml`](../../.github/workflows/sync-develop.yml) still triggers on every push to `main` as a safety net, but in the normal case `main` and `develop` are already the same commit (from the fast-forward in step 2) and it no-ops. It only opens a `main` → `develop` backmerge PR when a hotfix landed directly on `main`, bypassing `develop` — a human merges that with **Create a merge commit** (never squash). Requires repository secret `GH_PAT` — see [`docs/ops/GITHUB_AUTOMATION_PAT.md`](../ops/GITHUB_AUTOMATION_PAT.md).
 5. `deploy.yml` is currently a reserved skip-only workflow (called after `release.yml` succeeds on `main`). Both remain runnable standalone via `workflow_dispatch` for manual retries.
 
-## Promotion and versioning (critical)
+## Promotion and versioning
 
-Squash promotion creates **one commit** on `main` from the **PR title only**. `semantic-release` does not read individual commits that were squashed on `develop`.
-
-| Promotion PR title | Release on `main` |
-|------------------|-------------------|
-| `feat!:` or breaking | **Major** bump |
-| `feat:` | **Minor** bump |
-| `fix:` / `perf:` / `revert:` / `release:` | **Patch** bump |
-| `chore(deps):` / `chore(deps-dev):` | **Patch** bump |
-| `chore:` / `docs:` / `ci:` (non-deps) | **No release** |
-
-CI **Promotion Release Semver Check** compares the PR title against commits on `develop` since the last `v*` tag.
-
-Before promotion:
+`semantic-release` reads `main`'s real conventional-commit history directly — there's no PR-title-based versioning trick and nothing to validate before opening the promotion PR. Every commit that landed on `develop` via a conventional-commit-titled squash merge carries its own release-rules classification straight through to `main`, unchanged, because rebase-merge preserves individual commits instead of collapsing them.
 
 ```bash
-bash scripts/suggest-promotion-title.sh
+gh pr create --head develop --base main --title "chore: promote develop to main"
 ```
+
+The promotion PR title itself doesn't drive versioning — it just needs to pass the normal `Commit And PR Convention Checks` (any of `feat`, `fix`, `docs`, `chore`, `refactor`, `test`, `ci`, `release`).
 
 ### Maintainer checklist
 
-- [ ] Run `bash scripts/suggest-promotion-title.sh` and use the suggested title (or higher semver)
 - [ ] List included PRs/issues in the promotion PR body
-- [ ] All required CI checks green (including Promotion Release Semver Check)
-- [ ] CODEOWNERS approval obtained
-- [ ] Squash merge to `main`
-- [ ] Merge the `main` → `develop` backmerge PR opened by `sync-develop.yml` using **Create a merge commit** (never squash)
+- [ ] All required CI checks green
+- [ ] CODEOWNERS approval obtained (or admin bypass, if you're the repo owner merging your own PR)
+- [ ] Merge with **"Rebase and merge"** — never squash, never a merge commit
+- [ ] Confirm `main` and `develop` now point at the same commit (`git fetch && git rev-parse origin/main origin/develop` — should match). If they don't, a hotfix diverged them; merge the backmerge PR `sync-develop.yml` opens
 
 ## Release Automation Behavior
 
-- Releases are generated by `semantic-release` on `main` only ([`.releaserc.json`](../../.releaserc.json)).
+- Releases are generated by `semantic-release` on `main` only ([`.releaserc.json`](../../.releaserc.json)), reading every conventional commit since the last tag.
 - Version bumps follow Conventional Commits (angular preset):
   - `feat!:` or `BREAKING CHANGE:` footer => **major**
   - `feat:` => **minor**
@@ -63,23 +56,21 @@ bash scripts/suggest-promotion-title.sh
   - `chore(deps):` / `chore(deps-dev):` => **patch**
   - `docs:`, `chore:`, `refactor:`, `test:`, `ci:`, `build:` => no release
 - Root `package.json` version is updated during release (`npmPublish: false`).
-- GitHub Release notes are generated automatically.
-- Release tags (`vX.Y.Z`) stay on `main`; `develop` aligns to the same tree via a human-merged backmerge PR opened by the sync workflow (merge commit, not a direct push — `develop`'s branch protection has no bypass).
+- GitHub Release notes are generated automatically from the real commit list.
+- Release tags (`vX.Y.Z`) land on `main`; `develop` is the same commit already (fast-forward promotion), so there's nothing further to align in the normal case.
 
 ## What triggers a release vs no-op
 
 | Event | Release? |
 |-------|----------|
-| Promotion squash with `feat:` title | Yes — minor+ |
-| Promotion squash with `chore:` title (batch has features) | **No** — misconfigured |
+| Promotion rebase-merge where the batch includes a `feat:` commit | Yes — minor+ |
+| Promotion rebase-merge where the batch is `docs:`/`chore:`/`ci:` only | No — intentional |
 | Hotfix `fix:` PR directly to `main` | Yes — patch |
 | `semantic-release` version commit on `main` | No-op (already released) |
-| Docs-only promotion with `chore:` title | No — intentional |
 
 ## Requirements
 
-- Conventional commits on `develop` feature PRs
-- Semantic promotion PR titles
+- Conventional commits on `develop` feature PRs (these become `main`'s real commit history via rebase-merge, so they must be accurate)
 - Green CI checks before merge to `main`
 
 ## Local formatting
