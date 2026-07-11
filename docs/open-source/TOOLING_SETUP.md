@@ -69,8 +69,8 @@ Dependabot **cannot** create a branch from `main` while opening the PR to `devel
 
 ## Branch promotion and drift
 
-- **Promotion:** manual PR `develop` → `main` with **semantic squash title** (see [`RELEASE_PROCESS.md`](./RELEASE_PROCESS.md)); run `bash scripts/suggest-promotion-title.sh` first
-- **Develop sync:** [`.github/workflows/sync-develop.yml`](../../.github/workflows/sync-develop.yml) aligns `develop` **after release** on `main` (requires `GH_PAT`)
+- **Promotion:** manual PR `develop` → `main`, merged with **"Rebase and merge"** (fast-forward in the normal case — see [`RELEASE_PROCESS.md`](./RELEASE_PROCESS.md)); no title convention or pre-check script needed
+- **Develop sync:** [`.github/workflows/sync-develop.yml`](../../.github/workflows/sync-develop.yml) is a hotfix-divergence safety net — no-ops when `main`/`develop` already match, which is the normal post-promotion state (requires `GH_PAT`)
 - **Drift detection:** [`.github/workflows/branch-drift.yml`](../../.github/workflows/branch-drift.yml) — weekly advisory issue
 - **Bot PRs:** Dependabot targets `develop`; merge manually after review
 
