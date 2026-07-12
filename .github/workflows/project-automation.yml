@@ -3,7 +3,7 @@ name: Project Status Automation
 on:
   pull_request:
     types: [opened, reopened, ready_for_review, closed]
-    branches: [develop, main]
+    branches: [main]
 
 permissions:
   contents: read

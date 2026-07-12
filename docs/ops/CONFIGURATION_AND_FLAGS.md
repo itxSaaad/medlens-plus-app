@@ -33,5 +33,5 @@ These map to factory methods in `apps/api/src/api/core/factories.py`.
 
 ## Enterprise Guidance
 - Keep production flags in secret manager/config service (not git).
-- Use staged rollouts by environment (`develop`, `main`).
+- Use staged rollouts by deployment environment (preview/staging/production), not by branch — trunk-based development has a single branch, so flags (not branches) gate what's visible where.
 - Track all flag changes in release notes.

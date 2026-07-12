@@ -11,16 +11,16 @@ Run once per repository or after changing required CI checks.
 
 ## Current policy
 
-- **PR required** on `develop` and `main`
+- **PR required** on `main` (the only long-lived branch — trunk-based, see [`BRANCHING_STRATEGY.md`](../open-source/BRANCHING_STRATEGY.md))
 - **Required CI checks** must pass (see list below)
-- **1 CODEOWNERS approval from `@itxSaaad`** on `develop` and `main` for collaborator PRs
+- **1 CODEOWNERS approval from `@itxSaaad`** on `main` for collaborator PRs
 - **Repo owner (`@itxSaaad`) may merge own PRs** without external approval (`enforce_admins: false`)
 - **Conversation resolution** required before merge
 - **Last-push approval** required for collaborators (prevents self-approve after pushing)
 - **Admins excluded** from protection (`enforce_admins: false`) so the sole owner can self-merge; Write collaborators are still subject to CODEOWNERS review
 - **Classic branch protection** is authoritative on personal repos
 - **Rulesets** with `github-actions[bot]` bypass are best-effort (often rejected on personal repos)
-- **`GH_PAT`** (fine-grained PAT) lets [`sync-develop.yml`](../../.github/workflows/sync-develop.yml) align `develop` after release
+- **`GH_PAT`** (fine-grained PAT) lets `project-automation.yml` and the `ci.yml` cleanup job manage Projects and delete merged branches
 
 ## Merge settings
 
@@ -50,7 +50,7 @@ bash .github/setup-branch-protection.sh owner/repo
 The script:
 
 1. Patches repository merge settings (squash only, no auto-merge)
-2. Creates/updates rulesets for `main` and `develop` with GitHub Actions bypass (best-effort)
+2. Creates/updates a ruleset for `main` with GitHub Actions bypass (best-effort)
 3. Applies **classic** branch protection mirroring the same policy (authoritative)
 
 Configuration reference: [`.github/branch-protection.yml`](../../.github/branch-protection.yml)
@@ -61,7 +61,7 @@ Re-run `bash .github/setup-branch-protection.sh` so required status check contex
 
 ## Deferred hardening
 
-- Add repository secret **`GH_PAT`** before relying on automated develop sync (replaces legacy `BRANCH_SYNC_PAT`)
+- Add repository secret **`GH_PAT`** before relying on Project Status automation or branch cleanup (replaces legacy `BRANCH_SYNC_PAT`)
 - Add **Integration Tests** job to required checks after stable green runs on PRs
 - Enable **signed commits** only when all maintainers use commit signing
 - Migrate to organization repo + rulesets when Actions bypass is required

@@ -220,10 +220,8 @@ CODEOWNER_USER_ID="$(resolve_codeowner_user_id)"
 
 echo "Applying rulesets (optional; GitHub Actions + owner bypass when supported)..."
 upsert_ruleset "Protected branch main" '["refs/heads/main"]' true "$CODEOWNER_USER_ID" || true
-upsert_ruleset "Protected branch develop" '["refs/heads/develop"]' false "$CODEOWNER_USER_ID" || true
 
 echo "Applying classic branch protection..."
-protect_branch_classic develop false
 protect_branch_classic main true
 
 echo "Done."
@@ -232,4 +230,4 @@ echo "- Sole CODEOWNER: @${CODEOWNER_LOGIN}; collaborator PRs require owner appr
 echo "- Repo owner may self-merge (enforce_admins: false); collaborators cannot bypass."
 echo "- Classic branch protection is authoritative (personal repos)."
 echo "- Rulesets with github-actions + owner bypass are best-effort (org repos)."
-echo "- Add repo secret GH_PAT for sync-develop and project automation (docs/ops/GITHUB_AUTOMATION_PAT.md)."
+echo "- Add repo secret GH_PAT for project automation (docs/ops/GITHUB_AUTOMATION_PAT.md)."

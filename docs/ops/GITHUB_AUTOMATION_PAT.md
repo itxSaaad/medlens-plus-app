@@ -6,13 +6,12 @@ Repository workflows that update protected branches, user Projects, or open issu
 
 | Workflow | Needs |
 | -------- | ----- |
-| [`sync-develop.yml`](../../.github/workflows/sync-develop.yml) | Force-align `develop` ref after release |
 | [`project-automation.yml`](../../.github/workflows/project-automation.yml) | Update user Project #2 Status field |
-| [`branch-drift.yml`](../../.github/workflows/branch-drift.yml) | Open/update drift issues |
 | [`ci.yml`](../../.github/workflows/ci.yml) cleanup job | Delete merged feature branches |
-| [`dependabot-retarget.yml`](../../.github/workflows/dependabot-retarget.yml) | Comment on security Dependabot PRs |
 
-`GITHUB_TOKEN` cannot update protected `develop` or access user-owned Projects v2 reliably. `GH_PAT` replaces the legacy `BRANCH_SYNC_PAT` secret.
+`GITHUB_TOKEN` cannot access user-owned Projects v2 reliably. `GH_PAT` replaces the legacy `BRANCH_SYNC_PAT` secret.
+
+Trunk-based (single `main` branch) removed the cross-branch sync/drift automation (`sync-develop.yml`, `branch-drift.yml`, `dependabot-retarget.yml`) that previously needed this PAT too — see [`BRANCHING_STRATEGY.md`](../open-source/BRANCHING_STRATEGY.md) for why.
 
 ## Step 1 — Create fine-grained PAT
 
@@ -23,11 +22,8 @@ Repository workflows that update protected branches, user Projects, or open issu
 
 | Permission | Access | Used for |
 | ---------- | ------ | -------- |
-| Contents | Read and write | Sync `develop`, delete merged branches |
-| Pull requests | Read and write | Hotfix propagation PRs |
-| Issues | Read and write | Branch drift issues |
+| Contents | Read and write | Delete merged feature branches |
 | Metadata | Read | All API calls |
-| Workflows | Read | `workflow_run` chain visibility |
 | Projects | Read and write | Project Status automation |
 
 - **Expiration:** 90 days (rotate quarterly) or custom per org policy
@@ -55,7 +51,7 @@ Keep: `CODECOV_TOKEN`, and the automatic `GITHUB_TOKEN`.
 | Every 90 days (or before expiry) | Generate new fine-grained PAT with same scopes |
 | Same day | Update `GH_PAT` secret in repository settings |
 | After update | Revoke the old token in Developer settings |
-| Verify | Run **Sync Develop To Main** via **workflow_dispatch** or complete a promotion → release cycle |
+| Verify | Merge a PR to `main` and confirm the cleanup job deletes the feature branch, or run Project Status automation manually |
 
 ## Security rules
 
@@ -68,8 +64,8 @@ Keep: `CODECOV_TOKEN`, and the automatic `GITHUB_TOKEN`.
 
 | Symptom | Likely cause |
 | ------- | ------------- |
-| Sync workflow: `GH_PAT is not set` | Secret missing or misnamed |
-| HTTP 403 on PATCH `develop` | PAT lacks **Contents: Read and write** or token owner is not admin |
+| Cleanup job: `GH_PAT is not set` | Secret missing or misnamed |
+| Branch deletion HTTP 403 | PAT lacks **Contents: Read and write** or token owner is not admin |
 | Project automation HTTP 403 | PAT lacks **Projects: Read and write**; confirm Project #2 includes this repo |
 | `Resource not accessible` in logs | Workflow still using `GITHUB_TOKEN` instead of `GH_PAT` |
 

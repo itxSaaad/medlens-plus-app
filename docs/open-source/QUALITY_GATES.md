@@ -1,6 +1,6 @@
 # Quality Gates
 
-Every PR targeting `develop` or `main` must pass:
+Every PR targeting `main` must pass:
 
 1. Branch naming validation
 2. JS lint + markdown lint

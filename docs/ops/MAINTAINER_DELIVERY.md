@@ -17,12 +17,7 @@ python .github/maintainer/sync-delivery.py --all
 
 ## Branch alignment
 
-After merging delivery changes to `develop`:
-
-1. Open PR `develop` → `main`, review, squash merge manually
-2. [`sync-develop.yml`](../../.github/workflows/sync-develop.yml) fast-forwards `develop` to `main` when file trees match — no manual backmerge after promotion
-
-See [`docs/open-source/BRANCHING_STRATEGY.md`](../open-source/BRANCHING_STRATEGY.md).
+Trunk-based — delivery changes merge directly to `main` via PR (squash), same as any other change. No separate promotion step. See [`docs/open-source/BRANCHING_STRATEGY.md`](../open-source/BRANCHING_STRATEGY.md).
 
 ## Project views
 

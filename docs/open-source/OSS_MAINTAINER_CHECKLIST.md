@@ -15,9 +15,8 @@ Use this checklist before merging PRs.
 - [ ] Safety rules preserved (medical constraints)
 - [ ] CI checks all green
 
-## Release Promotion Checklist
+## Release Checklist
 
-- [ ] `develop` validated
-- [ ] `develop` validated before promotion to `main`
-- [ ] release PR merged to `main`
+- [ ] PR merged to `main` (squash)
+- [ ] CI green, `semantic-release` ran
 - [ ] changelog/release notes reviewed

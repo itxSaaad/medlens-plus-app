@@ -22,7 +22,7 @@ Install these GitHub Apps on `itxSaaad/medlens-plus-app` and add repository secr
 - **Workflow:** [`.github/workflows/codeql.yml`](../../.github/workflows/codeql.yml)
 - **Config:** [`.github/codeql/codeql-config.yml`](../../.github/codeql/codeql-config.yml)
 - **Languages:** JavaScript/TypeScript (`apps/web`, `packages/*`) and Python (`apps/api`)
-- **Schedule:** Weekly Monday 06:00 UTC + on every PR/push to `main` and `develop`
+- **Schedule:** Weekly Monday 06:00 UTC + on every PR/push to `main`
 - **Policy:** **Advisory** — does not block merges; review alerts under **Security → Code scanning**
 - **Enable (one-time):** **Settings → Code security and analysis** → ensure **Code scanning** is enabled after the workflow is on `main`
 - **Promote to required:** optional after 1–2 clean weeks (add job name to branch protection script)
@@ -30,24 +30,11 @@ Install these GitHub Apps on `itxSaaad/medlens-plus-app` and add repository secr
 ## Dependabot (dependency updates)
 
 - **Config:** [`.github/dependabot.yml`](../../.github/dependabot.yml)
-- **Target branch:** `develop` (all npm, pip, and GitHub Actions version updates)
-- **Policy:** Never merge Dependabot PRs directly to `main`; land on `develop` first
+- **Target branch:** `main` (all npm, pip, and GitHub Actions version updates — trunk-based, no separate integration branch)
 - **No install required** — enabled automatically when the config file is on `main`
 - **CI:** Branch naming validation bypasses `dependabot/*`; Dependabot `chore(deps):` / `chore(deps-dev):` commits already pass commitlint
 - **Lockfile conflicts:** When several npm Dependabot PRs overlap, open one manual branch with all version bumps and run `pnpm install` once — do **not** hand-merge `pnpm-lock.yaml` conflict hunks; delete the lockfile and regenerate if needed
-
-### Main-first limitation
-
-Dependabot **cannot** create a branch from `main` while opening the PR to `develop`. Version updates always branch from the `target-branch` commit (`develop` HEAD).
-
-| Update type | PR target | Branch source |
-| ----------- | --------- | ------------- |
-| Version updates | `develop` | `develop` HEAD |
-| Security updates | **`main`** (default branch) | `main` HEAD |
-
-**Workaround for version updates:** Keep `develop` aligned with `main` via [`sync-develop.yml`](../../.github/workflows/sync-develop.yml) so Dependabot reads the same lockfiles as production.
-
-**Security PRs to `main`:** [`dependabot-retarget.yml`](../../.github/workflows/dependabot-retarget.yml) comments with retarget instructions. Manually change the PR base to `develop` or cherry-pick the bump — do not merge security PRs directly to `main`.
+- Security updates and version updates both target `main` directly now — no retargeting workflow needed (the old two-branch model required one; see `BRANCHING_STRATEGY.md` for why that was dropped).
 
 ## Turborepo (monorepo task orchestration)
 
@@ -67,12 +54,9 @@ Dependabot **cannot** create a branch from `main` while opening the PR to `devel
 - **On commit:** Husky `pre-commit` runs `lint-staged` on **staged files only** (skips graphify, `.cursor`, graphify skills); full `pnpm lint` runs in CI
 - **Python deps:** `pnpm install` runs `uv sync --directory apps/api --frozen --group dev` automatically when `uv` is on PATH (via `postinstall`)
 
-## Branch promotion and drift
+## Branch flow
 
-- **Promotion:** manual PR `develop` → `main`, merged with **"Rebase and merge"** (fast-forward in the normal case — see [`RELEASE_PROCESS.md`](./RELEASE_PROCESS.md)); no title convention or pre-check script needed
-- **Develop sync:** [`.github/workflows/sync-develop.yml`](../../.github/workflows/sync-develop.yml) is a hotfix-divergence safety net — no-ops when `main`/`develop` already match, which is the normal post-promotion state (requires `GH_PAT`)
-- **Drift detection:** [`.github/workflows/branch-drift.yml`](../../.github/workflows/branch-drift.yml) — weekly advisory issue
-- **Bot PRs:** Dependabot targets `develop`; merge manually after review
+Trunk-based, single branch — see [`BRANCHING_STRATEGY.md`](./BRANCHING_STRATEGY.md). Every PR (including Dependabot's) targets `main` directly and merges via squash; merge manually after review.
 
 ### Manual cleanup after removing Codacy
 

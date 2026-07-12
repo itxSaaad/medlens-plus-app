@@ -3,48 +3,34 @@
 ## Workflow Sequence
 
 ```text
-develop integration  -->  promotion PR (rebase merge)  -->  main
-        |                                             |
-        +--> feat/fix PRs to develop (squash)          v
-                                        rebase-merge fast-forwards main to
-                                        develop's exact tip (no new commit,
-                                        no divergence — see BRANCHING_STRATEGY.md)
-                                                    |
-                                            push to main
-                                          (independent, parallel fan-out)
-                                    /                              \
-            ci.yml: js/python/container checks       sync-develop.yml
-                            |                        (no-op in the normal case —
-            ci.yml calls release.yml (needs: quality)  main already equals develop;
-            reusable workflow: tag + GitHub Release     opens a backmerge PR only
-                            |                            after a hotfix diverges them)
-            ci.yml calls deploy.yml (needs: release)
-            reusable workflow: skipped by design
+feat/fix PR (from main, squash)  -->  main
+                                        |
+                                push to main
+                                        |
+                ci.yml: js/python/container checks
+                                |
+                ci.yml calls release.yml (needs: quality)
+                reusable workflow: tag + GitHub Release
+                                |
+                ci.yml calls deploy.yml (needs: release)
+                reusable workflow: skipped by design
 ```
 
-1. Feature work lands on `develop` via squash PRs with conventional commits. Squashing here is fine — `develop` isn't tagged or released from, and one commit per feature keeps its history readable.
-2. Maintainers promote `develop` → `main` merged with **"Rebase and merge"** — not squash, not a merge commit. Every individual conventional commit lands on `main` unchanged. When `develop` has no independent divergence from `main` (the normal case — see "Why promotion uses rebase-merge" in `BRANCHING_STRATEGY.md`), GitHub performs a true fast-forward: `main` becomes the exact same commit as `develop`, zero new commits created.
-3. `ci.yml` runs quality checks on the `main` push, then calls [`release.yml`](../../.github/workflows/release.yml) and [`deploy.yml`](../../.github/workflows/deploy.yml) as **reusable workflows** (`on: workflow_call`) via `jobs.release.uses:` / `jobs.deploy.uses:`, gated by `needs: [js-quality, python-quality, container-scan]` and `needs: release` respectively. Release and deploy stay in their own files — separate concerns, separately reviewable — but run as part of the same workflow run as jobs, not as independently triggered workflows. This matters: they used to be chained via `workflow_run` (CI → Release → Deploy), and that chain silently no-ops whenever the upstream run is cancelled (e.g. a concurrency-group collision), with no error surfaced. A `needs:` dependency on a `workflow_call` job can't silently miss an event like that — it's a direct part of the same run.
-4. [`sync-develop.yml`](../../.github/workflows/sync-develop.yml) still triggers on every push to `main` as a safety net, but in the normal case `main` and `develop` are already the same commit (from the fast-forward in step 2) and it no-ops. It only opens a `main` → `develop` backmerge PR when a hotfix landed directly on `main`, bypassing `develop` — a human merges that with **"Rebase and merge"** (never squash, never a merge commit — a merge commit here would permanently block future promotions from fast-forwarding). Requires repository secret `GH_PAT` — see [`docs/ops/GITHUB_AUTOMATION_PAT.md`](../ops/GITHUB_AUTOMATION_PAT.md).
-5. `deploy.yml` is currently a reserved skip-only workflow (called after `release.yml` succeeds on `main`). Both remain runnable standalone via `workflow_dispatch` for manual retries.
+1. Every feature/fix PR merges to `main` via squash, with a conventional-commit-formatted title (that title becomes `main`'s commit message).
+2. `ci.yml` runs quality checks on the `main` push, then calls [`release.yml`](../../.github/workflows/release.yml) and [`deploy.yml`](../../.github/workflows/deploy.yml) as **reusable workflows** (`on: workflow_call`) via `jobs.release.uses:` / `jobs.deploy.uses:`, gated by `needs: [js-quality, python-quality, container-scan]` and `needs: release` respectively. Release and deploy stay in their own files — separate concerns, separately reviewable — but run as part of the same workflow run as jobs, not as independently triggered workflows. This matters: an earlier design chained them via `workflow_run` (CI → Release → Deploy), and that chain silently no-ops whenever the upstream run is cancelled (e.g. a concurrency-group collision), with no error surfaced. A `needs:` dependency on a `workflow_call` job can't silently miss an event like that — it's a direct part of the same run.
+3. `deploy.yml` is currently a reserved skip-only workflow (called after `release.yml` succeeds on `main`). Both remain runnable standalone via `workflow_dispatch` for manual retries.
+4. `semantic-release` runs on **every** merge to `main`, reading the real commit history directly — every squash-merged feature PR is one commit with its own conventional-commit classification, so versioning is accurate per-merge rather than batched.
 
-## Promotion and versioning
+## Versioning
 
-`semantic-release` reads `main`'s real conventional-commit history directly — there's no PR-title-based versioning trick and nothing to validate before opening the promotion PR. Every commit that landed on `develop` via a conventional-commit-titled squash merge carries its own release-rules classification straight through to `main`, unchanged, because rebase-merge preserves individual commits instead of collapsing them.
+No special title convention or batch-semver validation exists or is needed — there's no promotion step to validate a title for. Every PR's squash-merge commit on `main` is itself the unit `semantic-release` reads.
 
-```bash
-gh pr create --head develop --base main --title "chore: promote develop to main"
-```
+### Contributor checklist
 
-The promotion PR title itself doesn't drive versioning — it just needs to pass the normal `Commit And PR Convention Checks` (any of `feat`, `fix`, `docs`, `chore`, `refactor`, `test`, `ci`, `release`).
-
-### Maintainer checklist
-
-- [ ] List included PRs/issues in the promotion PR body
+- [ ] PR title is a valid conventional-commit type (`feat`, `fix`, `docs`, `chore`, `refactor`, `test`, `ci`, `release`)
 - [ ] All required CI checks green
 - [ ] CODEOWNERS approval obtained (or admin bypass, if you're the repo owner merging your own PR)
-- [ ] Merge with **"Rebase and merge"** — never squash, never a merge commit
-- [ ] Confirm `main` and `develop` now point at the same commit (`git fetch && git rev-parse origin/main origin/develop` — should match). If they don't, a hotfix diverged them; merge the backmerge PR `sync-develop.yml` opens
+- [ ] Merge with **squash** — the only method enabled on the repo
 
 ## Release Automation Behavior
 
@@ -57,20 +43,18 @@ The promotion PR title itself doesn't drive versioning — it just needs to pass
   - `docs:`, `chore:`, `refactor:`, `test:`, `ci:`, `build:` => no release
 - Root `package.json` version is updated during release (`npmPublish: false`).
 - GitHub Release notes are generated automatically from the real commit list.
-- Release tags (`vX.Y.Z`) land on `main`; `develop` is the same commit already (fast-forward promotion), so there's nothing further to align in the normal case.
 
 ## What triggers a release vs no-op
 
 | Event | Release? |
 |-------|----------|
-| Promotion rebase-merge where the batch includes a `feat:` commit | Yes — minor+ |
-| Promotion rebase-merge where the batch is `docs:`/`chore:`/`ci:` only | No — intentional |
-| Hotfix `fix:` PR directly to `main` | Yes — patch |
+| PR merged with a `feat:` title | Yes — minor+ |
+| PR merged with a `docs:`/`chore:`/`ci:` title | No — intentional |
 | `semantic-release` version commit on `main` | No-op (already released) |
 
 ## Requirements
 
-- Conventional commits on `develop` feature PRs (these become `main`'s real commit history via rebase-merge, so they must be accurate)
+- Conventional commits on every PR title landing on `main` (this is `main`'s real, permanent commit history — get it right)
 - Green CI checks before merge to `main`
 
 ## Local formatting

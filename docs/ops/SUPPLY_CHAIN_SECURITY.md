@@ -18,8 +18,7 @@ Checklist for dependency and CI supply-chain controls on `medlens-plus-app`. Mos
 
 | Control | Implementation |
 | ------- | -------------- |
-| Dependabot version updates | [`.github/dependabot.yml`](../.github/dependabot.yml) → `target-branch: develop` |
-| Security Dependabot guidance | [`.github/workflows/dependabot-retarget.yml`](../.github/workflows/dependabot-retarget.yml) |
+| Dependabot version updates | [`.github/dependabot.yml`](../.github/dependabot.yml) → `target-branch: main` |
 | CodeQL advisory scanning | [`.github/workflows/codeql.yml`](../.github/workflows/codeql.yml) |
 | npm audit (advisory) | `pnpm audit --audit-level=high` in [`.github/workflows/ci.yml`](../.github/workflows/ci.yml) (non-blocking) |
 | Action pinning | Workflows pin `uses:` to full commit SHA with version comment |
@@ -35,7 +34,7 @@ Third-party Actions are pinned to immutable commit SHAs:
 uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
 ```
 
-When Dependabot opens a **GitHub Actions** version bump PR, verify the new SHA in the diff before merging to `develop`.
+When Dependabot opens a **GitHub Actions** version bump PR, verify the new SHA in the diff before merging to `main`.
 
 ## Fork PR safety
 
@@ -72,7 +71,7 @@ Codacy was removed from repository files. Complete uninstall in GitHub:
 | Cadence | Task |
 | ------- | ---- |
 | Weekly | Review CodeQL + Dependabot alerts under **Security** |
-| Per promotion | Confirm `pnpm audit` and CI green on `develop` |
+| Per PR | Confirm `pnpm audit` and CI green on `main` |
 | Quarterly | Rotate `GH_PAT`; re-run action SHA audit after major Dependabot Actions PRs |
 
 See also: [`TOOLING_SETUP.md`](../open-source/TOOLING_SETUP.md), [`GITHUB_AUTOMATION_PAT.md`](./GITHUB_AUTOMATION_PAT.md).
