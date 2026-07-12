@@ -37,7 +37,7 @@ Report what you ran and any failures; do not claim done without evidence.
 Every commit must pass `commitlint.config.cjs` (`@commitlint/config-conventional`) — the required `Commit And PR Convention Checks` CI job fails the PR otherwise, and this has caused real broken CI in this repo. Rules:
 
 - Header: `<type>(<scope>): <subject>`, ≤100 chars, valid `type` (`feat`, `fix`, `docs`, `chore`, `refactor`, `test`, `ci`, `release`, `perf`, `revert`, `build`)
-- **Body lines ≤100 chars each** — wrap long paragraphs manually; this is the rule most commonly violated
+- `body-max-line-length` is disabled — commit bodies routinely contain unwrappable URLs (Dependabot changelog links, GitHub compare URLs). Still wrap prose by hand for readability.
 - Blank line between header, body, and footer
 - No trailing period on the subject line
 
