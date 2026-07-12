@@ -42,6 +42,11 @@ Turborepo orchestrates workspace tasks (`turbo.json`). CI caches `.turbo/` via G
 - Rules map: `docs/agent-context/RULES_AND_SKILLS_MAP.md`
 
 ## graphify
-When `graphify-out/graph.json` exists:
-- `graphify query "<question>"` before broad file reads
-- `graphify update .` after structural code changes
+
+This project has a knowledge graph at graphify-out/ with god nodes, community structure, and cross-file relationships.
+
+Rules:
+- For codebase questions, first run `graphify query "<question>"` when graphify-out/graph.json exists. Use `graphify path "<A>" "<B>"` for relationships and `graphify explain "<concept>"` for focused concepts. These return a scoped subgraph, usually much smaller than GRAPH_REPORT.md or raw grep output.
+- If graphify-out/wiki/index.md exists, use it for broad navigation instead of raw source browsing.
+- Read graphify-out/GRAPH_REPORT.md only for broad architecture review or when query/path/explain do not surface enough context.
+- After modifying code, run `graphify update .` to keep the graph current (AST-only, no API cost).
