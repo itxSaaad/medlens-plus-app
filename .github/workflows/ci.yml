@@ -230,6 +230,9 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request' && github.event.action != 'closed'
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+
       - name: Lint commit messages
         uses: wagoid/commitlint-github-action@f133a0d95090ef2609192b4a21f54e20af819ea9 # v6
         with:
