@@ -33,6 +33,28 @@ Rebase-merge doesn't have this problem, and it has a specific behavior that reso
 
 This only breaks down if `main` gets a commit `develop` doesn't have (a hotfix). That's the one case where a real backmerge PR is still needed — see below. It's meant to be rare; the normal path never needs one.
 
+### The invariant this depends on, and why merge commits are banned everywhere
+
+The whole scheme only works if `main` and `develop` are **exact SHA matches** immediately after every promotion and every backmerge — not just content-equal, literally the same commit. As of 2026-07-11, both branches were reset to the identical SHA to establish this cleanly (see "Recovery" below for why and how).
+
+**A merge commit anywhere in the `main`↔`develop` relationship breaks this permanently going forward, not just once.** GitHub's rebase-merge refuses to rebase any range that contains a merge commit. If a backmerge is ever done with "Create a merge commit" (even once, even for a legitimate hotfix), the *next* `develop` → `main` promotion will fail to rebase — and since there's no non-empty diff to fall back on (the content already matches), a squash becomes the only option, which reintroduces the original drift and starts the whole cycle over. This is why **every** PR in the `main`↔`develop` relationship — promotion and backmerge alike — must use **"Rebase and merge," never "Create a merge commit," never squash.** Squash is only for feature PRs landing on `develop`, which don't touch this relationship at all (single-parent commits don't block rebase).
+
+### Recovery: if the invariant ever breaks
+
+If `main` and `develop` end up with identical content but different SHAs and no shared ancestry (check with `git diff origin/main origin/develop` — empty — and `git merge-base --is-ancestor origin/main origin/develop` — fails), rebase-merge cannot fix it (an empty diff has nothing to replay, so GitHub silently drops it and the ref never moves). The only clean fix is to reset `develop` to `main`'s exact SHA:
+
+```bash
+# 1. Temporarily allow deletion on develop's protection (PUT full protection
+#    payload with allow_deletions: true — the GitHub API has no single-field
+#    PATCH for this)
+# 2. Delete and recreate develop at main's current SHA:
+gh api repos/<owner>/<repo>/git/refs/heads/develop -X DELETE
+gh api repos/<owner>/<repo>/git/refs -X POST -f ref="refs/heads/develop" -f sha="$(git rev-parse origin/main)"
+# 3. Restore allow_deletions: false on develop's protection
+```
+
+This is safe **only when the content diff is empty** (verify first) — it discards `develop`'s commit graph, not its content, since everything is already present in `main`. Any open PRs targeting `develop` will auto-close (GitHub closes PRs when their base branch is deleted) and need to be recreated or retargeted afterward.
+
 ## Manual promotion
 
 No special title convention or batch-semver validation is needed. `semantic-release` reads `main`'s real commit history directly (rebase-merge preserves every individual `develop` commit, unlike squash), so any conventional-commit-formatted title works:
@@ -50,11 +72,11 @@ Use the PR **body** to list included PRs and issues. Wait for CI, resolve confli
 | Condition | Action |
 |-----------|--------|
 | Same SHA on `main` and `develop` | No-op — this is the expected state after every normal rebase-merge promotion |
-| Same file tree, different SHAs | Open/update `main` → `develop` PR, empty diff, merge with a merge commit |
-| `main` ahead with non-empty diff (hotfix) | Open/update `main` → `develop` PR for human review/merge |
+| Same file tree, different SHAs | Open/update `main` → `develop` PR, empty diff, merge with **"Rebase and merge"** |
+| `main` ahead with non-empty diff (hotfix) | Open/update `main` → `develop` PR for human review/merge, also **"Rebase and merge"** |
 | `develop` ahead with unpromoted work | No-op (open promotion PR when ready) |
 
-Both drift cases (which should now only occur after a hotfix) end the same way — a PR merged with **"Create a merge commit."** There is no direct-push/force-push path; `develop`'s branch protection doesn't allow one.
+Both drift cases (which should now only occur after a hotfix) end the same way — a PR merged with **"Rebase and merge."** Never a merge commit: it would permanently block future `develop` → `main` promotions from fast-forwarding, since GitHub's rebase-merge can't rebase a range that contains one. There is no direct-push/force-push path either; `develop`'s branch protection doesn't allow one.
 
 ## Hotfix / post-promotion propagation
 
@@ -62,7 +84,7 @@ Merge the PR opened by the sync workflow:
 
 ```bash
 gh pr list --base develop --head main --state open
-gh pr merge <number> --merge   # never --squash for this PR
+gh pr merge <number> --rebase   # never --squash, never --merge, for this PR
 ```
 
 Or create one manually if the workflow hasn't fired yet:
@@ -96,8 +118,7 @@ Use a real conflict-resolution merge only when trees differ with actual conflict
 - One-time setup: [`docs/ops/BRANCH_PROTECTION_SETUP.md`](../ops/BRANCH_PROTECTION_SETUP.md)
 - Branch, commit, and PR naming: [`NAMING_CONVENTIONS.md`](./NAMING_CONVENTIONS.md)
 - Release process: [`RELEASE_PROCESS.md`](./RELEASE_PROCESS.md)
-- Squash merge for feature PRs into `develop`; **rebase merge** (never squash, never merge commit) for `develop` → `main` promotion PRs — `main` requires linear history, and only rebase-merge can fast-forward instead of creating a new commit
-- Merge commit only for `main` → `develop` backmerge PRs, which should now be rare (hotfix divergence only — normal promotions fast-forward and need no backmerge)
+- Squash merge for feature PRs into `develop`. **Rebase merge only** (never squash, never merge commit) for both `develop` → `main` promotion PRs and `main` → `develop` backmerge PRs — `main` requires linear history and only rebase-merge can fast-forward instead of creating a new commit; a merge commit on either side permanently blocks future rebase-merges across it, since GitHub can't rebase a range containing one. Backmerge PRs should now be rare (hotfix divergence only — normal promotions fast-forward and need no backmerge).
 - No direct pushes to `main` or `develop` under any circumstance, including by automation — both reject force-pushes and require PRs
 - Auto-merge disabled; Dependabot PRs still require manual merge on `develop`
 - Auto-delete merged feature branches; never delete protected branches
