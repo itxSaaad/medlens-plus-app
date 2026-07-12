@@ -45,8 +45,14 @@ jobs:
           # develop's branch protection forbids force-pushes, so `develop` can
           # never be fast-forwarded directly by automation. Both drift cases
           # (graph-only, post squash-promotion; and hotfix, real diff) resolve
-          # the same way: a human-reviewed PR merged with a *merge commit*
-          # (never squash — squashing here recreates the drift every cycle).
+          # the same way: a human-reviewed PR merged with "Rebase and merge"
+          # (never squash, never a merge commit). A merge commit here would
+          # permanently block future develop -> main promotions from being
+          # rebaseable -- GitHub's rebase-merge refuses to rebase any range
+          # containing a merge commit, so one merge-commit backmerge poisons
+          # every promotion after it. Rebase keeps every commit linear on
+          # both branches, so develop -> main promotion can keep
+          # fast-forwarding indefinitely (see BRANCHING_STRATEGY.md).
           if [ "$SYNC_ACTION" = "fast_forward" ]; then
             TITLE="chore: sync develop with main (post-promotion)"
             REASON="Graph-only drift after a squash promotion to \`main\` — file trees already match, this PR has an empty diff and exists only to align commit ancestry."
@@ -59,7 +65,7 @@ jobs:
 
           ${REASON}
 
-          **Merge this PR with \"Create a merge commit\" — do not squash.** Squashing produces a new commit with no shared ancestry to \`develop\`, which reintroduces the drift this workflow exists to prevent.
+          **Merge this PR with \"Rebase and merge\" — never squash, never a merge commit.** A merge commit here would permanently block future \`develop\` -> \`main\` promotions from fast-forwarding (GitHub's rebase-merge can't rebase a range containing a merge commit). Squashing recreates the original drift this workflow exists to prevent.
 
           See \`docs/open-source/BRANCHING_STRATEGY.md\`.
           "
