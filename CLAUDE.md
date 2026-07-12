@@ -21,7 +21,7 @@ Claude Code instructions for MedLens+.
 | `packages/agents` | Agent layer standards |
 
 ## Execution
-- Branch from `main`; PR to `develop` (features) or `main` (hotfixes)
+- Trunk-based: branch from `main`, PR back to `main` (squash merge). No `develop` branch.
 - Naming: [`docs/open-source/NAMING_CONVENTIONS.md`](docs/open-source/NAMING_CONVENTIONS.md) — `feat/TKT-NNN-slug`, conventional commits, semantic PR title
 - Adapter/factory boundaries; env + feature flags
 - PR-only merges; auto-merge disabled

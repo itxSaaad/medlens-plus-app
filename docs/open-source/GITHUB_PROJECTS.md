@@ -71,5 +71,5 @@ Full rules: [`NAMING_CONVENTIONS.md`](./NAMING_CONVENTIONS.md)
 - Body: follow [PR template](../../.github/pull_request_template.md) — `Closes #NNN` or `Relates to #NNN`, problem/solution, checklists, validation evidence
 - **Size (recommended):** ≤150 changed files; ≤400 lines meaningful diff; split or use modular commits when larger
 - **AI review:** manual only — `@coderabbitai review` / assign Copilot when ready (see [`TOOLING_SETUP.md`](./TOOLING_SETUP.md))
-- Target: `develop` (features); promotion PRs to `main` by maintainers
-- Merge: **squash only** on protected branches
+- Target: `main` — trunk-based, single branch (see [`BRANCHING_STRATEGY.md`](./BRANCHING_STRATEGY.md))
+- Merge: **squash only** — the only merge method enabled on the repo

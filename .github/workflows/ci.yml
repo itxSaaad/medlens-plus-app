@@ -5,10 +5,10 @@ env:
 
 on:
   pull_request:
-    branches: [main, develop]
+    branches: [main]
     types: [opened, synchronize, reopened, edited, closed]
   push:
-    branches: [main, develop]
+    branches: [main]
 
 concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}
@@ -28,7 +28,7 @@ jobs:
           BRANCH_NAME: ${{ github.head_ref }}
         run: |
           echo "Validating branch: $BRANCH_NAME"
-          if [[ "$BRANCH_NAME" =~ ^(develop|main)$ ]]; then
+          if [[ "$BRANCH_NAME" =~ ^main$ ]]; then
             echo "Bypassing naming validation for permanent branch: $BRANCH_NAME"
             exit 0
           fi
@@ -272,7 +272,7 @@ jobs:
           # shellcheck source=/dev/null
           source .github/scripts/github-api.sh
 
-          if [[ "$BRANCH_TO_DELETE" == "main" || "$BRANCH_TO_DELETE" == "develop" ]]; then
+          if [[ "$BRANCH_TO_DELETE" == "main" ]]; then
             echo "Skipping deletion for permanent branch: $BRANCH_TO_DELETE"
             exit 0
           fi

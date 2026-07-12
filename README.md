@@ -39,11 +39,10 @@ MedLens+ is a safety-first, longitudinal medical report intelligence platform th
 
 ## Engineering Workflow
 
-- Long-lived branches only: `main`, `develop`
+- Trunk-based: `main` is the only long-lived branch (protected, never deleted) — see [`docs/open-source/BRANCHING_STRATEGY.md`](docs/open-source/BRANCHING_STRATEGY.md)
 - Feature branches merge by PR (squash merge) and are auto-deleted after merge
-- `develop` and `main` are protected and never deleted
 - `CI - Quality And Governance` (`ci.yml`) runs quality checks on every PR and push; on push to `main` it also calls `release.yml` and `deploy.yml` as reusable workflows (`needs:`-gated `workflow_call` jobs, not cross-workflow `workflow_run` chaining, which proved unreliable — see [`docs/open-source/RELEASE_PROCESS.md`](docs/open-source/RELEASE_PROCESS.md)). Release and deploy stay in their own files for separation of concerns and remain independently runnable via `workflow_dispatch`.
-- Supporting workflows: `codeql.yml` (security scanning), `sync-develop.yml` (backmerge PR automation), `branch-drift.yml` (weekly drift check), `integration-gate.yml`, `dependabot-retarget.yml`, `project-automation.yml`
+- Supporting workflows: `codeql.yml` (security scanning), `integration-gate.yml`, `project-automation.yml`
 
 Current deployment strategy is git-integrated platform deployment (Vercel/Render). The deploy gate is intentionally a placeholder until managed environments are enabled.
 

@@ -19,8 +19,8 @@ Build MedLens+ as a safety-first, longitudinal medical report intelligence platf
 - Update docs in the same PR for architecture/config/flow changes.
 
 ## Branch and PR Rules
-- Branch from `main`; PR to `develop` (features) or `main` (hotfixes).
-- Long-lived branches: `main`, `develop` only.
+- Trunk-based: branch from `main`, PR back to `main` (squash merge).
+- Long-lived branches: `main` only.
 - All merges to protected branches are **manual PR merges** — auto-merge disabled.
 - Link a GitHub issue (`Closes #NNN` or `Relates to #NNN`) in every PR.
 - Use the [PR template](../pull_request_template.md) — summary, safety impact, privacy impact, test evidence.

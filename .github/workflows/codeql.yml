@@ -2,7 +2,7 @@ name: CodeQL Security Analysis
 
 on:
   pull_request:
-    branches: [main, develop]
+    branches: [main]
   schedule:
     - cron: "0 6 * * 1"
 

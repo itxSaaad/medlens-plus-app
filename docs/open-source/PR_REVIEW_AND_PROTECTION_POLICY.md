@@ -4,11 +4,11 @@ This repository enforces merge discipline similar to an enterprise software team
 
 ## Mandatory PR Rules
 
-1. No direct pushes to `main` or `develop`.
+1. No direct pushes to `main`.
 2. Every code change must come via pull request.
 3. Use the [PR template](../../.github/pull_request_template.md) for the body (ticket link, problem, solution, checklists, validation evidence).
 4. Approval requirements (see [`docs/ops/BRANCH_PROTECTION_SETUP.md`](../ops/BRANCH_PROTECTION_SETUP.md)):
-   - `develop`, `main`: **1 CODEOWNERS approval from `@itxSaaad`** for collaborator PRs
+   - `main`: **1 CODEOWNERS approval from `@itxSaaad`** for collaborator PRs
    - Repo owner (`@itxSaaad`) may merge own PRs without external approval
    - Last-push approval required for collaborators; blocking conversations must be resolved before merge
 5. Required checks must pass before merge:
@@ -40,14 +40,13 @@ Setup details: [`TOOLING_SETUP.md`](./TOOLING_SETUP.md).
 
 ## CODEOWNERS
 
-[`@itxSaaad`](https://github.com/itxSaaad) is the sole code owner. Every collaborator PR to `main` or `develop` requires approval from `@itxSaaad`. The repo owner may merge their own PRs without external approval. See [`.github/CODEOWNERS`](../../.github/CODEOWNERS).
+[`@itxSaaad`](https://github.com/itxSaaad) is the sole code owner. Every collaborator PR to `main` requires approval from `@itxSaaad`. The repo owner may merge their own PRs without external approval. See [`.github/CODEOWNERS`](../../.github/CODEOWNERS).
 
-## Branch Promotion Rules
+## Branch Rules
 
-- `feature/*` -> `develop`
-- `develop` -> `main`
+- `feat/*`, `fix/*`, `hotfix/*`, etc. -> `main` (squash merge)
 
-Only promote forward after validations pass.
+Trunk-based — see [`BRANCHING_STRATEGY.md`](./BRANCHING_STRATEGY.md). Merge only after validations pass.
 
 ## Quality Expectations
 
