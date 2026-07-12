@@ -22,6 +22,7 @@ Build MedLens+ as a safety-first, longitudinal medical report intelligence platf
 - Trunk-based: branch from `main`, PR back to `main` (squash merge).
 - Long-lived branches: `main` only.
 - All merges to protected branches are **manual PR merges** — auto-merge disabled.
+- **Every commit message must pass `commitlint.config.cjs`** or the required CI check fails the PR: conventional `<type>(<scope>): <subject>` header, valid type, header ≤100 chars, **body lines ≤100 chars each**, blank lines between header/body/footer.
 - Link a GitHub issue (`Closes #NNN` or `Relates to #NNN`) in every PR.
 - Use the [PR template](../pull_request_template.md) — summary, safety impact, privacy impact, test evidence.
 - **AI reviews (Copilot, CodeRabbit) are manual only** — request when the PR is ready and scoped (see `docs/open-source/TOOLING_SETUP.md`).

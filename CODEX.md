@@ -25,5 +25,8 @@ Codex operating instructions for MedLens+.
 - `pnpm test`
 - `pnpm build`
 
+## Commit Messages
+Every commit must pass `commitlint.config.cjs` (`@commitlint/config-conventional`) — the required `Commit And PR Convention Checks` CI job fails the PR otherwise. Conventional `<type>(<scope>): <subject>` header, valid `type` (`feat`, `fix`, `docs`, `chore`, `refactor`, `test`, `ci`, `release`, etc.), header ≤100 chars, **body lines ≤100 chars each** (wrap long paragraphs), blank line between header/body/footer.
+
 ## Skill Playbooks
 Read `.claude/skills/medlens/SKILL.md` for the index. Modular rules: `.claude/rules/agent-discipline.md`. Map: `docs/agent-context/RULES_AND_SKILLS_MAP.md`.

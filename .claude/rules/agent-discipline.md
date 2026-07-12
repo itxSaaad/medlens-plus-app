@@ -31,3 +31,14 @@ pnpm lint && pnpm typecheck && pnpm test && pnpm build
 ```
 
 Report what you ran and any failures; do not claim done without evidence.
+
+## Commit messages
+
+Every commit must pass `commitlint.config.cjs` (`@commitlint/config-conventional`) — the required `Commit And PR Convention Checks` CI job fails the PR otherwise, and this has caused real broken CI in this repo. Rules:
+
+- Header: `<type>(<scope>): <subject>`, ≤100 chars, valid `type` (`feat`, `fix`, `docs`, `chore`, `refactor`, `test`, `ci`, `release`, `perf`, `revert`, `build`)
+- **Body lines ≤100 chars each** — wrap long paragraphs manually; this is the rule most commonly violated
+- Blank line between header, body, and footer
+- No trailing period on the subject line
+
+If unsure, verify locally before pushing: `pnpm exec commitlint --from HEAD~1 --to HEAD`
