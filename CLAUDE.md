@@ -23,7 +23,7 @@ Claude Code instructions for MedLens+.
 ## Execution
 - Trunk-based: branch from `main`, PR back to `main` (squash merge). No `develop` branch.
 - Naming: [`docs/open-source/NAMING_CONVENTIONS.md`](docs/open-source/NAMING_CONVENTIONS.md) — `feat/TKT-NNN-slug`, conventional commits, semantic PR title
-- **Every commit message must pass `commitlint.config.cjs`** (`@commitlint/config-conventional`) or the required `Commit And PR Convention Checks` CI job fails the PR: `<type>(<scope>): <subject>` header, valid `type` (`feat`, `fix`, `docs`, `chore`, `refactor`, `test`, `ci`, `release`, etc.), header ≤100 chars, **body lines ≤100 chars each** (wrap long paragraphs — this is the rule most commonly missed), blank line between header/body/footer. Run `pnpm exec commitlint --from HEAD~1 --to HEAD` locally before pushing if unsure.
+- **Every commit message must pass `commitlint.config.cjs`** (`@commitlint/config-conventional`) or the required `Commit And PR Convention Checks` CI job fails the PR: `<type>(<scope>): <subject>` header, valid `type` (`feat`, `fix`, `docs`, `chore`, `refactor`, `test`, `ci`, `release`, etc.), header ≤100 chars, blank line between header/body/footer. `body-max-line-length` is disabled (commit bodies routinely contain unwrappable URLs, e.g. Dependabot changelog links) — still wrap prose by hand for readability. Run `pnpm exec commitlint --from HEAD~1 --to HEAD` locally before pushing if unsure.
 - Adapter/factory boundaries; env + feature flags
 - PR-only merges; auto-merge disabled
 - Never bypass medical safety guardrails

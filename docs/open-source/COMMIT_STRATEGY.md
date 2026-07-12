@@ -32,5 +32,5 @@ Keep every commit meaningful, reviewable, and safe to cherry-pick into `main` wh
 ## Enforcement
 - CI enforces commit convention and PR title convention.
 - Branch ticket-id pattern for `feat`/`fix`/`hotfix`: see [`NAMING_CONVENTIONS.md`](./NAMING_CONVENTIONS.md).
-- Commit body lines must be ≤100 characters (commitlint `body-max-line-length`).
+- `body-max-line-length` is disabled — commit bodies routinely contain unwrappable URLs (Dependabot changelog links, GitHub compare URLs). Still wrap prose to a reasonable width by hand for readability; there's just no enforced hard limit.
 - Maintainers should request split commits when a change is not cherry-pick safe.
