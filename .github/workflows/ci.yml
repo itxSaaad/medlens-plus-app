@@ -9,6 +9,7 @@ on:
     types: [opened, synchronize, reopened, edited, closed]
   push:
     branches: [main]
+  workflow_dispatch:
 
 concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}
@@ -302,10 +303,14 @@ jobs:
   # docs/open-source/RELEASE_PROCESS.md); a `needs:` dependency on a
   # `workflow_call` job cannot silently miss like that, since it's a direct
   # synchronous part of this same workflow run.
+  # Release is manual-trigger only (workflow_dispatch), not automatic on
+  # every push to main. Quality checks still run automatically on push --
+  # that feedback loop stays useful even when nothing is release-ready yet.
+  # Run a release with: gh workflow run ci.yml
   release:
     name: Release
     needs: [js-quality, python-quality, container-scan]
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.event_name == 'workflow_dispatch'
     uses: ./.github/workflows/release.yml
     permissions:
       contents: write
@@ -316,7 +321,7 @@ jobs:
   deploy:
     name: Deploy
     needs: [release]
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.event_name == 'workflow_dispatch'
     uses: ./.github/workflows/deploy.yml
     permissions:
       contents: read

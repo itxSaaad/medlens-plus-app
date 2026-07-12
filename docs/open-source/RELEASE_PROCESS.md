@@ -7,8 +7,10 @@ feat/fix PR (from main, squash)  -->  main
                                         |
                                 push to main
                                         |
-                ci.yml: js/python/container checks
-                                |
+                ci.yml: js/python/container checks (automatic, every push)
+                                        |
+                        -- manual: gh workflow run ci.yml --
+                                        |
                 ci.yml calls release.yml (needs: quality)
                 reusable workflow: tag + GitHub Release
                                 |
@@ -17,9 +19,17 @@ feat/fix PR (from main, squash)  -->  main
 ```
 
 1. Every feature/fix PR merges to `main` via squash, with a conventional-commit-formatted title (that title becomes `main`'s commit message).
-2. `ci.yml` runs quality checks on the `main` push, then calls [`release.yml`](../../.github/workflows/release.yml) and [`deploy.yml`](../../.github/workflows/deploy.yml) as **reusable workflows** (`on: workflow_call`) via `jobs.release.uses:` / `jobs.deploy.uses:`, gated by `needs: [js-quality, python-quality, container-scan]` and `needs: release` respectively. Release and deploy stay in their own files — separate concerns, separately reviewable — but run as part of the same workflow run as jobs, not as independently triggered workflows. This matters: an earlier design chained them via `workflow_run` (CI → Release → Deploy), and that chain silently no-ops whenever the upstream run is cancelled (e.g. a concurrency-group collision), with no error surfaced. A `needs:` dependency on a `workflow_call` job can't silently miss an event like that — it's a direct part of the same run.
-3. `deploy.yml` is currently a reserved skip-only workflow (called after `release.yml` succeeds on `main`). Both remain runnable standalone via `workflow_dispatch` for manual retries.
-4. `semantic-release` runs on **every** merge to `main`, reading the real commit history directly — every squash-merged feature PR is one commit with its own conventional-commit classification, so versioning is accurate per-merge rather than batched.
+2. `ci.yml` runs quality checks automatically on every push to `main` — that feedback loop is always on, independent of whether a release is due.
+3. **Releasing is a manual, deliberate action**, not automatic on every push. The `release` and `deploy` jobs in `ci.yml` only run on `workflow_dispatch`:
+
+   ```bash
+   gh workflow run ci.yml
+   ```
+
+   This is intentional: `semantic-release` would otherwise cut a new tagged release on *every* merge, including routine Dependabot bumps, which isn't wanted while the project doesn't yet have a stable, release-worthy state. Cut a release when you actually mean to — not as a side effect of merging a dependency update.
+4. `release` calls [`release.yml`](../../.github/workflows/release.yml) and `deploy` calls [`deploy.yml`](../../.github/workflows/deploy.yml) as **reusable workflows** (`on: workflow_call`) via `jobs.release.uses:` / `jobs.deploy.uses:`, gated by `needs: [js-quality, python-quality, container-scan]` and `needs: release` respectively. Release and deploy stay in their own files — separate concerns, separately reviewable — but run as part of the same workflow run as jobs, not as independently triggered workflows. This matters: an earlier design chained them via `workflow_run` (CI → Release → Deploy), and that chain silently no-ops whenever the upstream run is cancelled (e.g. a concurrency-group collision), with no error surfaced. A `needs:` dependency on a `workflow_call` job can't silently miss an event like that — it's a direct part of the same run.
+5. `deploy.yml` is currently a reserved skip-only workflow (called after `release.yml` succeeds). Both remain runnable standalone via their own `workflow_dispatch` for manual retries.
+6. When triggered, `semantic-release` reads `main`'s real commit history directly — every squash-merged feature PR is one commit with its own conventional-commit classification, so versioning is accurate across however many commits have landed since the last release.
 
 ## Versioning
 
@@ -46,11 +56,13 @@ No special title convention or batch-semver validation exists or is needed — t
 
 ## What triggers a release vs no-op
 
-| Event | Release? |
+Nothing does, automatically — releasing requires `gh workflow run ci.yml` (or the Actions tab "Run workflow" button). Once triggered:
+
+| Commits since last tag | Release? |
 |-------|----------|
-| PR merged with a `feat:` title | Yes — minor+ |
-| PR merged with a `docs:`/`chore:`/`ci:` title | No — intentional |
-| `semantic-release` version commit on `main` | No-op (already released) |
+| Includes a `feat:` commit | Yes — minor+ |
+| Only `docs:`/`chore:`/`ci:` commits | No — intentional no-op |
+| Nothing since the last `semantic-release` run | No-op (already released) |
 
 ## Requirements
 
