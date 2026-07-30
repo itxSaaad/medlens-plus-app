@@ -8,18 +8,21 @@ Read `.claude/skills/testing/SKILL.md` and on demand `references/test-master/`.
 2. Run the narrowest relevant test commands first, then workspace checks if needed.
 
 ## Web
+
 ```bash
 pnpm --filter @medlens/web test:unit
 pnpm --filter @medlens/web test:integration
 ```
 
 ## API
+
 ```bash
 pnpm --filter @medlens/api test
 pnpm --filter @medlens/api test:integration
 ```
 
 ## Full gate
+
 ```bash
 pnpm test
 ```

@@ -8,7 +8,7 @@
     "format": "prettier --write . && pnpm -r --if-present format && pnpm format:md",
     "format:check": "prettier --check .",
     "format:md": "pnpm lint:md:fix",
-    "lint:md": "markdownlint \"**/*.md\" -p .gitignore --ignore \".cursor/**\" --ignore \".claude/skills/graphify/**\"",
+    "lint:md": "markdownlint \"**/*.md\" -p .gitignore --ignore \".cursor/**\" --ignore \".claude/skills/**/references/**\"",
     "lint:md:fix": "markdownlint \"**/*.md\" --fix -p .gitignore --ignore \".cursor/**\" --ignore \".claude/skills/graphify/**\"",
     "typecheck": "turbo run typecheck",
     "test": "turbo run test",

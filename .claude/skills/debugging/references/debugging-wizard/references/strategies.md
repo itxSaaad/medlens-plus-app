@@ -19,7 +19,7 @@ async function process(data) {
   // Bug somewhere below?
 
   const step2 = await validate(step1);
-  console.log('After step2:', step2); // Check here
+  console.log("After step2:", step2); // Check here
 
   const step3 = await enrich(step2);
   const step4 = await save(step3);
@@ -132,11 +132,11 @@ git log --oneline -- src/problematic-file.ts
 
 ## Quick Reference
 
-| Strategy | Best For |
-|----------|----------|
-| Binary Search | Unknown bug location |
+| Strategy      | Best For                |
+| ------------- | ----------------------- |
+| Binary Search | Unknown bug location    |
 | Minimal Repro | Complex bugs, reporting |
-| Git Bisect | Regression bugs |
-| Time Travel | Known error location |
-| Rubber Duck | Logic errors |
-| Delta Debug | Recent breakage |
+| Git Bisect    | Regression bugs         |
+| Time Travel   | Known error location    |
+| Rubber Duck   | Logic errors            |
+| Delta Debug   | Recent breakage         |

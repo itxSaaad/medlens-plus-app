@@ -5,6 +5,15 @@ dist/
 apps/web/temp/
 apps/web/tmp/
 apps/web/next-env.d.ts
+apps/mobile/dist/
+apps/mobile/.expo/
+apps/mobile/web-build/
+apps/mobile/.turbo/
+apps/mobile/.metro-health-check*
+apps/mobile/.cache/
+apps/mobile/android/
+apps/mobile/ios/
+apps/mobile/package-lock.json
 
 # Python
 .venv/

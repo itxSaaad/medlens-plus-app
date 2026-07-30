@@ -1,4 +1,7 @@
-const IGNORED_PATH_RE = /(?:^|\/)(graphify-out|\.cursor|\.claude\/skills\/graphify)(?:\/|$)/;
+// .claude/skills/*/references/** are vendored third-party skill bundles
+// (e.g. react-best-practices, test-master) — not house-style content.
+const IGNORED_PATH_RE =
+  /(?:^|\/)(graphify-out|\.cursor|\.claude\/skills\/graphify|\.claude\/skills\/[^/]+\/references)(?:\/|$)/;
 
 /** @param {string[]} files */
 function withoutIgnoredPaths(files) {
@@ -26,5 +29,7 @@ export default {
   "*.md": (files) => runOnFiles(files, "markdownlint --fix"),
   "apps/web/**/*.{js,jsx,ts,tsx,mjs}": (files) =>
     runOnFiles(files, "pnpm --filter @medlens/web exec eslint --fix"),
+  "apps/mobile/**/*.{js,jsx,ts,tsx,mjs,cjs,json}": (files) =>
+    runOnFiles(files, "pnpm --filter @medlens/mobile exec eslint --fix"),
   "apps/api/**/*.py": (files) => runOnFiles(files, "uv run --directory apps/api ruff check --fix"),
 };

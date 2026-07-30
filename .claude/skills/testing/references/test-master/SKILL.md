@@ -34,15 +34,16 @@ A minimal Jest unit test illustrating the key patterns this skill enforces:
 
 ```js
 // ✅ Good: meaningful description, specific assertion, isolated dependency
-describe('calculateDiscount', () => {
-  it('applies 10% discount for premium users', () => {
-    const result = calculateDiscount({ price: 100, userTier: 'premium' });
+describe("calculateDiscount", () => {
+  it("applies 10% discount for premium users", () => {
+    const result = calculateDiscount({ price: 100, userTier: "premium" });
     expect(result).toBe(90); // specific outcome, not just truthy
   });
 
-  it('throws on negative price', () => {
-    expect(() => calculateDiscount({ price: -1, userTier: 'standard' }))
-      .toThrow('Price must be non-negative');
+  it("throws on negative price", () => {
+    expect(() => calculateDiscount({ price: -1, userTier: "standard" })).toThrow(
+      "Price must be non-negative",
+    );
   });
 });
 ```
@@ -55,22 +56,23 @@ Load detailed guidance based on context:
 
 <!-- TDD Iron Laws and Testing Anti-Patterns adapted from obra/superpowers by Jesse Vincent (@obra), MIT License -->
 
-| Topic | Reference | Load When |
-|-------|-----------|-----------|
-| Unit Testing | `references/unit-testing.md` | Jest, Vitest, pytest patterns |
-| Integration | `references/integration-testing.md` | API testing, Supertest |
-| E2E | `references/e2e-testing.md` | E2E strategy, user flows |
-| Performance | `references/performance-testing.md` | k6, load testing |
-| Security | `references/security-testing.md` | Security test checklist |
-| Reports | `references/test-reports.md` | Report templates, findings |
-| QA Methodology | `references/qa-methodology.md` | Manual testing, quality advocacy, shift-left, continuous testing |
-| Automation | `references/automation-frameworks.md` | Framework patterns, scaling, maintenance, team enablement |
-| TDD Iron Laws | `references/tdd-iron-laws.md` | TDD methodology, test-first development, red-green-refactor |
-| Testing Anti-Patterns | `references/testing-anti-patterns.md` | Test review, mock issues, test quality problems |
+| Topic                 | Reference                             | Load When                                                        |
+| --------------------- | ------------------------------------- | ---------------------------------------------------------------- |
+| Unit Testing          | `references/unit-testing.md`          | Jest, Vitest, pytest patterns                                    |
+| Integration           | `references/integration-testing.md`   | API testing, Supertest                                           |
+| E2E                   | `references/e2e-testing.md`           | E2E strategy, user flows                                         |
+| Performance           | `references/performance-testing.md`   | k6, load testing                                                 |
+| Security              | `references/security-testing.md`      | Security test checklist                                          |
+| Reports               | `references/test-reports.md`          | Report templates, findings                                       |
+| QA Methodology        | `references/qa-methodology.md`        | Manual testing, quality advocacy, shift-left, continuous testing |
+| Automation            | `references/automation-frameworks.md` | Framework patterns, scaling, maintenance, team enablement        |
+| TDD Iron Laws         | `references/tdd-iron-laws.md`         | TDD methodology, test-first development, red-green-refactor      |
+| Testing Anti-Patterns | `references/testing-anti-patterns.md` | Test review, mock issues, test quality problems                  |
 
 ## Constraints
 
 **MUST DO**
+
 - Test happy paths AND error/edge cases (e.g., empty input, null, boundary values)
 - Mock external dependencies — never call real APIs or databases in unit tests
 - Use meaningful `it('…')` descriptions that read as plain-English specifications
@@ -78,6 +80,7 @@ Load detailed guidance based on context:
 - Run tests in CI/CD; document and remediate coverage gaps
 
 **MUST NOT**
+
 - Skip error-path testing (e.g., don't test only the success branch of a try/catch)
 - Use production data in tests — use fixtures or factories instead
 - Create order-dependent tests — each test must be independently runnable
@@ -87,6 +90,7 @@ Load detailed guidance based on context:
 ## Output Templates
 
 When creating test plans, provide:
+
 1. Test scope and approach
 2. Test cases with expected outcomes
 3. Coverage analysis

@@ -5,6 +5,7 @@
 ## When to Use This Guide
 
 **Migrate to FastAPI when:**
+
 - Need async/await for I/O-bound operations
 - Require WebSocket or Server-Sent Events
 - Want automatic OpenAPI/Swagger documentation
@@ -14,6 +15,7 @@
 - Require lower resource consumption
 
 **DO NOT migrate when:**
+
 - Heavy use of Django admin interface
 - Extensive Django ORM model inheritance
 - Complex form handling and validation
@@ -26,26 +28,26 @@
 
 ## Concept Mapping: Django/DRF → FastAPI
 
-| Django/DRF Concept | FastAPI Equivalent | Notes |
-|-------------------|-------------------|-------|
-| `models.Model` | Pydantic `BaseModel` + SQLAlchemy | Separate schema from ORM |
-| `serializers.Serializer` | Pydantic `BaseModel` | Type-safe validation |
-| `ModelSerializer` | Multiple Pydantic models | Create/Read/Update schemas |
-| `ViewSet` | `APIRouter` + path operations | More explicit routing |
-| `GenericAPIView` | Dependency injection | Function-based approach |
-| `@api_view` decorator | `@router.get/post` | Built-in HTTP methods |
-| `urls.py` | `APIRouter` + `app.include_router` | Nested routers |
-| `settings.py` | `pydantic-settings` | Environment-based config |
-| `middleware` | Middleware + dependencies | More granular control |
-| `permissions` | Dependencies | Composable auth |
-| `authentication` | OAuth2 + JWT dependencies | Standards-based |
-| `pagination` | Query parameters + dependencies | Manual implementation |
-| `filters` | Query parameters | Type-safe filtering |
-| `Django ORM` | SQLAlchemy 2.0+ | Async support |
-| `select_related` | `selectinload` | Eager loading |
-| `prefetch_related` | `joinedload` | Join strategies |
-| `pytest-django` | `pytest + httpx` | Async test client |
-| `admin.py` | External (SQLAdmin, etc.) | Not built-in |
+| Django/DRF Concept       | FastAPI Equivalent                 | Notes                      |
+| ------------------------ | ---------------------------------- | -------------------------- |
+| `models.Model`           | Pydantic `BaseModel` + SQLAlchemy  | Separate schema from ORM   |
+| `serializers.Serializer` | Pydantic `BaseModel`               | Type-safe validation       |
+| `ModelSerializer`        | Multiple Pydantic models           | Create/Read/Update schemas |
+| `ViewSet`                | `APIRouter` + path operations      | More explicit routing      |
+| `GenericAPIView`         | Dependency injection               | Function-based approach    |
+| `@api_view` decorator    | `@router.get/post`                 | Built-in HTTP methods      |
+| `urls.py`                | `APIRouter` + `app.include_router` | Nested routers             |
+| `settings.py`            | `pydantic-settings`                | Environment-based config   |
+| `middleware`             | Middleware + dependencies          | More granular control      |
+| `permissions`            | Dependencies                       | Composable auth            |
+| `authentication`         | OAuth2 + JWT dependencies          | Standards-based            |
+| `pagination`             | Query parameters + dependencies    | Manual implementation      |
+| `filters`                | Query parameters                   | Type-safe filtering        |
+| `Django ORM`             | SQLAlchemy 2.0+                    | Async support              |
+| `select_related`         | `selectinload`                     | Eager loading              |
+| `prefetch_related`       | `joinedload`                       | Join strategies            |
+| `pytest-django`          | `pytest + httpx`                   | Async test client          |
+| `admin.py`               | External (SQLAdmin, etc.)          | Not built-in               |
 
 ---
 
@@ -804,6 +806,7 @@ location /api/ {
 ```
 
 **Approach:**
+
 1. Stand up FastAPI with shared database (read-only initially)
 2. Migrate GET endpoints first (lowest risk)
 3. Add write endpoints with dual-write to both systems
@@ -829,6 +832,7 @@ class User(Base):
 ### Phase 3: Database Schema Modernization
 
 After traffic migration, modernize schema:
+
 - Remove Django-specific fields (`content_type`, `permissions`)
 - Simplify table names (remove app prefixes)
 - Add database-level constraints
@@ -851,6 +855,7 @@ After traffic migration, modernize schema:
 ### 1. Async/Await Mistakes
 
 **WRONG:**
+
 ```python
 # Blocking call in async function
 @router.get("/users")
@@ -860,6 +865,7 @@ async def get_users(db: AsyncSession):
 ```
 
 **CORRECT:**
+
 ```python
 @router.get("/users")
 async def get_users(db: AsyncSession):
@@ -871,6 +877,7 @@ async def get_users(db: AsyncSession):
 ### 2. Missing `from_attributes` (orm_mode)
 
 **WRONG:**
+
 ```python
 class UserRead(BaseModel):
     id: int
@@ -879,6 +886,7 @@ class UserRead(BaseModel):
 ```
 
 **CORRECT:**
+
 ```python
 class UserRead(BaseModel):
     id: int
@@ -890,6 +898,7 @@ class UserRead(BaseModel):
 ### 3. Session Management
 
 **WRONG:**
+
 ```python
 # Reusing session across requests
 db_session = async_sessionmaker(engine)()
@@ -900,6 +909,7 @@ async def get_users():
 ```
 
 **CORRECT:**
+
 ```python
 # Dependency injection per request
 async def get_db():
@@ -916,6 +926,7 @@ async def get_users(db: Annotated[AsyncSession, Depends(get_db)]):
 ### 4. Relationship Loading
 
 **WRONG:**
+
 ```python
 # Lazy loading in async (causes errors)
 user = await db.get(User, user_id)
@@ -923,6 +934,7 @@ posts = user.posts  # Error: lazy loading not supported in async
 ```
 
 **CORRECT:**
+
 ```python
 # Eager loading with selectinload
 result = await db.execute(
@@ -935,6 +947,7 @@ posts = user.posts  # Already loaded
 ### 5. Transaction Handling
 
 **WRONG:**
+
 ```python
 # Auto-commit not configured
 @router.post("/users")
@@ -946,6 +959,7 @@ async def create_user(user: UserCreate, db: AsyncSession):
 ```
 
 **CORRECT:**
+
 ```python
 @router.post("/users")
 async def create_user(user: UserCreate, db: AsyncSession):
@@ -961,6 +975,7 @@ async def create_user(user: UserCreate, db: AsyncSession):
 ## Cross-Reference
 
 For comprehensive migration strategies and modernization patterns:
+
 - **Legacy Modernizer**: `/skills/legacy-modernizer/references/migration-strategies.md`
   - Strangler pattern implementation
   - Feature flag strategies
@@ -972,6 +987,7 @@ For comprehensive migration strategies and modernization patterns:
 ## Migration Checklist
 
 **Pre-Migration:**
+
 - [ ] Async readiness assessment (I/O bound workload?)
 - [ ] Team async Python experience validated
 - [ ] Database compatibility verified (async drivers available)
@@ -979,6 +995,7 @@ For comprehensive migration strategies and modernization patterns:
 - [ ] Migration timeline approved (6-12 months realistic)
 
 **During Migration:**
+
 - [ ] Parallel deployment configured
 - [ ] Monitoring and alerting set up
 - [ ] Load testing completed
@@ -986,6 +1003,7 @@ For comprehensive migration strategies and modernization patterns:
 - [ ] Rollback procedure tested
 
 **Post-Migration:**
+
 - [ ] Django dependencies removed
 - [ ] Documentation updated
 - [ ] Team training completed

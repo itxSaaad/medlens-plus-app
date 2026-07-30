@@ -143,18 +143,19 @@ CurrentUser = Annotated[str, Depends(get_current_user)]
 
 Load detailed guidance based on context:
 
-| Topic | Reference | Load When |
-|-------|-----------|-----------|
-| Pydantic V2 | `references/pydantic-v2.md` | Creating schemas, validation, model_config |
-| SQLAlchemy | `references/async-sqlalchemy.md` | Async database, models, CRUD operations |
-| Endpoints | `references/endpoints-routing.md` | APIRouter, dependencies, routing |
-| Authentication | `references/authentication.md` | JWT, OAuth2, get_current_user |
-| Testing | `references/testing-async.md` | pytest-asyncio, httpx, fixtures |
-| Django Migration | `references/migration-from-django.md` | Migrating from Django/DRF to FastAPI |
+| Topic            | Reference                             | Load When                                  |
+| ---------------- | ------------------------------------- | ------------------------------------------ |
+| Pydantic V2      | `references/pydantic-v2.md`           | Creating schemas, validation, model_config |
+| SQLAlchemy       | `references/async-sqlalchemy.md`      | Async database, models, CRUD operations    |
+| Endpoints        | `references/endpoints-routing.md`     | APIRouter, dependencies, routing           |
+| Authentication   | `references/authentication.md`        | JWT, OAuth2, get_current_user              |
+| Testing          | `references/testing-async.md`         | pytest-asyncio, httpx, fixtures            |
+| Django Migration | `references/migration-from-django.md` | Migrating from Django/DRF to FastAPI       |
 
 ## Constraints
 
 ### MUST DO
+
 - Use type hints everywhere (FastAPI requires them)
 - Use Pydantic V2 syntax (`field_validator`, `model_validator`, `model_config`)
 - Use `Annotated` pattern for dependency injection
@@ -164,6 +165,7 @@ Load detailed guidance based on context:
 - Document endpoints (auto-generated OpenAPI)
 
 ### MUST NOT DO
+
 - Use synchronous database operations
 - Skip Pydantic validation
 - Store passwords in plain text
@@ -175,6 +177,7 @@ Load detailed guidance based on context:
 ## Output Templates
 
 When implementing FastAPI features, provide:
+
 1. Schema file (Pydantic models)
 2. Endpoint file (router with endpoints)
 3. CRUD operations if database involved

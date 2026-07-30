@@ -4,21 +4,22 @@
 
 ## Strategy Comparison Matrix
 
-| Strategy | Best For | Chunk Quality | Implementation Complexity |
-|----------|----------|---------------|---------------------------|
-| **Fixed-size** | Simple documents, logs | Low-Medium | Simple |
-| **Recursive character** | General text, articles | Medium | Simple |
-| **Sentence-based** | Conversational, Q&A | Medium-High | Medium |
-| **Semantic** | Technical docs, manuals | High | Medium |
-| **Document-aware** | Structured content (MD, HTML) | High | Medium |
-| **Agentic/Contextual** | Complex documents | Very High | Complex |
-| **Late chunking** | Long-context embeddings | High | Medium |
+| Strategy                | Best For                      | Chunk Quality | Implementation Complexity |
+| ----------------------- | ----------------------------- | ------------- | ------------------------- |
+| **Fixed-size**          | Simple documents, logs        | Low-Medium    | Simple                    |
+| **Recursive character** | General text, articles        | Medium        | Simple                    |
+| **Sentence-based**      | Conversational, Q&A           | Medium-High   | Medium                    |
+| **Semantic**            | Technical docs, manuals       | High          | Medium                    |
+| **Document-aware**      | Structured content (MD, HTML) | High          | Medium                    |
+| **Agentic/Contextual**  | Complex documents             | Very High     | Complex                   |
+| **Late chunking**       | Long-context embeddings       | High          | Medium                    |
 
 ---
 
 ## When to Use Each Strategy
 
 ### Fixed-Size Chunking
+
 ```
 Best For:
 - Log files and structured data
@@ -33,6 +34,7 @@ When to Avoid:
 ```
 
 ### Recursive Character Splitting
+
 ```
 Best For:
 - General articles and blog posts
@@ -47,6 +49,7 @@ When to Avoid:
 ```
 
 ### Semantic Chunking
+
 ```
 Best For:
 - Technical documentation
@@ -61,6 +64,7 @@ When to Avoid:
 ```
 
 ### Document-Aware Chunking
+
 ```
 Best For:
 - Markdown documentation
@@ -536,7 +540,7 @@ def chunk_markdown(
 
 ### Code-Aware Chunking
 
-```python
+````python
 import re
 from dataclasses import dataclass
 
@@ -630,7 +634,7 @@ def split_code_block(code: str, language: str, max_size: int) -> list[CodeChunk]
         ))
 
     return chunks
-```
+````
 
 ---
 
@@ -849,27 +853,27 @@ def enrich_chunk(
 
 ## Chunk Size Selection Guide
 
-| Document Type | Recommended Size | Overlap | Rationale |
-|--------------|------------------|---------|-----------|
-| FAQ/Q&A | 200-400 tokens | 20-50 | Keep Q&A pairs together |
-| Technical docs | 400-600 tokens | 50-100 | Balance context vs precision |
-| Legal/contracts | 600-800 tokens | 100-150 | Preserve clause context |
-| Code documentation | 300-500 tokens | 50-100 | Keep function docs together |
-| Chat transcripts | 150-300 tokens | 25-50 | Natural turn boundaries |
-| Research papers | 500-800 tokens | 100-200 | Section-level coherence |
+| Document Type      | Recommended Size | Overlap | Rationale                    |
+| ------------------ | ---------------- | ------- | ---------------------------- |
+| FAQ/Q&A            | 200-400 tokens   | 20-50   | Keep Q&A pairs together      |
+| Technical docs     | 400-600 tokens   | 50-100  | Balance context vs precision |
+| Legal/contracts    | 600-800 tokens   | 100-150 | Preserve clause context      |
+| Code documentation | 300-500 tokens   | 50-100  | Keep function docs together  |
+| Chat transcripts   | 150-300 tokens   | 25-50   | Natural turn boundaries      |
+| Research papers    | 500-800 tokens   | 100-200 | Section-level coherence      |
 
 ---
 
 ## Quick Reference
 
-| Strategy | Use Case | Code Pattern |
-|----------|----------|--------------|
-| Fixed-size | Logs, baseline | `text[i:i+chunk_size]` |
-| Recursive | General text | Split by `["\n\n", "\n", ". "]` |
-| Sentence | Q&A content | `sent_tokenize()` + merge |
-| Semantic | Technical docs | Similarity-based breaks |
-| Markdown | Documentation | Header-aware splitting |
-| Late chunking | Long-context models | Embed full, pool chunks |
+| Strategy      | Use Case            | Code Pattern                    |
+| ------------- | ------------------- | ------------------------------- |
+| Fixed-size    | Logs, baseline      | `text[i:i+chunk_size]`          |
+| Recursive     | General text        | Split by `["\n\n", "\n", ". "]` |
+| Sentence      | Q&A content         | `sent_tokenize()` + merge       |
+| Semantic      | Technical docs      | Similarity-based breaks         |
+| Markdown      | Documentation       | Header-aware splitting          |
+| Late chunking | Long-context models | Embed full, pool chunks         |
 
 ## Related Skills
 
