@@ -8,11 +8,12 @@ description: GitHub Actions CI/CD, Docker, env secrets, feature flags, and PR-on
 Use when changing workflows, release config, Docker, or deployment gates.
 
 ## Rules
+
 - PR-only merges; no secrets in repo files
 - CI gates all PRs to `develop` and `main`
 - `semantic-release` on `main` creates `vX.Y.Z` tags after CI
 - Deploy workflow is gated — do not enable without maintainer approval
-- Env and flags: `docs/ops/CONFIGURATION_AND_FLAGS.md`
+- Env and flags: `docs/06-ops/02-CONFIGURATION_AND_FLAGS.md`
 
 ## Validation
 

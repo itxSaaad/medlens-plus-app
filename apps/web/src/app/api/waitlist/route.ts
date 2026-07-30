@@ -13,11 +13,11 @@ export async function POST(request: Request) {
     const body = waitlistSchema.parse(await request.json());
     const normalizedEmail = body.email.toLowerCase().trim();
 
-    if (waitlistEntryExists(normalizedEmail)) {
+    if (await waitlistEntryExists(normalizedEmail)) {
       return NextResponse.json({ message: "You are already on the waitlist." });
     }
 
-    appendWaitlistEntry(normalizedEmail);
+    await appendWaitlistEntry(normalizedEmail);
     webLogger.info("Waitlist signup", { success: true });
 
     return NextResponse.json({ message: "Successfully joined the waitlist." });

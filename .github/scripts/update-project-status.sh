@@ -27,7 +27,7 @@ query($owner: String!, $number: Int!) {
 GRAPHQL
 
 PROJECT_RESULT=$(github_graphql "$PROJECT_QUERY" '{"owner":"itxSaaad","number":2}') || {
-  echo "Failed to query Project #2 — verify GH_PAT has Projects read/write (docs/ops/GITHUB_AUTOMATION_PAT.md)" >&2
+  echo "Failed to query Project #2 — verify GH_PAT has Projects read/write (docs/06-ops/05-GITHUB_AUTOMATION_PAT.md)" >&2
   exit 1
 }
 

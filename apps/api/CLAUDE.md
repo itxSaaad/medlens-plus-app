@@ -27,14 +27,22 @@ tests/
 ```
 
 ## Conventions
+
 - All providers via interfaces + factories — never hardcode vendors in routes.
 - Async I/O; Pydantic v2 schemas; env-backed settings.
 - No PHI in logs; safety filters on AI output.
 
+## Guidance for agents
+
+- Treat this package as a FastAPI service and follow the official FastAPI, Pydantic, and Uvicorn guidance for request handling, validation, and deployment.
+- When working with integrations or async flows, consult the relevant package documentation before introducing new patterns.
+- Keep the API contract consistent with the web and mobile apps by using shared schemas and package conventions.
+
 ## Skills
+
 - `api-backend` — FastAPI, OpenAPI, Postgres
 - `ai-workflows` — LangGraph, prompts, RAG
 - `parser-pipeline` — OCR, extractors
 - `safety-privacy` — medical guardrails
 
-Reference: `docs/architecture/ADAPTER_FACTORY_GUIDE.md`
+Reference: `docs/02-architecture/04-ADAPTER_FACTORY_GUIDE.md`

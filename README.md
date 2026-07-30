@@ -39,9 +39,9 @@ MedLens+ is a safety-first, longitudinal medical report intelligence platform th
 
 ## Engineering Workflow
 
-- Trunk-based: `main` is the only long-lived branch (protected, never deleted) — see [`docs/open-source/BRANCHING_STRATEGY.md`](docs/open-source/BRANCHING_STRATEGY.md)
+- Trunk-based: `main` is the only long-lived branch (protected, never deleted) — see [`docs/07-open-source/04-BRANCHING_STRATEGY.md`](docs/07-open-source/04-BRANCHING_STRATEGY.md)
 - Feature branches merge by PR (squash merge) and are auto-deleted after merge
-- `CI - Quality And Governance` (`ci.yml`) runs quality checks on every PR and push; on push to `main` it also calls `release.yml` and `deploy.yml` as reusable workflows (`needs:`-gated `workflow_call` jobs, not cross-workflow `workflow_run` chaining, which proved unreliable — see [`docs/open-source/RELEASE_PROCESS.md`](docs/open-source/RELEASE_PROCESS.md)). Release and deploy stay in their own files for separation of concerns and remain independently runnable via `workflow_dispatch`.
+- `CI - Quality And Governance` (`ci.yml`) runs quality checks on every PR and push; on push to `main` it also calls `release.yml` and `deploy.yml` as reusable workflows (`needs:`-gated `workflow_call` jobs, not cross-workflow `workflow_run` chaining, which proved unreliable — see [`docs/07-open-source/11-RELEASE_PROCESS.md`](docs/07-open-source/11-RELEASE_PROCESS.md)). Release and deploy stay in their own files for separation of concerns and remain independently runnable via `workflow_dispatch`.
 - Supporting workflows: `codeql.yml` (security scanning), `integration-gate.yml`, `project-automation.yml`
 
 Current deployment strategy is git-integrated platform deployment (Vercel/Render). The deploy gate is intentionally a placeholder until managed environments are enabled.
@@ -72,21 +72,21 @@ Backend Python quality and tests are executed through workspace scripts and CI u
 
 ## Key Docs
 
-- Product scope: `docs/product/MVP_V1_SPEC.md`
-- Golden rules: `docs/product/GOLDEN_RULES.md`
-- System architecture: `docs/architecture/SYSTEM_ARCHITECTURE.md`
-- Adapter/factory strategy: `docs/architecture/ADAPTER_FACTORY_GUIDE.md`
-- Config and feature flags: `docs/ops/CONFIGURATION_AND_FLAGS.md`
-- Branching model: `docs/open-source/BRANCHING_STRATEGY.md`
-- Release model: `docs/open-source/RELEASE_PROCESS.md`
-- Quality gates: `docs/open-source/QUALITY_GATES.md`
-- Commit standards: `docs/open-source/COMMIT_STRATEGY.md`
-- OSS operating manual: `docs/open-source/PROJECT_OPERATING_MANUAL.md`
-- Delivery board: `docs/open-source/GITHUB_PROJECTS.md`
-- Tooling setup: `docs/open-source/TOOLING_SETUP.md`
-- Agent baseline: `docs/agent-context/AGENT_SKILLS_BASELINE.md`
-- Rules and skills map: `docs/agent-context/RULES_AND_SKILLS_MAP.md`
-- Skills provenance: `docs/agent-context/SKILLS_PROVENANCE.md`
+- Product scope: `docs/01-product/04-MVP_V1_SPEC.md`
+- Golden rules: `docs/01-product/03-GOLDEN_RULES.md`
+- System architecture: `docs/02-architecture/01-SYSTEM_ARCHITECTURE.md`
+- Adapter/factory strategy: `docs/02-architecture/04-ADAPTER_FACTORY_GUIDE.md`
+- Config and feature flags: `docs/06-ops/02-CONFIGURATION_AND_FLAGS.md`
+- Branching model: `docs/07-open-source/04-BRANCHING_STRATEGY.md`
+- Release model: `docs/07-open-source/11-RELEASE_PROCESS.md`
+- Quality gates: `docs/07-open-source/09-QUALITY_GATES.md`
+- Commit standards: `docs/07-open-source/05-COMMIT_STRATEGY.md`
+- OSS operating manual: `docs/07-open-source/01-PROJECT_OPERATING_MANUAL.md`
+- Delivery board: `docs/07-open-source/06-GITHUB_PROJECTS.md`
+- Tooling setup: `docs/07-open-source/08-TOOLING_SETUP.md`
+- Agent baseline: `docs/00-start/02-AGENT_SKILLS_BASELINE.md`
+- Rules and skills map: `docs/00-start/03-RULES_AND_SKILLS_MAP.md`
+- Skills provenance: `docs/00-start/04-SKILLS_PROVENANCE.md`
 - Cursor rules: `.cursor/rules/README.md`
 - Cursor skills: `.cursor/skills/README.md`
 

@@ -10,7 +10,8 @@ const publicEnvSchema = z.object({
 });
 
 const serverEnvSchema = z.object({
-  WAITLIST_STORAGE_PATH: z.string().default("data/waitlist.json"),
+  UPSTASH_REDIS_REST_URL: z.string().url().default("http://localhost:8079"),
+  UPSTASH_REDIS_REST_TOKEN: z.string().default("dev-token"),
   WAITLIST_ADMIN_API_KEY: z.string().optional(),
 });
 
@@ -27,7 +28,8 @@ function parsePublicEnv() {
 
 function parseServerEnv() {
   return serverEnvSchema.parse({
-    WAITLIST_STORAGE_PATH: process.env.WAITLIST_STORAGE_PATH,
+    UPSTASH_REDIS_REST_URL: process.env.UPSTASH_REDIS_REST_URL,
+    UPSTASH_REDIS_REST_TOKEN: process.env.UPSTASH_REDIS_REST_TOKEN,
     WAITLIST_ADMIN_API_KEY: process.env.WAITLIST_ADMIN_API_KEY,
   });
 }

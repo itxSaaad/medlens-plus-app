@@ -6,7 +6,7 @@ alwaysApply: false
 
 # AI Workflows
 
-Reference: `docs/architecture/SYSTEM_ARCHITECTURE.md`, `apps/api/src/api/workflows/`.
+Reference: `docs/02-architecture/01-SYSTEM_ARCHITECTURE.md`, `apps/api/src/api/workflows/`.
 
 ## Rules
 

@@ -11,7 +11,7 @@ Use when planning **what to write and how to structure** public pages for tradit
 - Health-adjacent YMYL: expertise and trust matter more than keyword stuffing
 - Target informational intent (“how to organize lab reports”) not “symptoms of X”
 - No fear-based or diagnostic headlines for clicks
-- Align copy with `docs/product/GOLDEN_RULES.md`
+- Align copy with `docs/01-product/03-GOLDEN_RULES.md`
 
 ## Search intent mapping
 | Intent | Example topics | Page type |
