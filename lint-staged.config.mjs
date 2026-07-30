@@ -10,7 +10,10 @@ function withoutIgnoredPaths(files) {
 
 /** @param {string[]} files */
 function quoted(files) {
-  return files.map((file) => `"${file.replace(/"/g, '\\"')}"`).join(" ");
+  // Escape backslashes before quotes, or a path ending in `\` immediately
+  // followed by our closing `"` would escape the quote itself instead of
+  // being treated as a literal backslash — CodeQL: incomplete string escaping.
+  return files.map((file) => `"${file.replace(/\\/g, "\\\\").replace(/"/g, '\\"')}"`).join(" ");
 }
 
 /** @param {string[]} files @param {string} command */
