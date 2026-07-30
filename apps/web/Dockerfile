@@ -7,6 +7,7 @@ COPY package.json pnpm-lock.yaml* pnpm-workspace.yaml ./
 COPY apps/web/package.json apps/web/package.json
 COPY packages/types/package.json packages/types/package.json
 COPY packages/logger/package.json packages/logger/package.json
+COPY packages/ui-tokens/package.json packages/ui-tokens/package.json
 RUN --mount=type=cache,target=/root/.local/share/pnpm/store \
     pnpm install --frozen-lockfile=false --ignore-scripts
 
@@ -17,6 +18,7 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY --from=deps /app/apps/web/node_modules ./apps/web/node_modules
 COPY --from=deps /app/packages/types/node_modules ./packages/types/node_modules
 COPY --from=deps /app/packages/logger/node_modules ./packages/logger/node_modules
+COPY --from=deps /app/packages/ui-tokens/node_modules ./packages/ui-tokens/node_modules
 COPY . .
 RUN pnpm --filter @medlens/web build
 
