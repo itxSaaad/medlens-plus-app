@@ -48,7 +48,7 @@ jobs:
             if [[ ! "$BRANCH_NAME" =~ $TICKET_PATTERN ]] && [[ ! "$BRANCH_NAME" =~ $SLUG_PATTERN ]]; then
               echo "Invalid branch name: $BRANCH_NAME"
               echo "feat/fix/hotfix branches need a ticket id (feat/TKT-013-short-slug) or a description slug (feat/short-slug)"
-              echo "See docs/open-source/NAMING_CONVENTIONS.md"
+              echo "See docs/07-open-source/03-NAMING_CONVENTIONS.md"
               exit 1
             fi
           fi
@@ -143,6 +143,10 @@ jobs:
         uses: astral-sh/setup-uv@d4b2f3b6ecc6e67c4457f6d3e41ec42d3d0fcb86 # v5
         with:
           enable-cache: true
+          # See integration-gate.yml — the post-job cache-prune step has
+          # hung then failed on this action elsewhere; disable it
+          # pre-emptively here too since it's a pure hygiene optimization.
+          prune-cache: false
 
       - name: Install backend dependencies
         run: uv sync --directory apps/api --frozen --group dev
@@ -303,7 +307,7 @@ jobs:
   # are invoked here as reusable workflows (`workflow_call`) with `needs:`,
   # not via `workflow_run` event-chaining. workflow_run silently no-ops if
   # the upstream run is cancelled (observed in production — see
-  # docs/open-source/RELEASE_PROCESS.md); a `needs:` dependency on a
+  # docs/07-open-source/11-RELEASE_PROCESS.md); a `needs:` dependency on a
   # `workflow_call` job cannot silently miss like that, since it's a direct
   # synchronous part of this same workflow run.
   # Release is manual-trigger only (workflow_dispatch), not automatic on

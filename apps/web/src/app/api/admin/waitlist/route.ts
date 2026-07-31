@@ -10,7 +10,7 @@ export async function GET(request: Request) {
 
   const url = new URL(request.url);
   if (url.searchParams.get("format") === "csv") {
-    const entries = readWaitlistEntries();
+    const entries = await readWaitlistEntries();
     webLogger.info("Waitlist admin export", { count: entries.length });
 
     return new NextResponse(entriesToCsv(entries), {
@@ -21,7 +21,7 @@ export async function GET(request: Request) {
     });
   }
 
-  const entries = readWaitlistEntries();
+  const entries = await readWaitlistEntries();
   webLogger.info("Waitlist admin list", { count: entries.length });
 
   return NextResponse.json({ entries, count: entries.length });

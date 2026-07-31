@@ -35,4 +35,4 @@ pnpm --filter @medlens/api lint typecheck test test:integration
 | REST / OpenAPI design | `references/api-designer/` |
 | Postgres / Supabase | `references/postgres-pro/` |
 
-Docs: `docs/architecture/ADAPTER_FACTORY_GUIDE.md` · Rule: `.cursor/rules/fastapi-backend.mdc`
+Docs: `docs/02-architecture/04-ADAPTER_FACTORY_GUIDE.md` · Rule: `.cursor/rules/fastapi-backend.mdc`

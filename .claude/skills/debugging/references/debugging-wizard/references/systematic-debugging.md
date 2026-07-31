@@ -56,6 +56,7 @@ TypeError: Cannot read property 'map' of undefined
 ```
 
 **Key questions:**
+
 - What exact operation failed?
 - Where in the code (file, line)?
 - What was the call stack?
@@ -65,12 +66,14 @@ TypeError: Cannot read property 'map' of undefined
 
 ```markdown
 ## Reproduction Steps
+
 1. Navigate to /users
 2. Click "Load More" button
 3. Wait for loading spinner
 4. **ERROR: "Cannot read property 'map' of undefined"**
 
 ## Environment
+
 - Browser: Chrome 120
 - User: Admin role
 - Data state: 50+ users in database
@@ -116,13 +119,13 @@ const { data } = useQuery(GET_USERS);
 
 ```typescript
 // Add temporary logging at boundaries
-console.log('[UserList] props:', JSON.stringify(props));
-console.log('[UserList] users type:', typeof props.users);
-console.log('[UserList] users value:', props.users);
+console.log("[UserList] props:", JSON.stringify(props));
+console.log("[UserList] users type:", typeof props.users);
+console.log("[UserList] users value:", props.users);
 
 // Check at data source
-console.log('[API] Response:', response);
-console.log('[API] Response.data:', response.data);
+console.log("[API] Response:", response);
+console.log("[API] Response.data:", response.data);
 ```
 
 ---
@@ -163,12 +166,12 @@ function UserList({ users, loading }) {
 
 ### Step 2.3: Document All Differences
 
-| Aspect | Working (ProductList) | Broken (UserList) |
-|--------|----------------------|-------------------|
-| Null check | `if (!products)` | Missing |
-| Default value | `products ?? []` | None |
-| Loading handled | Before render | Before render |
-| Error handled | Returns ErrorState | Missing |
+| Aspect          | Working (ProductList) | Broken (UserList) |
+| --------------- | --------------------- | ----------------- |
+| Null check      | `if (!products)`      | Missing           |
+| Default value   | `products ?? []`      | None              |
+| Loading handled | Before render         | Before render     |
+| Error handled   | Returns ErrorState    | Missing           |
 
 ---
 
@@ -180,6 +183,7 @@ function UserList({ users, loading }) {
 
 ```markdown
 ## Hypothesis #1
+
 **Statement:** The crash occurs because `users` is undefined when the
 query is complete but returns no data.
 
@@ -205,9 +209,9 @@ function UserList({ users, loading }) {
 ```markdown
 ## Test Results
 
-| Hypothesis | Change | Result | Conclusion |
-|------------|--------|--------|------------|
-| #1: Null check | Add `if (!users)` | ✓ Pass | Confirmed |
+| Hypothesis     | Change            | Result | Conclusion |
+| -------------- | ----------------- | ------ | ---------- |
+| #1: Null check | Add `if (!users)` | ✓ Pass | Confirmed  |
 
 Do NOT test multiple hypotheses simultaneously.
 ```
@@ -299,13 +303,13 @@ Fix Attempt 3: Fixed parent → Original error returns
 
 When you notice these, stop and restart from Phase 1:
 
-| Red Flag | Why It's Wrong |
-|----------|----------------|
-| Proposing solutions before tracing data flow | Guessing, not debugging |
-| Making multiple simultaneous changes | Can't identify which change worked |
-| Skipping test creation | Bug will recur |
-| "Let's try this and see if it works" | Shotgun debugging |
-| Fixing without understanding the cause | Band-aid, not cure |
+| Red Flag                                     | Why It's Wrong                     |
+| -------------------------------------------- | ---------------------------------- |
+| Proposing solutions before tracing data flow | Guessing, not debugging            |
+| Making multiple simultaneous changes         | Can't identify which change worked |
+| Skipping test creation                       | Bug will recur                     |
+| "Let's try this and see if it works"         | Shotgun debugging                  |
+| Fixing without understanding the cause       | Band-aid, not cure                 |
 
 ---
 
@@ -364,4 +368,4 @@ When you notice these, stop and restart from Phase 1:
 
 ---
 
-*Content adapted from [obra/superpowers](https://github.com/obra/superpowers) by Jesse Vincent (@obra), MIT License.*
+_Content adapted from [obra/superpowers](https://github.com/obra/superpowers) by Jesse Vincent (@obra), MIT License._

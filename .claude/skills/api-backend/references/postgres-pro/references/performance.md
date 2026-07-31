@@ -32,6 +32,7 @@ Actual time: 0.123..45.678 rows=9876 loops=1
 ```
 
 **Node types (fastest to slowest):**
+
 - Index Only Scan - Best, data from index only
 - Index Scan - Good, uses index + heap lookup
 - Bitmap Index Scan - Good for multiple conditions

@@ -23,4 +23,4 @@
 | `devops` | CI/CD, Docker |
 | `debugging` | Logs, traces |
 
-Map: `docs/agent-context/RULES_AND_SKILLS_MAP.md`
+Map: `docs/00-start/03-RULES_AND_SKILLS_MAP.md`

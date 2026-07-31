@@ -230,4 +230,4 @@ echo "- Sole CODEOWNER: @${CODEOWNER_LOGIN}; collaborator PRs require owner appr
 echo "- Repo owner may self-merge (enforce_admins: false); collaborators cannot bypass."
 echo "- Classic branch protection is authoritative (personal repos)."
 echo "- Rulesets with github-actions + owner bypass are best-effort (org repos)."
-echo "- Add repo secret GH_PAT for project automation (docs/ops/GITHUB_AUTOMATION_PAT.md)."
+echo "- Add repo secret GH_PAT for project automation (docs/06-ops/05-GITHUB_AUTOMATION_PAT.md)."

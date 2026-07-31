@@ -19,4 +19,4 @@ description: Medical safety and PII guardrails before merging any MedLens+ chang
 - Privacy/security note
 - Test evidence for safety filters
 
-Always-on: `.cursor/rules/medical-safety.mdc` · `docs/product/GOLDEN_RULES.md`
+Always-on: `.cursor/rules/medical-safety.mdc` · `docs/01-product/03-GOLDEN_RULES.md`

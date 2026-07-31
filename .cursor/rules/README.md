@@ -26,4 +26,4 @@ Rules live as `.mdc` files with YAML frontmatter. See [Cursor docs](https://curs
 | `technical-seo.mdc` | `apps/web/**` — technical SEO + links to content-seo & AEO skills |
 
 Skills: `.cursor/skills/README.md`  
-Map: `docs/agent-context/RULES_AND_SKILLS_MAP.md`
+Map: `docs/00-start/03-RULES_AND_SKILLS_MAP.md`

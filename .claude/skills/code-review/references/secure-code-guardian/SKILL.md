@@ -36,17 +36,18 @@ After each implementation step, verify:
 
 Load detailed guidance based on context:
 
-| Topic | Reference | Load When |
-|-------|-----------|-----------|
-| OWASP | `references/owasp-prevention.md` | OWASP Top 10 patterns |
-| Authentication | `references/authentication.md` | Password hashing, JWT |
-| Input Validation | `references/input-validation.md` | Zod, SQL injection |
-| XSS/CSRF | `references/xss-csrf.md` | XSS prevention, CSRF |
-| Headers | `references/security-headers.md` | Helmet, rate limiting |
+| Topic            | Reference                        | Load When             |
+| ---------------- | -------------------------------- | --------------------- |
+| OWASP            | `references/owasp-prevention.md` | OWASP Top 10 patterns |
+| Authentication   | `references/authentication.md`   | Password hashing, JWT |
+| Input Validation | `references/input-validation.md` | Zod, SQL injection    |
+| XSS/CSRF         | `references/xss-csrf.md`         | XSS prevention, CSRF  |
+| Headers          | `references/security-headers.md` | Helmet, rate limiting |
 
 ## Constraints
 
 ### MUST DO
+
 - Hash passwords with bcrypt/argon2 (never MD5/SHA-1/unsalted hashes)
 - Use parameterized queries (never string-interpolated SQL)
 - Validate and sanitize all user input before use
@@ -56,6 +57,7 @@ Load detailed guidance based on context:
 - Store secrets in environment variables or secret managers (never in source code)
 
 ### MUST NOT DO
+
 - Store passwords in plaintext or reversibly encrypted form
 - Trust user input without validation
 - Expose sensitive data in logs or error responses
@@ -67,7 +69,7 @@ Load detailed guidance based on context:
 ### Password Hashing (bcrypt)
 
 ```typescript
-import bcrypt from 'bcrypt';
+import bcrypt from "bcrypt";
 
 const SALT_ROUNDS = 12; // minimum 10; 12 balances security and performance
 
@@ -85,13 +87,13 @@ export async function verifyPassword(plaintext: string, hash: string): Promise<b
 ```typescript
 // NEVER: `SELECT * FROM users WHERE email = '${email}'`
 // ALWAYS: use positional parameters
-import { Pool } from 'pg';
+import { Pool } from "pg";
 const pool = new Pool();
 
 export async function getUserByEmail(email: string) {
   const { rows } = await pool.query(
-    'SELECT id, email, role FROM users WHERE email = $1',
-    [email]  // value passed separately — never interpolated
+    "SELECT id, email, role FROM users WHERE email = $1",
+    [email], // value passed separately — never interpolated
   );
   return rows[0] ?? null;
 }
@@ -100,7 +102,7 @@ export async function getUserByEmail(email: string) {
 ### Input Validation with Zod
 
 ```typescript
-import { z } from 'zod';
+import { z } from "zod";
 
 const LoginSchema = z.object({
   email: z.string().email().max(254),
@@ -111,7 +113,7 @@ export function validateLoginInput(raw: unknown) {
   const result = LoginSchema.safeParse(raw);
   if (!result.success) {
     // Return generic error — never echo raw input back
-    throw new Error('Invalid credentials format');
+    throw new Error("Invalid credentials format");
   }
   return result.data;
 }
@@ -120,18 +122,18 @@ export function validateLoginInput(raw: unknown) {
 ### JWT Validation
 
 ```typescript
-import jwt from 'jsonwebtoken';
+import jwt from "jsonwebtoken";
 
 const JWT_SECRET = process.env.JWT_SECRET!; // never hardcode
 
 export function verifyToken(token: string): jwt.JwtPayload {
   // Throws if expired, tampered, or wrong algorithm
   const payload = jwt.verify(token, JWT_SECRET, {
-    algorithms: ['HS256'],   // explicitly allowlist algorithm
-    issuer: 'your-app',
-    audience: 'your-app',
+    algorithms: ["HS256"], // explicitly allowlist algorithm
+    issuer: "your-app",
+    audience: "your-app",
   });
-  if (typeof payload === 'string') throw new Error('Invalid token payload');
+  if (typeof payload === "string") throw new Error("Invalid token payload");
   return payload;
 }
 ```
@@ -139,22 +141,22 @@ export function verifyToken(token: string): jwt.JwtPayload {
 ### Securing an Endpoint — Full Flow
 
 ```typescript
-import express from 'express';
-import rateLimit from 'express-rate-limit';
-import helmet from 'helmet';
+import express from "express";
+import rateLimit from "express-rate-limit";
+import helmet from "helmet";
 
 const app = express();
 app.use(helmet()); // sets CSP, HSTS, X-Frame-Options, etc.
-app.use(express.json({ limit: '10kb' })); // limit payload size
+app.use(express.json({ limit: "10kb" })); // limit payload size
 
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 10,                   // 10 attempts per window per IP
+  max: 10, // 10 attempts per window per IP
   standardHeaders: true,
   legacyHeaders: false,
 });
 
-app.post('/api/login', authLimiter, async (req, res) => {
+app.post("/api/login", authLimiter, async (req, res) => {
   // 1. Validate input
   const { email, password } = validateLoginInput(req.body);
 
@@ -162,25 +164,27 @@ app.post('/api/login', authLimiter, async (req, res) => {
   const user = await getUserByEmail(email);
   if (!user || !(await verifyPassword(password, user.passwordHash))) {
     // Generic message — do not reveal whether email exists
-    return res.status(401).json({ error: 'Invalid credentials' });
+    return res.status(401).json({ error: "Invalid credentials" });
   }
 
   // 3. Authorize — issue scoped, short-lived token
-  const token = jwt.sign(
-    { sub: user.id, role: user.role },
-    JWT_SECRET,
-    { algorithm: 'HS256', expiresIn: '15m', issuer: 'your-app', audience: 'your-app' }
-  );
+  const token = jwt.sign({ sub: user.id, role: user.role }, JWT_SECRET, {
+    algorithm: "HS256",
+    expiresIn: "15m",
+    issuer: "your-app",
+    audience: "your-app",
+  });
 
   // 4. Secure response — token in httpOnly cookie, not body
-  res.cookie('token', token, { httpOnly: true, secure: true, sameSite: 'strict' });
-  return res.json({ message: 'Authenticated' });
+  res.cookie("token", token, { httpOnly: true, secure: true, sameSite: "strict" });
+  return res.json({ message: "Authenticated" });
 });
 ```
 
 ## Output Templates
 
 When implementing security features, provide:
+
 1. Secure implementation code
 2. Security considerations noted
 3. Configuration requirements (env vars, headers)

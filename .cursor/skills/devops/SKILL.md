@@ -12,7 +12,7 @@ Use when changing workflows, release config, Docker, or deployment gates.
 - CI gates all PRs to `develop` and `main`
 - `semantic-release` on `main` creates `vX.Y.Z` tags after CI
 - Deploy workflow is gated — do not enable without maintainer approval
-- Env and flags: `docs/ops/CONFIGURATION_AND_FLAGS.md`
+- Env and flags: `docs/06-ops/02-CONFIGURATION_AND_FLAGS.md`
 
 ## Validation
 ```bash

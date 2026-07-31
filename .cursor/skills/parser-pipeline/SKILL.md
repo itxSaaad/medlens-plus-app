@@ -23,4 +23,4 @@ Use for `packages/parsers/`, OCR providers, and normalization logic.
 - Contract tests on normalized schema output
 - Edge cases: missing units, ambiguous labels, multi-page reports
 
-Docs: `packages/parsers/`, `docs/architecture/SYSTEM_ARCHITECTURE.md`
+Docs: `packages/parsers/`, `docs/02-architecture/01-SYSTEM_ARCHITECTURE.md`

@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 # GitHub REST API helper for workflows — curl only, no gh CLI.
-# Requires GH_PAT (repository secret). See docs/ops/GITHUB_AUTOMATION_PAT.md.
+# Requires GH_PAT (repository secret). See docs/06-ops/05-GITHUB_AUTOMATION_PAT.md.
 set -euo pipefail
 
 if [[ -z "${GH_PAT:-}" ]]; then
-  echo "error: GH_PAT is not set. Add the repository secret (see docs/ops/GITHUB_AUTOMATION_PAT.md)." >&2
+  echo "error: GH_PAT is not set. Add the repository secret (see docs/06-ops/05-GITHUB_AUTOMATION_PAT.md)." >&2
   exit 1
 fi
 

@@ -1,52 +1,67 @@
-import fs from "node:fs";
-import path from "node:path";
+import { Redis } from "@upstash/redis";
 import { getServerEnv } from "@/lib/site/env";
+
+// Upstash Redis (REST, HTTP-based — works from any Vercel serverless/edge
+// function, no persistent connection needed) backs waitlist signups until a
+// real relational store exists. This is the same Upstash Redis instance the
+// rest of the architecture already plans to use for caching/idempotency (see
+// docs/02-architecture/02-STACK_DECISIONS.md), just a different key
+// namespace — not a new service. Entries live in a sorted set keyed by
+// lowercased email, scored by join time (epoch ms), which gives dedup
+// (ZADD NX), existence checks (ZSCORE), and chronological order (ZRANGE) for
+// free without a read-modify-write race. Move to Supabase once the real
+// tenant/report schema exists; this key can be migrated wholesale then.
 
 export interface WaitlistEntry {
   email: string;
   joinedAt: string;
 }
 
-interface WaitlistData {
-  entries: WaitlistEntry[];
-}
+const WAITLIST_KEY = "medlens:waitlist:entries";
 
-function getWaitlistFile(): string {
-  return path.join(process.cwd(), getServerEnv().WAITLIST_STORAGE_PATH);
-}
+let cachedClient: Redis | null = null;
 
-export function ensureWaitlistFile(): void {
-  const waitlistFile = getWaitlistFile();
-  const dir = path.dirname(waitlistFile);
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir, { recursive: true });
+function getRedisClient(): Redis {
+  if (!cachedClient) {
+    const { UPSTASH_REDIS_REST_URL, UPSTASH_REDIS_REST_TOKEN } = getServerEnv();
+    cachedClient = new Redis({ url: UPSTASH_REDIS_REST_URL, token: UPSTASH_REDIS_REST_TOKEN });
   }
-  if (!fs.existsSync(waitlistFile)) {
-    fs.writeFileSync(waitlistFile, JSON.stringify({ entries: [] }, null, 2));
+  return cachedClient;
+}
+
+/** @internal Test-only cache reset (mirrors resetEnvCacheForTests) */
+export function resetWaitlistClientForTests(): void {
+  cachedClient = null;
+}
+
+export async function readWaitlistEntries(): Promise<WaitlistEntry[]> {
+  const redis = getRedisClient();
+  const raw = await redis.zrange<(string | number)[]>(WAITLIST_KEY, 0, -1, {
+    withScores: true,
+    rev: true,
+  });
+
+  const entries: WaitlistEntry[] = [];
+  for (let i = 0; i < raw.length; i += 2) {
+    const email = String(raw[i]);
+    const joinedAtMs = Number(raw[i + 1]);
+    entries.push({ email, joinedAt: new Date(joinedAtMs).toISOString() });
   }
+  return entries;
 }
 
-export function readWaitlistEntries(): WaitlistEntry[] {
-  ensureWaitlistFile();
-  const raw = fs.readFileSync(getWaitlistFile(), "utf-8");
-  const data = JSON.parse(raw) as WaitlistData;
-  return data.entries.sort(
-    (a, b) => new Date(b.joinedAt).getTime() - new Date(a.joinedAt).getTime(),
-  );
+export async function appendWaitlistEntry(email: string): Promise<void> {
+  const redis = getRedisClient();
+  // NX: only set if not already a member, so a retried/duplicate request
+  // can't overwrite the original join date — replaces the old
+  // check-then-append pattern with one atomic call.
+  await redis.zadd(WAITLIST_KEY, { nx: true }, { score: Date.now(), member: email });
 }
 
-export function appendWaitlistEntry(email: string): void {
-  ensureWaitlistFile();
-  const waitlistFile = getWaitlistFile();
-  const raw = fs.readFileSync(waitlistFile, "utf-8");
-  const data = JSON.parse(raw) as WaitlistData;
-
-  data.entries.push({ email, joinedAt: new Date().toISOString() });
-  fs.writeFileSync(waitlistFile, JSON.stringify(data, null, 2));
-}
-
-export function waitlistEntryExists(email: string): boolean {
-  return readWaitlistEntries().some((entry) => entry.email === email);
+export async function waitlistEntryExists(email: string): Promise<boolean> {
+  const redis = getRedisClient();
+  const score = await redis.zscore(WAITLIST_KEY, email);
+  return score !== null;
 }
 
 export function entriesToCsv(entries: WaitlistEntry[]): string {

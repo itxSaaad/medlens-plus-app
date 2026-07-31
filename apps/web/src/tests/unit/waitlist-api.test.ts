@@ -1,26 +1,43 @@
-import fs from "node:fs";
-import os from "node:os";
-import path from "node:path";
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { resetEnvCacheForTests } from "@/lib/site/env";
-import { POST } from "@/app/api/waitlist/route";
-import { GET } from "@/app/api/admin/waitlist/route";
+
+const { fakeStore } = vi.hoisted(() => ({ fakeStore: new Map<string, number>() }));
+
+/* eslint-disable @typescript-eslint/no-unused-vars -- fake mirrors the real Redis method signatures */
+vi.mock("@upstash/redis", () => ({
+  Redis: class FakeRedis {
+    async zadd(
+      _key: string,
+      opts: { nx?: boolean },
+      { score, member }: { score: number; member: string },
+    ) {
+      if (opts.nx && fakeStore.has(member)) return 0;
+      fakeStore.set(member, score);
+      return 1;
+    }
+    async zscore(_key: string, member: string) {
+      return fakeStore.has(member) ? fakeStore.get(member)! : null;
+    }
+    async zrange(_key: string, _min: number, _max: number, _opts: { withScores?: boolean }) {
+      return [...fakeStore.entries()]
+        .sort((a, b) => b[1] - a[1])
+        .flatMap(([member, score]) => [member, score]);
+    }
+  },
+}));
+
+const { POST } = await import("@/app/api/waitlist/route");
+const { GET } = await import("@/app/api/admin/waitlist/route");
 
 describe("waitlist API routes", () => {
-  let tempDir: string;
-  let tempFile: string;
-
   beforeEach(() => {
-    tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "waitlist-api-"));
-    tempFile = path.join(tempDir, "waitlist.json");
-    process.env.WAITLIST_STORAGE_PATH = tempFile;
+    fakeStore.clear();
     process.env.WAITLIST_ADMIN_API_KEY = "admin-secret";
     resetEnvCacheForTests();
   });
 
   afterEach(() => {
-    fs.rmSync(tempDir, { recursive: true, force: true });
-    delete process.env.WAITLIST_STORAGE_PATH;
+    fakeStore.clear();
     delete process.env.WAITLIST_ADMIN_API_KEY;
     resetEnvCacheForTests();
   });

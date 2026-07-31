@@ -15,7 +15,7 @@ Use for `packages/agents/`, `apps/api/src/api/workflows/`, prompts, and model se
 - Record `prompt_id`, model, and change note on every AI workflow change
 
 ## Topology
-Intake/OCR → Parser → Explainer → Timeline → Alert — see `docs/architecture/SYSTEM_ARCHITECTURE.md`
+Intake/OCR → Parser → Explainer → Timeline → Alert — see `docs/02-architecture/01-SYSTEM_ARCHITECTURE.md`
 
 ## Failure handling
 - Fail fast with `job_id` / `request_id` in logs

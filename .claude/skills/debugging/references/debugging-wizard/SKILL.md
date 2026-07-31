@@ -31,17 +31,18 @@ Load detailed guidance based on context:
 
 <!-- Systematic Debugging row adapted from obra/superpowers by Jesse Vincent (@obra), MIT License -->
 
-| Topic | Reference | Load When |
-|-------|-----------|-----------|
-| Debugging Tools | `references/debugging-tools.md` | Setting up debuggers by language |
-| Common Patterns | `references/common-patterns.md` | Recognizing bug patterns |
-| Strategies | `references/strategies.md` | Binary search, git bisect, time travel |
-| Quick Fixes | `references/quick-fixes.md` | Common error solutions |
+| Topic                | Reference                            | Load When                                                |
+| -------------------- | ------------------------------------ | -------------------------------------------------------- |
+| Debugging Tools      | `references/debugging-tools.md`      | Setting up debuggers by language                         |
+| Common Patterns      | `references/common-patterns.md`      | Recognizing bug patterns                                 |
+| Strategies           | `references/strategies.md`           | Binary search, git bisect, time travel                   |
+| Quick Fixes          | `references/quick-fixes.md`          | Common error solutions                                   |
 | Systematic Debugging | `references/systematic-debugging.md` | Complex bugs, multiple failed fixes, root cause analysis |
 
 ## Constraints
 
 ### MUST DO
+
 - Reproduce the issue first
 - Gather complete error messages and stack traces
 - Test one hypothesis at a time
@@ -50,6 +51,7 @@ Load detailed guidance based on context:
 - Remove all debug code before committing
 
 ### MUST NOT DO
+
 - Guess without testing
 - Make multiple changes at once
 - Skip reproduction steps
@@ -60,6 +62,7 @@ Load detailed guidance based on context:
 ## Common Debugging Commands
 
 **Python (pdb)**
+
 ```bash
 python -m pdb script.py          # launch debugger
 # inside pdb:
@@ -71,6 +74,7 @@ python -m pdb script.py          # launch debugger
 ```
 
 **JavaScript (Node.js)**
+
 ```bash
 node --inspect-brk script.js     # pause at first line, attach Chrome DevTools
 # In Chrome: open chrome://inspect → click "inspect"
@@ -78,6 +82,7 @@ node --inspect-brk script.js     # pause at first line, attach Chrome DevTools
 ```
 
 **Git bisect (regression hunting)**
+
 ```bash
 git bisect start
 git bisect bad                   # current commit is broken
@@ -89,6 +94,7 @@ git bisect reset
 ```
 
 **Go (delve)**
+
 ```bash
 dlv debug ./cmd/server           # build & attach
 # (dlv) break main.go:55
@@ -99,6 +105,7 @@ dlv debug ./cmd/server           # build & attach
 ## Output Templates
 
 When debugging, provide:
+
 1. **Root Cause**: What specifically caused the issue
 2. **Evidence**: Stack trace, logs, or test that proves it
 3. **Fix**: Code change that resolves it

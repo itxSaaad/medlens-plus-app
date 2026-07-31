@@ -2,7 +2,7 @@
 # This file documents branch protection for the MedLens+ repository.
 #
 # Apply via: bash .github/setup-branch-protection.sh
-# Docs: docs/ops/BRANCH_PROTECTION_SETUP.md
+# Docs: docs/06-ops/04-BRANCH_PROTECTION_SETUP.md
 #
 # Trunk-based: main is the only long-lived branch. Feature/fix branches PR
 # directly to main and are squash-merged; release automation runs on every

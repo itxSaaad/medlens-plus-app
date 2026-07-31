@@ -18,4 +18,4 @@ alwaysApply: false
 ## Authority
 `safety-privacy` and `medical-safety.mdc` override all UI and tracking guidance.
 
-Map: `docs/agent-context/RULES_AND_SKILLS_MAP.md`
+Map: `docs/00-start/03-RULES_AND_SKILLS_MAP.md`

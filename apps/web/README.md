@@ -1,36 +1,35 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# apps/web
 
-## Getting Started
+MedLens+ web application built with Next.js 16 and the App Router.
 
-First, run the development server:
+## Run locally
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm --filter @medlens/web dev
+pnpm --filter @medlens/web lint
+pnpm --filter @medlens/web typecheck
+pnpm --filter @medlens/web test:unit
+pnpm --filter @medlens/web test:integration
+pnpm --filter @medlens/web build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Project shape
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- `src/app/` — routes, layouts, and route groups
+- `src/components/` — shared UI and marketing components
+- `src/content/data/` — content-backed copy and structured marketing data
+- `src/lib/` — SEO, analytics, and content helpers
+- `src/tests/` — unit and integration coverage
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Conventions
 
-## Learn More
+- Prefer Server Components by default and use client components only when necessary.
+- Keep medical interpretation logic in the API layer instead of the UI.
+- Follow the repository safety and privacy guardrails for any health-related copy.
+- Use shared packages from `packages/types` and `packages/logger` where possible.
 
-To learn more about Next.js, take a look at the following resources:
+## Reference docs
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Next.js docs: [https://nextjs.org/docs](https://nextjs.org/docs)
+- App Router docs: [https://nextjs.org/docs/app](https://nextjs.org/docs/app)
+- Vercel/Next.js best practices: [https://nextjs.org/docs/app/building-your-application](https://nextjs.org/docs/app/building-your-application)

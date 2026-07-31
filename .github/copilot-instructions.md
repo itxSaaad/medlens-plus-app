@@ -1,9 +1,11 @@
 # GitHub Copilot Instructions for MedLens+
 
 ## Mission
+
 Build MedLens+ as a safety-first, longitudinal medical report intelligence platform.
 
 ## Non-Negotiables
+
 - Never diagnose disease.
 - Never prescribe medicine.
 - Never suggest dosage changes.
@@ -12,6 +14,7 @@ Build MedLens+ as a safety-first, longitudinal medical report intelligence platf
 - Warn when comparing values from different labs.
 
 ## Engineering Defaults
+
 - Use typed contracts and schema-first development.
 - Keep provider integrations behind interfaces and factories.
 - Keep config env-backed and feature-flag-backed.
@@ -19,28 +22,32 @@ Build MedLens+ as a safety-first, longitudinal medical report intelligence platf
 - Update docs in the same PR for architecture/config/flow changes.
 
 ## Branch and PR Rules
+
 - Trunk-based: branch from `main`, PR back to `main` (squash merge).
 - Long-lived branches: `main` only.
 - All merges to protected branches are **manual PR merges** — auto-merge disabled.
 - **Every commit message must pass `commitlint.config.cjs`** or the required CI check fails the PR: conventional `<type>(<scope>): <subject>` header, valid type, header ≤100 chars, blank lines between header/body/footer. `body-max-line-length` is disabled (commit bodies routinely contain unwrappable URLs).
 - Link a GitHub issue (`Closes #NNN` or `Relates to #NNN`) in every PR.
 - Use the [PR template](../pull_request_template.md) — summary, safety impact, privacy impact, test evidence.
-- **AI reviews (Copilot, CodeRabbit) are manual only** — request when the PR is ready and scoped (see `docs/open-source/TOOLING_SETUP.md`).
+- **AI reviews (Copilot, CodeRabbit) are manual only** — request when the PR is ready and scoped (see `docs/07-open-source/08-TOOLING_SETUP.md`).
 - **PR size (recommended):** ≤150 changed files for AI tools; ≤400 lines meaningful diff; one logical change per PR when possible.
 
 ## Local Validation
+
 Run before requesting review:
+
 - `pnpm lint`
 - `pnpm typecheck`
 - `pnpm test`
 - `pnpm build`
 
 ## Reference Docs
+
 - `AGENTS.md`
-- `docs/product/GOLDEN_RULES.md`
-- `docs/architecture/SYSTEM_ARCHITECTURE.md`
-- `docs/ops/CONFIGURATION_AND_FLAGS.md`
-- `docs/open-source/QUALITY_GATES.md`
-- `docs/open-source/GITHUB_PROJECTS.md`
+- `docs/01-product/03-GOLDEN_RULES.md`
+- `docs/02-architecture/01-SYSTEM_ARCHITECTURE.md`
+- `docs/06-ops/02-CONFIGURATION_AND_FLAGS.md`
+- `docs/07-open-source/09-QUALITY_GATES.md`
+- `docs/07-open-source/06-GITHUB_PROJECTS.md`
 - `.cursor/skills/code-review-and-pr-quality/SKILL.md`
 - `.cursor/skills/github-project-delivery/SKILL.md`

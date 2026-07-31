@@ -14,6 +14,7 @@ pnpm --filter @medlens/web build
 ```
 
 ## Layout
+
 - `src/app/` — App Router pages and layouts
 - `src/app/(marketing)/` — Public marketing routes (home, features, blog, glossary, etc.)
 - `src/components/ui/` — shadcn-style primitives
@@ -26,11 +27,19 @@ pnpm --filter @medlens/web build
 - Shared logger: `@medlens/logger` from `packages/logger`
 
 ## Conventions
+
 - Server Components by default; `"use client"` only when needed.
 - Marketing copy lives in JSON under `src/content/data/` — edit JSON, not components, for content changes.
 - No medical interpretation logic in the UI — API owns clinical semantics.
 - Accessible markup; no PII in client logs or analytics events.
 - GTM loads only after analytics consent (`ConsentBanner`).
+
+## Guidance for agents
+
+- Treat this app as a Next.js project and follow the official Next.js and App Router guidance for routing, server/client boundaries, and performance.
+- When editing UI, review the official React and Next.js documentation for patterns before introducing new abstractions.
+- Prefer the official package documentation for any shared libraries used here (for example, Radix UI, Tailwind, and Vitest) over ad hoc implementation choices.
+- Keep the web experience consistent with the mobile and API apps by reusing shared contracts and package conventions.
 
 ## Skills by surface
 
@@ -40,4 +49,4 @@ pnpm --filter @medlens/web build
 
 **Always:** `safety-privacy` for health copy and tracking
 
-Commands: `/ui-audit`, `/perf-review` · Map: `docs/agent-context/RULES_AND_SKILLS_MAP.md`
+Commands: `/ui-audit`, `/perf-review` · Map: `docs/00-start/03-RULES_AND_SKILLS_MAP.md`

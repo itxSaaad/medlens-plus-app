@@ -2,7 +2,7 @@
 requestInfoReplyComment: >
   Thanks for opening this! Please complete the issue/PR template:
   link the ticket, describe the change, and include validation evidence.
-  See docs/open-source/PR_REVIEW_AND_PROTECTION_POLICY.md.
+  See docs/07-open-source/10-PR_REVIEW_AND_PROTECTION_POLICY.md.
 
 requestInfoDefaultTitles:
   - update readme.md

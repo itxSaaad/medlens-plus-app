@@ -13,4 +13,4 @@ alwaysApply: true
 6. Always use uploaded report reference ranges, not internet-generic ranges.
 7. Always show caution when comparing reports from different labs.
 
-Full policy: `docs/product/GOLDEN_RULES.md`
+Full policy: `docs/01-product/03-GOLDEN_RULES.md`

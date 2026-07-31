@@ -8,7 +8,7 @@ description: PR quality, security review, Dependabot hygiene, and MedLens+ revie
 Use when preparing or reviewing pull requests.
 
 ## PR size and body
-- **CI naming:** [`docs/open-source/NAMING_CONVENTIONS.md`](../../docs/open-source/NAMING_CONVENTIONS.md) — branch, commit, PR title
+- **CI naming:** [`docs/07-open-source/03-NAMING_CONVENTIONS.md`](../../docs/07-open-source/03-NAMING_CONVENTIONS.md) — branch, commit, PR title
 - Use [PR template](https://github.com/itxSaaad/medlens-plus-app/blob/main/.github/pull_request_template.md): ticket link, problem, solution, checklists, validation evidence
 - **Recommended:** ≤150 changed files (AI review tools), ≤400 lines meaningful diff, one issue per PR
 - Summary, safety impact, privacy impact, test evidence, `Closes #NNN`

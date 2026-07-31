@@ -124,12 +124,12 @@ settings = Settings()
 
 ## Quick Reference
 
-| V1 Syntax | V2 Syntax |
-|-----------|-----------|
-| `@validator` | `@field_validator` |
-| `@root_validator` | `@model_validator` |
-| `class Config` | `model_config = {}` |
+| V1 Syntax         | V2 Syntax                |
+| ----------------- | ------------------------ |
+| `@validator`      | `@field_validator`       |
+| `@root_validator` | `@model_validator`       |
+| `class Config`    | `model_config = {}`      |
 | `orm_mode = True` | `from_attributes = True` |
-| `Optional[X]` | `X \| None` |
-| `.dict()` | `.model_dump()` |
-| `.parse_obj()` | `.model_validate()` |
+| `Optional[X]`     | `X \| None`              |
+| `.dict()`         | `.model_dump()`          |
+| `.parse_obj()`    | `.model_validate()`      |

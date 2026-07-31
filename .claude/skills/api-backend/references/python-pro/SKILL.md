@@ -41,27 +41,29 @@ Modern Python 3.11+ specialist focused on type-safe, async-first, production-rea
 
 Load detailed guidance based on context:
 
-| Topic | Reference | Load When |
-|-------|-----------|-----------|
-| Type System | `references/type-system.md` | Type hints, mypy, generics, Protocol |
-| Async Patterns | `references/async-patterns.md` | async/await, asyncio, task groups |
+| Topic            | Reference                        | Load When                                  |
+| ---------------- | -------------------------------- | ------------------------------------------ |
+| Type System      | `references/type-system.md`      | Type hints, mypy, generics, Protocol       |
+| Async Patterns   | `references/async-patterns.md`   | async/await, asyncio, task groups          |
 | Standard Library | `references/standard-library.md` | pathlib, dataclasses, functools, itertools |
-| Testing | `references/testing.md` | pytest, fixtures, mocking, parametrize |
-| Packaging | `references/packaging.md` | poetry, pip, pyproject.toml, distribution |
+| Testing          | `references/testing.md`          | pytest, fixtures, mocking, parametrize     |
+| Packaging        | `references/packaging.md`        | poetry, pip, pyproject.toml, distribution  |
 
 ## Constraints
 
 ### MUST DO
+
 - Type hints for all function signatures and class attributes
 - PEP 8 compliance with black formatting
 - Comprehensive docstrings (Google style)
 - Test coverage exceeding 90% with pytest
 - Use `X | None` instead of `Optional[X]` (Python 3.10+)
 - Async/await for I/O-bound operations
-- Dataclasses over manual __init__ methods
+- Dataclasses over manual **init** methods
 - Context managers for resource handling
 
 ### MUST NOT DO
+
 - Skip type annotations on public APIs
 - Use mutable default arguments
 - Mix sync and async code improperly
@@ -73,6 +75,7 @@ Load detailed guidance based on context:
 ## Code Examples
 
 ### Type-annotated function with error handling
+
 ```python
 from pathlib import Path
 
@@ -100,6 +103,7 @@ def read_config(path: Path) -> dict[str, str]:
 ```
 
 ### Dataclass with validation
+
 ```python
 from dataclasses import dataclass, field
 
@@ -116,6 +120,7 @@ class AppConfig:
 ```
 
 ### Async pattern
+
 ```python
 import asyncio
 import httpx
@@ -129,6 +134,7 @@ async def fetch_all(urls: list[str]) -> list[bytes]:
 ```
 
 ### pytest fixture and parametrize
+
 ```python
 import pytest
 from pathlib import Path
@@ -149,6 +155,7 @@ def test_app_config_port_validation(port: int, valid: bool) -> None:
 ```
 
 ### mypy strict configuration (pyproject.toml)
+
 ```toml
 [tool.mypy]
 python_version = "3.11"
@@ -159,14 +166,17 @@ disallow_untyped_defs = true
 ```
 
 Clean `mypy --strict` output looks like:
+
 ```
 Success: no issues found in 12 source files
 ```
+
 Any reported error (e.g., `error: Function is missing a return type annotation`) must be resolved before the implementation is considered complete.
 
 ## Output Templates
 
 When implementing Python features, provide:
+
 1. Module file with complete type hints
 2. Test file with pytest fixtures
 3. Type checking confirmation (mypy --strict passes)

@@ -20,13 +20,13 @@ python .github/maintainer/build-manifest.py
 python .github/maintainer/sync-delivery.py --all
 ```
 
-| Flag | Action |
-|------|--------|
-| `--cleanup-dupes` | Remove #61–#68 from project; delete or close duplicates |
-| `--hierarchy` | Repair epic/story sub-issue links |
-| `--fields` | Set Status, Epic, Priority, Ticket ID, Sprint on all items |
-| `--milestones` | Assign gate milestones |
-| `--verify` | Item count + GraphQL field gap check |
+| Flag              | Action                                                     |
+| ----------------- | ---------------------------------------------------------- |
+| `--cleanup-dupes` | Remove #61–#68 from project; delete or close duplicates    |
+| `--hierarchy`     | Repair epic/story sub-issue links                          |
+| `--fields`        | Set Status, Epic, Priority, Ticket ID, Sprint on all items |
+| `--milestones`    | Assign gate milestones                                     |
+| `--verify`        | Item count + GraphQL field gap check                       |
 
 ## Files
 
@@ -34,4 +34,4 @@ python .github/maintainer/sync-delivery.py --all
 - `sync-delivery.py` — GitHub Project sync
 - `build-manifest.py` — refresh sprint issue lists from `planning/sprints/`
 
-See [`docs/ops/MAINTAINER_DELIVERY.md`](../../docs/ops/MAINTAINER_DELIVERY.md).
+See [`docs/06-ops/07-MAINTAINER_DELIVERY.md`](../../docs/06-ops/07-MAINTAINER_DELIVERY.md).

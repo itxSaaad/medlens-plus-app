@@ -9,7 +9,7 @@ Use when picking work, shipping features, opening PRs, or promoting branches.
 
 ## Source of truth
 - [GitHub Project #2](https://github.com/users/itxSaaad/projects/2) — issues #15–#60
-- Naming rules: `docs/open-source/NAMING_CONVENTIONS.md` (**CI-enforced**)
+- Naming rules: `docs/07-open-source/03-NAMING_CONVENTIONS.md` (**CI-enforced**)
 
 ## Pick up work
 1. Filter **Status = Ready** on the project board

@@ -2,13 +2,13 @@
 
 ## Debuggers by Language
 
-| Language | Debugger | Start Command |
-|----------|----------|---------------|
-| TypeScript/JS | Node Inspector | `node --inspect` |
-| Python | pdb/ipdb | `python -m pdb` |
-| Go | Delve | `dlv debug` |
-| Rust | rust-gdb/lldb | `rust-gdb ./target/debug/app` |
-| Java | JDB/IDE | IDE debugger |
+| Language      | Debugger       | Start Command                 |
+| ------------- | -------------- | ----------------------------- |
+| TypeScript/JS | Node Inspector | `node --inspect`              |
+| Python        | pdb/ipdb       | `python -m pdb`               |
+| Go            | Delve          | `dlv debug`                   |
+| Rust          | rust-gdb/lldb  | `rust-gdb ./target/debug/app` |
+| Java          | JDB/IDE        | IDE debugger                  |
 
 ## Node.js / TypeScript
 
@@ -30,7 +30,7 @@ debugger; // Breakpoint
 // Quick print
 console.log({ variable }); // Shows name and value
 console.table(arrayOfObjects); // Table format
-console.trace('Called from'); // Stack trace
+console.trace("Called from"); // Stack trace
 ```
 
 ## Python
@@ -58,16 +58,16 @@ inspect(object, methods=True)
 
 ### pdb Commands
 
-| Command | Action |
-|---------|--------|
-| `n` | Next line |
-| `s` | Step into |
-| `c` | Continue |
-| `l` | List code |
-| `p expr` | Print expression |
-| `pp expr` | Pretty print |
-| `w` | Where (stack) |
-| `q` | Quit |
+| Command   | Action           |
+| --------- | ---------------- |
+| `n`       | Next line        |
+| `s`       | Step into        |
+| `c`       | Continue         |
+| `l`       | List code        |
+| `p expr`  | Print expression |
+| `pp expr` | Pretty print     |
+| `w`       | Where (stack)    |
+| `q`       | Quit             |
 
 ## Go
 
@@ -94,14 +94,14 @@ spew.Dump(variable)
 
 ### Delve Commands
 
-| Command | Action |
-|---------|--------|
-| `break main.go:42` | Set breakpoint |
-| `continue` | Continue |
-| `next` | Next line |
-| `step` | Step into |
-| `print var` | Print variable |
-| `goroutines` | List goroutines |
+| Command            | Action          |
+| ------------------ | --------------- |
+| `break main.go:42` | Set breakpoint  |
+| `continue`         | Continue        |
+| `next`             | Next line       |
+| `step`             | Step into       |
+| `print var`        | Print variable  |
+| `goroutines`       | List goroutines |
 
 ## VS Code Debug Config
 
@@ -131,10 +131,10 @@ spew.Dump(variable)
 
 ## Quick Reference
 
-| Need | Tool |
-|------|------|
-| Breakpoint in code | `debugger;` / `breakpoint()` |
-| Print with name | `console.log({x})` / `print(f"{x=}")` |
-| Stack trace | `console.trace()` / `traceback.print_stack()` |
-| Inspect object | `console.dir(obj)` / `dir(obj)` |
-| Step through | IDE debugger or CLI debugger |
+| Need               | Tool                                          |
+| ------------------ | --------------------------------------------- |
+| Breakpoint in code | `debugger;` / `breakpoint()`                  |
+| Print with name    | `console.log({x})` / `print(f"{x=}")`         |
+| Stack trace        | `console.trace()` / `traceback.print_stack()` |
+| Inspect object     | `console.dir(obj)` / `dir(obj)`               |
+| Step through       | IDE debugger or CLI debugger                  |
