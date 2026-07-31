@@ -143,6 +143,10 @@ jobs:
         uses: astral-sh/setup-uv@d4b2f3b6ecc6e67c4457f6d3e41ec42d3d0fcb86 # v5
         with:
           enable-cache: true
+          # See integration-gate.yml — the post-job cache-prune step has
+          # hung then failed on this action elsewhere; disable it
+          # pre-emptively here too since it's a pure hygiene optimization.
+          prune-cache: false
 
       - name: Install backend dependencies
         run: uv sync --directory apps/api --frozen --group dev
