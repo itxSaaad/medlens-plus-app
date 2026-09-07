@@ -32,20 +32,20 @@
     "postinstall": "node scripts/sync-python-deps.mjs"
   },
   "devDependencies": {
-    "@commitlint/cli": "^21.2.1",
-    "@commitlint/config-conventional": "^21.2.0",
+    "@commitlint/cli": "^21.2.2",
+    "@commitlint/config-conventional": "^21.2.2",
     "@eslint/js": "^10.0.1",
     "@semantic-release/commit-analyzer": "^13.0.1",
     "@semantic-release/github": "^12.0.9",
     "@semantic-release/npm": "^13.1.5",
     "@semantic-release/release-notes-generator": "^14.1.0",
-    "globals": "^17.7.0",
+    "globals": "^17.12.0",
     "husky": "^9.1.7",
-    "lint-staged": "17.0.8",
-    "markdownlint-cli": "^0.49.0",
-    "prettier": "^3.9.5",
-    "semantic-release": "^25.0.6",
-    "turbo": "^2.10.4",
-    "typescript-eslint": "^8.63.0"
+    "lint-staged": "17.4.1",
+    "markdownlint-cli": "^0.49.1",
+    "prettier": "^3.9.6",
+    "semantic-release": "^25.0.9",
+    "turbo": "^2.10.12",
+    "typescript-eslint": "^8.69.0"
   }
 }
