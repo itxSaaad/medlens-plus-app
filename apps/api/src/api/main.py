@@ -14,12 +14,24 @@ settings = Settings.from_env()
 app = FastAPI(title="MedLens+ API", version="0.1.0")
 
 
+@app.get("/api")
+def api_root() -> dict[str, str]:
+    return {
+        "service": "medlens-api",
+        "status": "ok",
+        "health": "/api/health",
+        "docs": "/docs",
+    }
+
+
 @app.get("/health")
+@app.get("/api/health")
 def health() -> dict[str, str]:
     return {"status": "ok", "env": settings.app_env}
 
 
 @app.post("/documents/{document_id}/process")
+@app.post("/api/documents/{document_id}/process")
 def process_document(document_id: str) -> dict[str, str]:
     workflow = ReportProcessingWorkflow(
         storage=get_storage_provider(settings),
