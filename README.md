@@ -1,5 +1,27 @@
 # MedLens+
 
+## Architecture
+
+```mermaid
+flowchart LR
+  Patient[Patient] -->|upload lab report, review history, prepare questions| Web[Next.js web app\nVercel Services: web]
+  Clinician[Clinician] -->|review patient-authorized report summaries| Web
+  Web -->|authenticated HTTPS API| API[FastAPI service\nVercel Services: api]
+  API -->|validate request and redact sensitive data| Security[Shared security package]
+  API -->|file extraction and normalization| Parser[Shared parser package]
+  Parser -->|structured observations and source ranges| API
+  API -->|report metadata, observations, timeline| DB[(PostgreSQL)]
+  API -. cache and asynchronous task state .-> Redis[(Redis)]
+  API -->|original and derived report artifacts| Storage[Object storage\nMinIO local / configured S3-compatible production]
+  API -->|safe trend summaries and visit questions| Agents[Shared agent package\nnon-diagnostic assistance]
+  Agents --> API
+  API -->|structured report, timeline, safety notices| Web
+  Web -->|doctor-ready timeline and questions| Patient
+  Web -->|authorized summary| Clinician
+```
+
+Patient interaction follows upload → API validation/redaction → parser extraction → persisted observations and report artifact → safe timeline and visit-preparation response. The product does not diagnose or prescribe; the clinician remains responsible for medical decisions.
+
 [![CI - Quality And Governance](https://img.shields.io/github/actions/workflow/status/itxSaaad/medlens-plus-app/ci.yml?branch=main&label=CI)](./.github/workflows/ci.yml)
 [![codecov](https://codecov.io/gh/itxSaaad/medlens-plus-app/graph/badge.svg?token=)](https://codecov.io/gh/itxSaaad/medlens-plus-app)
 [![CodeQL](https://github.com/itxSaaad/medlens-plus-app/actions/workflows/codeql.yml/badge.svg?branch=main)](https://github.com/itxSaaad/medlens-plus-app/actions/workflows/codeql.yml)
@@ -97,3 +119,7 @@ Read `CONTRIBUTING.md`, then pick a **Ready** issue from the [MedLens+ Project B
 ## License
 
 MIT License. See `LICENSE`.
+
+## Vercel Deployment
+Contains Next.js apps/web and FastAPI apps/api. Set project framework to Services. API entrypoint is src.api.main:app. Configure required external database, storage, and AI adapters before document processing.
+See the repository-root [vercel.json](./vercel.json) for build roots and routing. Configure private values in Vercel Project Settings; never commit secrets.
