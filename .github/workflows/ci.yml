@@ -12,8 +12,16 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: ci-${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  # PRs: group by head ref so pushing new commits cancels the stale run for
+  # that same branch (saves CI minutes, standard practice).
+  # Pushes to main: group by the unique commit SHA instead of the branch
+  # ref, so back-to-back merges/pushes never share a group and can never
+  # cancel each other's validation run — every commit on main gets a
+  # complete, uncancelled record. (A shared `refs/heads/main` group here
+  # was cancelling merge-commit runs mid-flight whenever another push
+  # landed moments later, e.g. a Dependabot merge.)
+  group: ci-${{ github.workflow }}-${{ github.event_name == 'pull_request' && github.head_ref || github.sha }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   branch-naming:
